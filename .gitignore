@@ -11,3 +11,4 @@ claude-design-system/build/examples.json
 # Test output
 packages/ui/test/components/qa/report.json
 packages/ui/test/components/qa/.cache/
+.github/readme/.cache/
