@@ -1,0 +1,168 @@
+/* Calling parts (calls.tsx). Call and Answer are green and Hang up red, the rest quiet; a control that is on is dark.
+   The docked call is the ink panel the toasts use, so it reads as "something live" on any page without a shadow or
+   a pulse. Nothing moves except a button's press and work under way. */
+
+/* ------------------------------------------------------------------ CallButton */
+.easm-ui-call-button { --_face: var(--easm-ui-track); --_ink: var(--easm-ui-text); --_face-hover: var(--easm-ui-track-hover);
+  display: inline-flex; flex-direction: column; align-items: center; gap: 6px; min-width: 56px; padding: 0; border: 0; background: none; color: var(--easm-ui-text-secondary); font: inherit; cursor: pointer; }
+.easm-ui-call-button-face { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--_face); color: var(--_ink); transition: background var(--easm-ui-motion-fast) var(--easm-ui-ease), transform var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-call-button[data-size=lg] { min-width: 72px; gap: 8px; }
+.easm-ui-call-button[data-size=lg] .easm-ui-call-button-face { width: 64px; height: 64px; }
+.easm-ui-call-button-face .easm-ui-icon { --easm-icon-fill: none; }
+.easm-ui-call-button-label { font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 550; white-space: nowrap; }
+.easm-ui-call-button[data-kind=go] { --_face: var(--easm-ui-success); --_ink: var(--easm-ui-surface); --_face-hover: color-mix(in srgb, var(--easm-ui-success) 86%, black); }
+.easm-ui-call-button[data-kind=stop] { --_face: var(--easm-ui-danger); --_ink: var(--easm-ui-surface); --_face-hover: var(--easm-ui-danger-hover); }
+.easm-ui-call-button[data-on] { --_face: var(--easm-ui-ink-panel); --_ink: var(--easm-ui-on-ink); --_face-hover: var(--easm-ui-ink-panel-hover); }
+.easm-ui-call-button:hover:not([aria-disabled]) .easm-ui-call-button-face { background: var(--_face-hover); }
+.easm-ui-call-button:active:not([aria-disabled]) .easm-ui-call-button-face { transform: scale(.94); }
+.easm-ui-call-button:focus-visible { outline: none; }
+.easm-ui-call-button:focus-visible .easm-ui-call-button-face { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 3px; }
+.easm-ui-call-button[aria-disabled] { cursor: not-allowed; }
+.easm-ui-call-button[aria-disabled]:not([aria-busy]) .easm-ui-call-button-face { opacity: .4; }
+.easm-ui-call-controls { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 12px 16px; }
+
+/* ------------------------------------------------------------------ Keypad */
+.easm-ui-keypad { display: grid; justify-items: center; gap: 14px; width: 100%; max-width: 264px; margin-inline: auto; }
+.easm-ui-keypad-value { display: block; width: 100%; min-height: 28px; text-align: center; font-size: 22px; line-height: 28px; font-weight: 550; letter-spacing: .04em; font-variant-numeric: tabular-nums; color: var(--easm-ui-text); overflow-wrap: anywhere; }
+.easm-ui-keypad-value[data-empty] { font-size: var(--easm-ui-text-sm); letter-spacing: 0; font-weight: 450; color: var(--easm-ui-text-secondary); }
+.easm-ui-keypad-keys { display: grid; grid-template-columns: repeat(3, 64px); gap: 12px 20px; }
+.easm-ui-keypad-key { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; cursor: pointer; transition: background var(--easm-ui-motion-fast) var(--easm-ui-ease), transform var(--easm-ui-motion-fast) var(--easm-ui-ease); touch-action: manipulation; }
+.easm-ui-keypad-key:hover:not(:disabled) { background: var(--easm-ui-track-hover); }
+.easm-ui-keypad-key:active:not(:disabled) { background: var(--easm-ui-track-pressed); transform: scale(.94); }
+.easm-ui-keypad-key:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+.easm-ui-keypad-key:disabled { opacity: .45; cursor: not-allowed; }
+.easm-ui-keypad-digit { font-size: 22px; line-height: 26px; font-weight: 500; }
+.easm-ui-keypad-letters { font-size: var(--easm-ui-text-xs); line-height: 14px; font-weight: 600; letter-spacing: .08em; color: var(--easm-ui-text-secondary); }
+
+/* ------------------------------------------------------------------ CallDeviceLine */
+.easm-ui-call-device { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-call-device > .easm-ui-icon { flex: none; --easm-icon-fill: none; }
+.easm-ui-call-device[data-problem] { color: var(--easm-ui-danger-hover); }
+.easm-ui-call-device-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-call-device-change { flex: none; min-height: 28px; padding: 4px 10px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-xs); font-weight: 600; cursor: pointer; }
+.easm-ui-call-device-change:hover { background: var(--easm-ui-track-hover); }
+.easm-ui-call-device-change:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+
+/* ------------------------------------------------------------------ CallBar */
+.easm-ui-call-elapsed { font-variant-numeric: tabular-nums; }
+.easm-ui-call-bar { container-type: inline-size; display: grid; gap: 16px; border-radius: var(--easm-ui-radius-card); }
+.easm-ui-call-bar-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 4px 12px; }
+.easm-ui-call-bar-who { display: flex; flex-direction: column; min-width: 0; }
+.easm-ui-call-bar-name { font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-call-bar-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-call-bar-state { grid-column: 1; display: inline-flex; align-items: center; gap: 6px; font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 600; }
+.easm-ui-call-bar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-presence-online); }
+.easm-ui-call-bar[data-status=ringing] .easm-ui-call-bar-dot, .easm-ui-call-bar[data-status=connecting] .easm-ui-call-bar-dot { background: var(--easm-ui-icon-warning); }
+.easm-ui-call-bar[data-status=on-hold] .easm-ui-call-bar-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--easm-ui-icon-warning); }
+.easm-ui-call-bar[data-status=ended] .easm-ui-call-bar-dot { background: var(--easm-ui-text-disabled); }
+.easm-ui-call-bar-open { grid-column: 2; grid-row: 1 / span 2; align-self: center; min-height: 32px; padding: 4px 12px; border: 0; border-radius: var(--easm-ui-radius-pill); font: inherit; font-size: var(--easm-ui-text-xs); font-weight: 600; cursor: pointer; }
+.easm-ui-call-bar-body { display: grid; justify-items: center; gap: 12px; }
+/* Docked: the ink panel in the corner of any page. */
+.easm-ui-call-bar[data-variant=docked] { padding: 14px 16px 16px; background: var(--easm-ui-ink-panel); color: var(--easm-ui-on-ink); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-bar-name { font-size: var(--easm-ui-text-md); line-height: 20px; }
+.easm-ui-call-bar[data-variant=docked] :is(.easm-ui-call-bar-detail, .easm-ui-call-bar-state) { color: var(--easm-ui-on-ink-muted); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-bar-open { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-bar-open:hover { background: color-mix(in srgb, var(--easm-ui-ink-panel-hover) 80%, white); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-controls { justify-content: space-between; gap: 8px; }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-button { color: var(--easm-ui-on-ink-muted); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-button:is([data-kind=toggle], [data-kind=plain]) { --_face: var(--easm-ui-ink-panel-hover); --_ink: var(--easm-ui-on-ink); --_face-hover: color-mix(in srgb, var(--easm-ui-ink-panel-hover) 80%, white); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-button[data-on] { --_face: var(--easm-ui-on-ink); --_ink: var(--easm-ui-ink-panel); --_face-hover: var(--easm-ui-on-ink-muted); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-button:focus-visible .easm-ui-call-button-face { outline-color: var(--easm-ui-on-ink); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-call-device { color: var(--easm-ui-on-ink-muted); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-key { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-letters, .easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-value[data-empty] { color: var(--easm-ui-on-ink-muted); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-value { color: var(--easm-ui-on-ink); }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-key { width: 52px; height: 52px; }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-keys { grid-template-columns: repeat(3, 52px); gap: 8px 16px; }
+.easm-ui-call-bar[data-variant=docked] .easm-ui-keypad-digit { font-size: 18px; line-height: 22px; }
+/* Page: the Dialer's call area, centred, with large buttons. */
+.easm-ui-call-bar[data-variant=page] { padding: 24px 20px; background: var(--easm-ui-surface); color: var(--easm-ui-text); }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-bar-head { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-bar-who { align-items: center; }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-bar-name { font-size: var(--easm-ui-text-xl); line-height: 28px; }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-bar-detail { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-bar-state { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+.easm-ui-call-bar[data-variant=page] .easm-ui-call-controls { gap: 16px 20px; }
+@container (max-width: 240px) { .easm-ui-call-bar[data-variant=docked] .easm-ui-call-button-label { display: none; } }
+/* The Dialer's call area on a phone: tighter gaps so three large buttons share a row. */
+@container (max-width: 420px) {
+  .easm-ui-call-bar[data-variant=page] .easm-ui-call-controls { gap: 14px 10px; }
+  .easm-ui-call-bar[data-variant=page] .easm-ui-call-button[data-size=lg] { min-width: 64px; }
+}
+
+/* ------------------------------------------------------------------ CallRowMeta */
+.easm-ui-call-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-width: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; }
+.easm-ui-call-meta-part { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.easm-ui-call-meta-part > .easm-ui-icon { flex: none; --easm-icon-fill: none; }
+.easm-ui-call-meta-part[data-handler=ai] > .easm-ui-icon { color: var(--easm-ui-ai); }
+/* An outcome chip sits on the 18 px line at its smallest. */
+.easm-ui-call-meta .easm-ui-status-chip[data-variant=chip] { min-height: 22px; padding: 2px 8px 2px 4px; gap: 4px; font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-call-meta .easm-ui-status-chip .easm-ui-status-glyph { width: 16px; height: 16px; }
+.easm-ui-call-meta-purpose { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-call-meta-part[data-live] { color: var(--easm-ui-success); font-weight: 600; }
+.easm-ui-call-meta-live { width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-presence-online); }
+
+/* ------------------------------------------------------------------ TranscriptViewer */
+.easm-ui-transcript { display: grid; gap: 12px; color: var(--easm-ui-text); }
+.easm-ui-transcript-search { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); }
+.easm-ui-transcript-search > .easm-ui-icon { flex: none; --easm-icon-fill: none; }
+.easm-ui-transcript-search input { flex: 1; min-width: 0; height: 36px; border: 0; background: transparent; color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-sm); outline: none; }
+.easm-ui-transcript-search:focus-within { box-shadow: 0 0 0 2px var(--easm-ui-primary-fill); }
+.easm-ui-transcript-count { flex: none; font-size: var(--easm-ui-text-xs); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-transcript-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.easm-ui-transcript-list > li { --_mark: var(--easm-ui-badge-neutral); --_mark-ink: var(--easm-ui-text-secondary); display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 12px; padding: 8px; border-radius: 12px; scroll-margin-block: 12px; transition: background var(--easm-ui-motion-medium) var(--easm-ui-ease, ease); }
+.easm-ui-transcript-list > li[data-speaker=assistant] { --_mark: var(--easm-ui-ai-surface); --_mark-ink: var(--easm-ui-ai); }
+.easm-ui-transcript-list > li[data-speaker=staff] { --_mark: var(--easm-ui-badge-brand); --_mark-ink: var(--easm-ui-primary-fill); }
+.easm-ui-transcript-list > li[data-speaker=transfer] { --_mark: var(--easm-ui-badge-warning); --_mark-ink: var(--easm-ui-warning); }
+.easm-ui-transcript-list > li[data-playing] { background: var(--easm-ui-surface-hover); }
+.easm-ui-transcript-list > li[data-focus] { background: color-mix(in srgb, var(--easm-ui-badge-brand) 55%, transparent); }
+.easm-ui-transcript-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--_mark); color: var(--_mark-ink); }
+.easm-ui-transcript-mark .easm-ui-icon { --easm-icon-fill: none; }
+.easm-ui-transcript-body { min-width: 0; }
+.easm-ui-transcript-head { display: flex; align-items: center; gap: 8px; margin: 0; min-height: 32px; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-transcript-head strong { font-weight: 600; }
+.easm-ui-transcript-time { min-height: 24px; padding: 2px 8px; border: 0; border-radius: var(--easm-ui-radius-pill); background: transparent; color: var(--easm-ui-text-secondary); font: inherit; font-size: var(--easm-ui-text-xs); line-height: 20px; font-variant-numeric: tabular-nums; }
+button.easm-ui-transcript-time { background: var(--easm-ui-track); color: var(--easm-ui-text); font-weight: 600; cursor: pointer; }
+button.easm-ui-transcript-time:hover { background: var(--easm-ui-track-hover); }
+button.easm-ui-transcript-time:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+.easm-ui-transcript-text { margin: 0; font-size: var(--easm-ui-text-sm); line-height: 22px; overflow-wrap: anywhere; }
+.easm-ui-transcript-text mark { border-radius: 3px; padding: 0 1px; background: var(--easm-ui-chart-amber-tint); color: inherit; }
+.easm-ui-transcript-marker { display: inline-flex; align-items: flex-start; gap: 6px; margin: 6px 0 0; padding: 4px 10px; border-radius: 10px; background: var(--easm-ui-badge-warning); color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); line-height: 18px; font-weight: 550; }
+.easm-ui-transcript-marker[data-kind=lookup-failed] { background: var(--easm-ui-badge-danger); }
+.easm-ui-transcript-marker[data-kind=handoff] { background: var(--easm-ui-badge-brand); }
+.easm-ui-transcript-marker > .easm-ui-icon { flex: none; margin-top: 1px; --easm-icon-fill: none; }
+.easm-ui-transcript-empty { margin: 0; padding: 8px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+
+/* ------------------------------------------------------------------ CallResultCard */
+.easm-ui-call-result { display: grid; gap: 12px; padding: 16px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); color: var(--easm-ui-text); }
+.easm-ui-call-result-follow { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; }
+.easm-ui-call-result-follow > li { display: inline-flex; align-items: flex-start; gap: 6px; max-width: 100%; padding: 6px 12px 6px 8px; border-radius: 14px; background: var(--easm-ui-surface-hover); font-size: var(--easm-ui-text-xs); line-height: 18px; font-weight: 550; }
+.easm-ui-call-result-follow > li > .easm-ui-icon { flex: none; margin-top: 1px; --easm-icon-fill: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-call-result-follow > li[data-tone=success] > .easm-ui-icon { color: var(--easm-ui-icon-success); }
+.easm-ui-call-result-follow > li[data-tone=warning] > .easm-ui-icon { color: var(--easm-ui-warning); }
+.easm-ui-call-result-detail { display: block; color: var(--easm-ui-text-secondary); font-weight: 400; }
+.easm-ui-call-result-handed { display: flex; align-items: flex-start; gap: 6px; margin: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; font-weight: 550; }
+.easm-ui-call-result-handed > .easm-ui-icon { flex: none; margin-top: 2px; }
+.easm-ui-call-result-handed > .easm-ui-icon { color: var(--easm-ui-primary-fill); --easm-icon-fill: none; }
+
+/* ------------------------------------------------------------------ ThreadEvent */
+.easm-ui-thread-event { --_mark: var(--easm-ui-badge-neutral); --_mark-ink: var(--easm-ui-text-secondary); display: flex; flex-direction: column; align-items: center; gap: 2px; margin: 8px auto; max-width: 100%; text-align: center; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; }
+.easm-ui-thread-event[data-tone=brand] { --_mark: var(--easm-ui-badge-brand); --_mark-ink: var(--easm-ui-primary-fill); }
+.easm-ui-thread-event[data-tone=success] { --_mark: var(--easm-ui-badge-success); --_mark-ink: var(--easm-ui-icon-success); }
+.easm-ui-thread-event[data-tone=warning] { --_mark: var(--easm-ui-badge-warning); --_mark-ink: var(--easm-ui-warning); }
+.easm-ui-thread-event[data-tone=danger] { --_mark: var(--easm-ui-badge-danger); --_mark-ink: var(--easm-ui-icon-danger); }
+.easm-ui-thread-event[data-tone=ai] { --_mark: var(--easm-ui-ai-surface); --_mark-ink: var(--easm-ui-ai); }
+.easm-ui-thread-event-line { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 3px 12px 3px 3px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface-hover); font-weight: 550; color: var(--easm-ui-text); }
+.easm-ui-thread-event-line time { color: var(--easm-ui-text-secondary); font-weight: 450; font-variant-numeric: tabular-nums; }
+.easm-ui-thread-event-mark { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--_mark); color: var(--_mark-ink); }
+.easm-ui-thread-event-mark .easm-ui-icon { --easm-icon-fill: none; }
+.easm-ui-thread-event-detail { max-width: 48ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-call-button-face, .easm-ui-keypad-key, .easm-ui-transcript-list > li { transition: none; }
+  .easm-ui-call-button:active .easm-ui-call-button-face, .easm-ui-keypad-key:active { transform: none; }
+}
+@media (forced-colors: active) {
+  .easm-ui-call-button-face, .easm-ui-keypad-key, .easm-ui-call-bar, .easm-ui-thread-event-line, .easm-ui-call-result { border: 1px solid CanvasText; }
+  .easm-ui-call-button[data-on] .easm-ui-call-button-face { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+}

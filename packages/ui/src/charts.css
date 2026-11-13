@@ -1,0 +1,268 @@
+/* Charts. Parts read the local --easm-chart-tone, --easm-chart-tone-tint and --easm-chart-tone-ink,
+   set from the chart palette; each falls back to blue. Motion is short, eased and switched off for
+   reduced motion. */
+
+@keyframes easm-chart-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes easm-chart-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes easm-chart-rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes easm-chart-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes easm-chart-spin-in { from { opacity: 0; transform: rotate(-24deg) scale(.94); } to { opacity: 1; transform: none; } }
+
+/* Header */
+.easm-ui-series-chart { margin: 0; min-width: 0; color: var(--easm-ui-text); font-family: var(--easm-ui-font); }
+.easm-ui-series-chart[data-appearance='card'] { padding: 16px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); }
+@media (min-width: 600px) { .easm-ui-series-chart[data-appearance='card'] { padding: 20px 20px 16px; } }
+.easm-ui-chart-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 4px 16px; margin-bottom: 14px; }
+.easm-ui-chart-heading { min-width: 0; }
+.easm-ui-chart-title { display: flex; align-items: center; margin: 0; font-size: 15px; font-weight: 600; line-height: 22px; letter-spacing: -.005em; }
+.easm-ui-chart-description { margin: 2px 0 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-chart-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.easm-ui-chart-summary { grid-column: 1 / -1; margin-top: 8px; }
+.easm-ui-chart-message { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-md); text-align: center; }
+.easm-ui-chart-message > p { margin: 0; }
+.easm-ui-chart-message[role='alert'] { color: var(--easm-ui-danger); }
+.easm-ui-chart-placeholder { display: flex; }
+.easm-ui-chart-placeholder > .easm-ui-skeleton { width: 100%; height: 100%; border-radius: var(--easm-ui-radius-control); }
+/* While loading, the space of the "View data table" toggle is kept, so the card does not grow when data arrives. */
+.easm-ui-chart-data-reserve { height: 32px; margin-top: 16px; }
+.easm-ui-chart-measure { width: 100%; height: 0; }
+
+/* Legend: chips that show and hide a series */
+.easm-ui-chart-legend { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 10px; }
+.easm-ui-chart-legend-item { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; padding: 0 10px 0 8px; border: 0; border-radius: var(--easm-ui-radius-pill); background: transparent; color: var(--easm-ui-text-secondary); font: inherit; font-size: var(--easm-ui-text-xs); font-weight: 500; line-height: 18px; cursor: pointer; transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), color var(--easm-ui-motion-fast) var(--easm-ui-ease), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-chart-legend-item:hover:not([aria-disabled='true']) { background: var(--easm-ui-track); color: var(--easm-ui-text); }
+/* The ring is the focus-ring token; the transparent outline is what forced-colours mode turns into a visible one. */
+.easm-ui-chart-legend-item:focus-visible { outline: 2px solid transparent; box-shadow: var(--easm-ui-focus-ring); }
+/* The last visible series cannot be hidden: the chip says so (aria-disabled plus a description) and stops looking clickable. */
+.easm-ui-chart-legend-item[aria-disabled='true'] { cursor: default; }
+.easm-ui-chart-legend-item[aria-pressed='false'] { color: var(--easm-ui-text-secondary); text-decoration: line-through; text-decoration-color: var(--easm-ui-text-disabled); }
+.easm-ui-chart-legend-item[aria-pressed='false'] > i { opacity: .3; }
+.easm-ui-chart-legend-item > i, .easm-ui-series-tooltip i { width: 10px; height: 10px; flex: none; border-radius: 3px; }
+:is(.easm-ui-chart-legend-item, .easm-ui-series-tooltip) i[data-dashed='true'] { height: 3px; border-radius: 2px; }
+
+/* Plot */
+.easm-ui-series-plot { position: relative; min-width: 0; border-radius: var(--easm-ui-radius-control); outline: none; }
+.easm-ui-series-plot:focus-visible { outline: 2px solid transparent; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-series-plot svg { display: block; max-width: none; overflow: visible; touch-action: pan-y; }
+.easm-ui-series-axis { fill: var(--easm-ui-text-secondary); font-family: var(--easm-ui-font); font-size: 11px; font-variant-numeric: tabular-nums; transition: fill var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-series-axis[data-active='true'] { fill: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-series-grid { stroke: var(--easm-ui-border-subtle); stroke-width: 1; opacity: .7; }
+.easm-ui-series-baseline { stroke: var(--easm-ui-border-subtle); stroke-width: 1.25; }
+.easm-ui-series-line { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; animation: easm-chart-draw 1100ms cubic-bezier(.33, 0, .2, 1) both; }
+.easm-ui-series-line[data-dashed='true'] { stroke-width: 2; stroke-dasharray: 5 5; opacity: .7; animation: easm-chart-fade 700ms var(--easm-ui-ease) both; }
+.easm-ui-series-chart[data-kind='stacked-area'] .easm-ui-series-line { stroke-width: 2; }
+.easm-ui-series-fill { animation: easm-chart-fade 900ms var(--easm-ui-ease) 200ms both; }
+.easm-ui-series-end { fill: currentColor; stroke: var(--easm-ui-surface); stroke-width: 2; animation: easm-chart-fade 400ms var(--easm-ui-ease) 900ms both; }
+.easm-ui-series-guide { stroke: var(--easm-ui-text-secondary); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; }
+/* The hover layer glides between categories on the soft spring and fades in and out where it is. */
+:is(.easm-ui-series-guide, .easm-ui-series-marker, .easm-ui-series-band) {
+  transition: transform var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-series-guide[data-visible] { opacity: .5; }
+:is(.easm-ui-series-marker, .easm-ui-series-band):not([data-visible]) { opacity: 0; }
+.easm-ui-series-halo { fill: currentColor; opacity: .16; }
+.easm-ui-series-dot { fill: var(--easm-ui-surface); stroke: currentColor; stroke-width: 2.5; }
+.easm-ui-series-band { fill: var(--easm-ui-track); opacity: .7; }
+.easm-ui-series-bar { transform-box: fill-box; transform-origin: 50% 100%; animation: easm-chart-rise 700ms cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--easm-chart-i, 0) * 1ms); transition: opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-series-bar[data-dim='true'] { opacity: .38; }
+
+/* Tooltip: a dark card beside the pointer, flipping to stay inside the plot */
+.easm-ui-series-tooltip { position: absolute; top: 0; left: 0; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; min-width: 0; max-width: 240px; padding: 10px; border-radius: var(--easm-ui-radius-float); background: var(--easm-ui-ink-panel); color: var(--easm-ui-on-ink); font-size: var(--easm-ui-text-xs); line-height: 18px; pointer-events: none; animation: easm-chart-fade 120ms var(--easm-ui-ease) both; }
+.easm-ui-series-tooltip {
+  /* Resting values; the chart sets both inline (x from the category, y from the pointer). */
+  --easm-ui-tip-x: 0px;
+  --easm-ui-tip-y: 6px;
+  transform: translate(calc(var(--easm-ui-tip-x) + 14px), var(--easm-ui-tip-y));
+  opacity: 0;
+  transition: transform var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-series-tooltip[data-side='left'] { transform: translate(calc(var(--easm-ui-tip-x) - 100% - 14px), var(--easm-ui-tip-y)); }
+.easm-ui-series-tooltip[data-visible] { opacity: 1; }
+.easm-ui-series-tooltip > strong { margin-bottom: 1px; font-weight: 600; }
+.easm-ui-series-tooltip > span { display: flex; align-items: center; gap: 6px; color: var(--easm-ui-on-ink-muted); }
+/* A narrow plot squeezes the label, never the value: the label wraps (between words, and inside one only if it must) and the value keeps its width. */
+.easm-ui-series-tooltip em { flex: 1 1 auto; min-width: 0; font-style: normal; overflow-wrap: break-word; }
+.easm-ui-series-tooltip b { flex: none; margin-inline-start: auto; padding-inline-start: 4px; color: var(--easm-ui-on-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-series-tooltip-total { margin: 4px -6px 0; padding: 4px 6px; border-radius: var(--easm-ui-radius-inner); background: var(--easm-ui-ink-panel-hover); }
+
+/* Sparkline */
+.easm-ui-sparkline { display: block; width: 100%; min-width: 40px; }
+.easm-ui-sparkline svg { display: block; overflow: visible; }
+.easm-ui-sparkline-line { fill: none; stroke: var(--easm-chart-tone, var(--easm-ui-chart-blue)); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; animation: easm-chart-draw 1000ms cubic-bezier(.33, 0, .2, 1) both; }
+.easm-ui-sparkline-end { fill: var(--easm-chart-tone, var(--easm-ui-chart-blue)); stroke: var(--easm-ui-surface); stroke-width: 1.5; animation: easm-chart-fade 300ms var(--easm-ui-ease) 900ms both; }
+.easm-ui-stat-spark { margin-top: 12px; }
+
+/* Shared legend for donut and proportion bar */
+.easm-ui-share-legend { display: flex; flex-direction: column; gap: 2px; min-width: 0; margin: 0; padding: 0; list-style: none; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-share-legend > li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto 44px; align-items: center; gap: 10px; padding: 7px 10px; border-radius: var(--easm-ui-radius-control); transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-share-legend > li[data-active='true'] { background: var(--easm-ui-surface-hover); }
+.easm-ui-share-legend > li[data-dim='true'] { opacity: .55; }
+.easm-ui-share-legend > li > i { width: 10px; height: 10px; border-radius: 3px; background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); }
+.easm-ui-share-legend-label { min-width: 0; overflow: hidden; color: var(--easm-ui-text); text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-share-legend-value { font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; }
+.easm-ui-share-legend-share { justify-self: end; min-width: 38px; padding: 0 6px; border-radius: var(--easm-ui-radius-inner); background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); font-size: var(--easm-ui-text-xs); font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-share-legend[data-layout='inline'] { flex-direction: row; flex-wrap: wrap; gap: 4px 6px; }
+.easm-ui-share-legend[data-layout='inline'] > li { grid-template-columns: 10px auto auto auto; padding: 4px 8px; }
+
+/* DonutChart */
+.easm-ui-donut { display: flex; align-items: center; gap: 28px; min-width: 0; font-family: var(--easm-ui-font); }
+.easm-ui-donut[data-legend='bottom'] { flex-direction: column; align-items: stretch; gap: 16px; }
+.easm-ui-donut > .easm-ui-share-legend { flex: 1 1 auto; max-width: 420px; }
+.easm-ui-donut[data-legend='bottom'] > .easm-ui-donut-figure { align-self: center; }
+.easm-ui-donut[data-legend='bottom'] > .easm-ui-share-legend { max-width: none; }
+.easm-ui-donut-figure { position: relative; flex: none; }
+.easm-ui-donut-ring { display: block; transform-origin: 50% 50%; animation: easm-chart-spin-in 800ms cubic-bezier(.2, .8, .2, 1) both; }
+.easm-ui-donut-track { fill: none; stroke: var(--easm-ui-track); opacity: .6; }
+.easm-ui-donut-segment { transition: opacity var(--easm-ui-motion-fast) var(--easm-ui-ease), stroke-width var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-donut-segment[data-dim='true'] { opacity: .28; }
+.easm-ui-donut-center { position: absolute; top: 50%; left: 50%; translate: -50% -50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; text-align: center; pointer-events: none; }
+.easm-ui-donut-share { font-variant-numeric: tabular-nums; }
+.easm-ui-donut-center > strong { font-size: 24px; font-weight: 650; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.easm-ui-donut[data-size='sm'] .easm-ui-donut-center > strong { font-size: 18px; }
+.easm-ui-donut[data-size='lg'] .easm-ui-donut-center > strong { font-size: 28px; }
+/* Lines away from the middle meet the curve sooner, so the label lines are a little narrower than the hole. */
+.easm-ui-donut-center > span { max-width: 92%; margin-top: 2px; overflow: hidden; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-donut[data-size='sm'] .easm-ui-donut-center > span { font-size: 11px; }
+
+/* ProportionBar */
+.easm-ui-proportion { display: flex; flex-direction: column; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); }
+.easm-ui-proportion-bar { display: flex; gap: 3px; height: 14px; }
+.easm-ui-proportion[data-size='sm'] .easm-ui-proportion-bar { height: 8px; gap: 2px; }
+.easm-ui-proportion[data-size='lg'] .easm-ui-proportion-bar { height: 22px; }
+.easm-ui-proportion-bar > span { flex-basis: 0; min-width: 4px; border-radius: 3px; transform-origin: 0 50%; animation: easm-chart-grow 700ms cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--easm-chart-i, 0) * 1ms); transition: opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-proportion-bar > span:first-child { border-start-start-radius: var(--easm-ui-radius-pill); border-end-start-radius: var(--easm-ui-radius-pill); }
+.easm-ui-proportion-bar > span:last-child { border-start-end-radius: var(--easm-ui-radius-pill); border-end-end-radius: var(--easm-ui-radius-pill); }
+.easm-ui-proportion-bar > span[data-dim='true'] { opacity: .3; }
+.easm-ui-proportion-empty { flex: 1; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); }
+
+/* BarList */
+.easm-ui-bar-list { display: grid; grid-template-columns: minmax(84px, max-content) minmax(60px, 1fr) max-content; align-items: center; gap: 2px 14px; margin: 0; padding: 0; list-style: none; font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-bar-list[data-ranked='true'] { grid-template-columns: 22px minmax(84px, max-content) minmax(60px, 1fr) max-content; }
+.easm-ui-bar-list > li { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; min-height: 34px; margin-inline: -8px; padding: 0 8px; border-radius: var(--easm-ui-radius-control); transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-bar-list[data-size='sm'] > li { min-height: 28px; }
+.easm-ui-bar-list > li:hover { background: var(--easm-ui-surface-hover); }
+.easm-ui-bar-list-rank { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-bar-list-label { min-width: 0; max-width: 220px; overflow: hidden; color: var(--easm-ui-text); text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-bar-list-label a { color: var(--easm-ui-primary); font-weight: 500; text-decoration: none; }
+.easm-ui-bar-list-label a:hover { text-decoration: underline; }
+.easm-ui-bar-list-label a:focus-visible { outline: 2px solid transparent; border-radius: var(--easm-ui-radius-mark); box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-bar-list-description { display: block; overflow: hidden; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; text-overflow: ellipsis; }
+.easm-ui-bar-list-track { display: block; height: 8px; border-radius: var(--easm-ui-radius-pill); background: color-mix(in srgb, var(--easm-ui-track) 70%, transparent); overflow: hidden; }
+.easm-ui-bar-list[data-size='sm'] .easm-ui-bar-list-track { height: 6px; }
+.easm-ui-bar-list-track > span { display: block; height: 100%; border-radius: inherit; background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); transform-origin: 0 50%; animation: easm-chart-grow 800ms cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--easm-chart-i, 0) * 1ms); }
+.easm-ui-bar-list-value { color: var(--easm-ui-text); font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+.easm-ui-bar-list-value > span { color: var(--easm-ui-text-secondary); font-weight: 500; }
+.easm-ui-bar-list[data-layout='stacked'] { grid-template-columns: minmax(0, 1fr) max-content; gap: 4px 12px; }
+.easm-ui-bar-list[data-layout='stacked'] > li { row-gap: 6px; padding-block: 8px; }
+.easm-ui-bar-list[data-layout='stacked'] .easm-ui-bar-list-label { max-width: none; font-weight: 500; }
+.easm-ui-bar-list[data-layout='stacked'] .easm-ui-bar-list-track { grid-column: 1 / -1; grid-row: 2; height: 10px; }
+.easm-ui-bar-list[data-layout='stacked'] .easm-ui-bar-list-value { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+.easm-ui-bar-list-empty { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+
+/* Heatmap */
+.easm-ui-heatmap { position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; font-family: var(--easm-ui-font); }
+/* Hovering a cell: a small dark card above it, as the line chart's, gliding from cell to cell on the soft spring. */
+.easm-ui-heatmap-tip {
+  --easm-ui-tip-x: 0px; --easm-ui-tip-y: 0px;
+  position: absolute; top: 0; left: 0; z-index: 3; display: grid; gap: 2px; min-width: 128px; padding: 8px 10px;
+  border-radius: var(--easm-ui-radius-float); background: var(--easm-ui-ink-panel); color: var(--easm-ui-on-ink-muted);
+  font-size: var(--easm-ui-text-xs); line-height: 18px; pointer-events: none; opacity: 0;
+  transform: translate(calc(var(--easm-ui-tip-x) - 50%), calc(var(--easm-ui-tip-y) - 100% - 8px));
+  transition: transform var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-heatmap-tip[data-visible] { opacity: 1; }
+.easm-ui-heatmap-tip > strong { color: var(--easm-ui-on-ink); font-weight: 600; }
+.easm-ui-heatmap-tip > span { display: flex; gap: 16px; }
+.easm-ui-heatmap-tip b { margin-inline-start: auto; color: var(--easm-ui-on-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-heatmap-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.easm-ui-heatmap-peak { margin: 0; color: var(--easm-ui-text-secondary); font-size: 11px; line-height: 14px; font-variant-numeric: tabular-nums; }
+.easm-ui-heatmap-peak b { color: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-heatmap-scroll { min-width: 0; margin: -4px; padding: 4px; overflow-x: auto; border-radius: var(--easm-ui-radius-control); outline: none; }
+.easm-ui-heatmap-scroll:focus-visible { outline: 2px solid transparent; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-heatmap table { border-collapse: separate; border-spacing: 3px; width: 100%; table-layout: fixed; }
+.easm-ui-heatmap th { padding: 0 6px 0 0; color: var(--easm-ui-text-secondary); font-size: 11px; font-weight: 500; line-height: 14px; white-space: nowrap; }
+.easm-ui-heatmap thead th { padding: 0 0 4px; text-align: start; overflow: visible; }
+.easm-ui-heatmap tbody th { width: 36px; text-align: start; }
+.easm-ui-heatmap thead td { width: 36px; }
+.easm-ui-heatmap td { padding: 0; }
+.easm-ui-heatmap-cell { display: block; min-width: 12px; height: 22px; border-radius: var(--easm-ui-radius-mark); background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); transition: transform var(--easm-ui-motion-release) var(--easm-ui-ease-spring), box-shadow var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-heatmap-cell[data-level='-1'] { background: transparent; box-shadow: inset 0 0 0 1px var(--easm-ui-border-subtle); }
+.easm-ui-heatmap-cell[data-level='0'] { background: color-mix(in srgb, var(--easm-ui-track) 80%, transparent); }
+.easm-ui-heatmap-cell[data-level='1'] { background: color-mix(in srgb, var(--easm-chart-tone, var(--easm-ui-chart-blue)) 22%, var(--easm-ui-surface)); }
+.easm-ui-heatmap-cell[data-level='2'] { background: color-mix(in srgb, var(--easm-chart-tone, var(--easm-ui-chart-blue)) 45%, var(--easm-ui-surface)); }
+.easm-ui-heatmap-cell[data-level='3'] { background: color-mix(in srgb, var(--easm-chart-tone, var(--easm-ui-chart-blue)) 72%, var(--easm-ui-surface)); }
+/* The hovered cell lifts a little above its neighbours (no shadow: separation is by fill), ringed in the heatmap's
+   own tone behind a hairline of surface, so the ring is never covered by the next cell or clipped by the scroller (4 px of room around it). */
+.easm-ui-heatmap-cell[data-active='true'] { position: relative; z-index: 1; transform: scale(1.08); box-shadow: 0 0 0 2px var(--easm-ui-surface), 0 0 0 4px var(--easm-chart-tone, var(--easm-ui-chart-blue)); }
+.easm-ui-heatmap-scale { display: flex; align-items: center; justify-content: flex-end; gap: 4px; color: var(--easm-ui-text-secondary); font-size: 11px; }
+.easm-ui-heatmap-scale > .easm-ui-heatmap-cell { width: 14px; min-width: 14px; height: 14px; border-radius: var(--easm-ui-radius-mark); }
+.easm-ui-heatmap-scale > span:first-child { margin-inline-end: 4px; }
+.easm-ui-heatmap-scale > span:last-child { margin-inline-start: 4px; }
+
+/* Funnel: label and value over a centred, tapering bar; the conversion sits between stages */
+.easm-ui-funnel { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-funnel > li { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.easm-ui-funnel-step { display: flex; align-items: flex-start; column-gap: 6px; margin: 2px 0 4px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; }
+.easm-ui-funnel-step-copy { display: flex; flex-wrap: wrap; column-gap: 6px; min-width: 0; }
+.easm-ui-funnel-step strong { color: var(--easm-ui-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-funnel-change { font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-funnel-change::before { content: '·'; margin-inline-end: 6px; color: var(--easm-ui-text-secondary); font-weight: 400; }
+.easm-ui-funnel-change[data-change='drop'] { color: var(--easm-ui-chart-coral-ink); }
+.easm-ui-funnel-change[data-change='gain'] { color: var(--easm-ui-success); }
+.easm-ui-funnel-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 6px 12px; }
+.easm-ui-funnel-label { overflow: hidden; color: var(--easm-ui-text); font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-funnel-value { grid-row: 1; grid-column: 2; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+.easm-ui-funnel-value > span { color: var(--easm-ui-text-secondary); font-weight: 500; }
+.easm-ui-funnel-track { grid-row: 2; grid-column: 1 / -1; display: flex; justify-content: center; height: 26px; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 55%, transparent); }
+.easm-ui-funnel-track > span { display: block; min-width: 18px; height: 100%; border-radius: var(--easm-ui-radius-control); background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); transform-origin: 50% 50%; animation: easm-chart-grow 800ms cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--easm-chart-i, 0) * 2ms); }
+
+/* Gauge */
+.easm-ui-gauge { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; font-family: var(--easm-ui-font); text-align: center; }
+.easm-ui-gauge-figure { position: relative; }
+.easm-ui-gauge-figure svg { display: block; overflow: visible; }
+.easm-ui-gauge-track { fill: none; stroke: var(--easm-ui-track); stroke-linecap: round; }
+.easm-ui-gauge-value { fill: none; stroke: var(--easm-chart-tone, var(--easm-ui-chart-blue)); stroke-linecap: round; transition: stroke-dasharray var(--easm-ui-motion-slow) var(--easm-ui-ease); animation: easm-chart-fade 600ms var(--easm-ui-ease) both; }
+.easm-ui-gauge-value[data-zero='true'] { stroke-linecap: butt; }
+.easm-ui-gauge-target { stroke: var(--easm-ui-text); stroke-width: 2.5; stroke-linecap: round; }
+.easm-ui-gauge-center { position: absolute; inset: auto 0 0; display: flex; justify-content: center; }
+.easm-ui-gauge-center > strong { font-size: 26px; font-weight: 650; line-height: 1.1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+.easm-ui-gauge[data-size='sm'] .easm-ui-gauge-center > strong { font-size: 20px; }
+.easm-ui-gauge-label { margin-top: 6px; color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 18px; }
+.easm-ui-gauge-caption { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-series-line, .easm-ui-series-fill, .easm-ui-series-end, .easm-ui-series-bar, .easm-ui-series-tooltip, .easm-ui-sparkline-line, .easm-ui-sparkline-end,
+  .easm-ui-donut-ring, .easm-ui-proportion-bar > span, .easm-ui-bar-list-track > span, .easm-ui-funnel-track > span, .easm-ui-gauge-value { animation: none; }
+  .easm-ui-series-line, .easm-ui-sparkline-line { stroke-dasharray: none; }
+  .easm-ui-series-line[data-dashed='true'] { stroke-dasharray: 5 5; }
+  .easm-ui-donut-segment, .easm-ui-share-legend > li, .easm-ui-bar-list > li, .easm-ui-series-bar, .easm-ui-heatmap-cell, .easm-ui-gauge-value,
+  .easm-ui-series-guide, .easm-ui-series-marker, .easm-ui-series-band, .easm-ui-series-tooltip, .easm-ui-heatmap-tip { transition: none; }
+}
+@media (forced-colors: active) {
+  .easm-ui-series-tooltip, .easm-ui-chart-legend-item { border: 1px solid CanvasText; }
+  .easm-ui-bar-list-track, .easm-ui-funnel-track { border: 1px solid CanvasText; }
+  .easm-ui-bar-list-track > span, .easm-ui-funnel-track > span, .easm-ui-proportion-bar > span { background: Highlight; }
+  .easm-ui-heatmap-cell { forced-color-adjust: none; }
+}
+@media (pointer: coarse) { .easm-ui-chart-legend-item { min-height: var(--easm-ui-size-touch); } }
+
+/* Provenance (demand list CLR-07): verified and external figures are solid, self-reported ones outlined,
+   provisional ones dashed, unmeasured ones a hollow dashed track. The same words are always written beside. */
+.easm-ui-series-layer[data-provenance='self-reported'] > .easm-ui-series-line:not(.easm-ui-series-line-core):not([data-provisional]) { stroke-width: 4.5; }
+.easm-ui-series-line-core { stroke: var(--easm-ui-surface); stroke-width: 1.6; }
+.easm-ui-series-fill[data-provisional] { opacity: .45; }
+.easm-ui-series-end[data-hollow] { fill: var(--easm-ui-surface); stroke: currentColor; stroke-width: 2.5; }
+.easm-ui-series-bar path { stroke-width: 0; }
+.easm-ui-series-bar path[data-provenance='self-reported'] { fill-opacity: .14; stroke-width: 2; }
+.easm-ui-series-bar path[data-provisional] { fill-opacity: .4; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.easm-ui-chart-legend-source, .easm-ui-series-tooltip-note { margin-inline-start: 4px; color: var(--easm-ui-text-secondary); font-weight: 450; }
+.easm-ui-chart-provenance { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 10px 0 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-chart-provenance > span { display: inline-flex; align-items: center; gap: 6px; }
+.easm-ui-chart-provenance i { flex: none; width: 16px; border-top: 2px dashed var(--easm-ui-text-secondary); }
+.easm-ui-chart-provenance i[data-style='self-reported'] { width: 10px; height: 10px; border: 2px solid var(--easm-ui-text-secondary); border-radius: 3px; box-sizing: border-box; }
+.easm-ui-bar-list > li[data-provenance='self-reported'] .easm-ui-bar-list-track > span,
+.easm-ui-funnel > li[data-provenance='self-reported'] .easm-ui-funnel-track > span { background: transparent; box-shadow: inset 0 0 0 2px var(--easm-chart-tone, var(--easm-ui-chart-blue)); }
+.easm-ui-bar-list > li[data-provenance='provisional'] .easm-ui-bar-list-track > span,
+.easm-ui-funnel > li[data-provenance='provisional'] .easm-ui-funnel-track > span { background: repeating-linear-gradient(90deg, var(--easm-chart-tone, var(--easm-ui-chart-blue)) 0 7px, transparent 7px 10px); }
+.easm-ui-bar-list > li[data-provenance='unmeasured'] .easm-ui-bar-list-track { background: transparent; outline: 1.5px dashed color-mix(in srgb, var(--easm-ui-text-secondary) 50%, transparent); outline-offset: -1.5px; }
+.easm-ui-bar-list-source, .easm-ui-funnel-source { display: inline-block; margin-inline-start: 6px; padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; font-weight: 550; vertical-align: 1px; }

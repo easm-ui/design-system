@@ -1,0 +1,8 @@
+.ds-data-module {min-width:0;}
+.ds-data-example-controls {container-name:ds-data-controls;container-type:inline-size;display:flex;align-items:flex-end;flex-wrap:wrap;gap:12px;min-width:0;max-width:100%;}
+.ds-data-example-controls>.easm-ui-field {width:auto;min-width:min(100%,160px);max-width:100%;flex:0 1 220px;}
+.ds-data-example-controls>.easm-ui-button {max-width:100%;white-space:normal;}
+.ds-data-example-controls>span,.ds-data-note {font-size:13px;line-height:1.5;color:var(--easm-ui-text-secondary);margin:0;}
+.ds-data-stat-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px;min-width:0;}
+@media(max-width:640px){.ds-data-example-controls>.easm-ui-field{flex:1 1 100%;}}
+@container ds-data-controls (max-width:440px){.ds-data-example-controls>.easm-ui-field{flex:1 1 100%;}.ds-data-example-controls>span{flex-basis:100%;overflow-wrap:anywhere;}}

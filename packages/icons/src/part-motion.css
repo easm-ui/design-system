@@ -1,0 +1,77 @@
+@import './motion-verbs.css';
+
+/* Only the semantic groups animate. The viewBox, hit area, housing and outer artwork stay put. */
+.easm-motion-icon {
+  --easm-motion-amplitude: 1;
+  --easm-motion-duration-scale: 1;
+}
+.easm-motion-icon[data-emphasis='hint'] { --easm-motion-amplitude: .45; }
+.easm-motion-icon :is(.easm-motion-part, .easm-motion-mask-part) {
+  transform-box: view-box;
+  animation: none;
+}
+.easm-motion-rest { visibility: visible; }
+.easm-motion-sequence { visibility: hidden; }
+.easm-motion-icon[data-active='true'] {
+  --easm-rest-animation: easm-part-rest-layer;
+  --easm-sequence-animation: easm-part-sequence-layer;
+}
+.easm-motion-icon :is(.easm-motion-rest, .easm-motion-sequence) {
+  animation-duration: calc(var(--easm-scene-duration) * var(--easm-motion-duration-scale));
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+.easm-motion-icon .easm-motion-rest { animation-name: var(--easm-rest-animation, none); }
+.easm-motion-icon .easm-motion-sequence { animation-name: var(--easm-sequence-animation, none); }
+.easm-motion-icon[data-active='true'] :is(.easm-motion-part, .easm-motion-mask-part)[data-moving='true'] {
+  animation-name: var(--easm-part-animation);
+  animation-duration: calc(var(--easm-part-duration) * var(--easm-motion-duration-scale));
+  animation-delay: calc(var(--easm-part-delay) * var(--easm-motion-duration-scale));
+  animation-timing-function: var(--easm-part-ease, cubic-bezier(.45, 0, .55, 1));
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+/* Interaction hints are started by the tiny client controller and finish their cycle after exit.
+   All repeating tracks share the scene clock. Their articulated layer stays visible across the seam. */
+.easm-motion-icon[data-active='true'][data-repeat='true'] :is(:is(.easm-motion-part, .easm-motion-mask-part)[data-moving='true'], .easm-motion-rest, .easm-motion-sequence) {
+  animation-iteration-count: infinite;
+}
+.easm-motion-icon[data-active='true'][data-repeat='true'] :is(.easm-motion-part, .easm-motion-mask-part)[data-moving='true'] {
+  animation-duration: calc(var(--easm-scene-duration) * var(--easm-motion-duration-scale));
+}
+.easm-motion-icon[data-active='true'][data-repeat='true'] .easm-motion-rest {
+  animation-name: none; visibility: hidden;
+}
+.easm-motion-icon[data-active='true'][data-repeat='true'] .easm-motion-sequence {
+  animation-name: none; visibility: visible;
+}
+.easm-motion-icon[data-paused='true'] :is(.easm-motion-part, .easm-motion-mask-part, .easm-motion-rest, .easm-motion-sequence) { animation-play-state: paused !important; }
+/* These rules win over any active/hover/keyboard selector, including controls that disable their SVG's parent. */
+:is([data-easm-motion='off'], [data-easm-motion='reduced'], :disabled, [aria-disabled='true'], [inert])
+  .easm-motion-icon :is(.easm-motion-part, .easm-motion-mask-part, .easm-motion-rest, .easm-motion-sequence),
+.easm-motion-icon:is([data-state='disabled'], [data-easm-motion='off'], [data-easm-motion='reduced'], [aria-disabled='true'], [inert]) :is(.easm-motion-part, .easm-motion-mask-part, .easm-motion-rest, .easm-motion-sequence) {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-motion-icon :is(.easm-motion-part, .easm-motion-mask-part, .easm-motion-rest, .easm-motion-sequence) { animation: none !important; }
+}
+@keyframes easm-part-rest-layer {
+  0%, 100% { visibility: visible; }
+  .001%, 99.999% { visibility: hidden; }
+}
+@keyframes easm-part-sequence-layer {
+  0%, 100% { visibility: hidden; }
+  .001%, 99.999% { visibility: visible; }
+}
+
+:is([data-easm-motion='off'], [data-easm-motion='reduced'], :disabled, [aria-disabled='true'], [inert])
+  .easm-motion-icon .easm-motion-rest,
+.easm-motion-icon:is([data-state='disabled'], [data-easm-motion='off'], [data-easm-motion='reduced'], [aria-disabled='true'], [inert]) .easm-motion-rest { visibility: visible !important; }
+:is([data-easm-motion='off'], [data-easm-motion='reduced'], :disabled, [aria-disabled='true'], [inert])
+  .easm-motion-icon .easm-motion-sequence,
+.easm-motion-icon:is([data-state='disabled'], [data-easm-motion='off'], [data-easm-motion='reduced'], [aria-disabled='true'], [inert]) .easm-motion-sequence { visibility: hidden !important; }
+@media (prefers-reduced-motion: reduce) {
+  .easm-motion-icon .easm-motion-rest { visibility: visible !important; }
+  .easm-motion-icon .easm-motion-sequence { visibility: hidden !important; }
+}

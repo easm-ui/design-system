@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const NotifyPushIcon = /* @__PURE__ */ createIcon({"name":"notify-push","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"rect","attrs":{"x":6,"y":2.8,"width":12,"height":18.4,"rx":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"M10 6h4M11 18h2"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":1.5,"fill":"ink","stroke":"none","stroke-width":1.15}}]});

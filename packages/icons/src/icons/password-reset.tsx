@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const PasswordResetIcon = /* @__PURE__ */ createIcon({"name":"password-reset","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"circle","attrs":{"cx":7.2,"cy":7.2,"r":3.6,"fill":"surface"}},{"tag":"path","attrs":{"d":"m9.745 9.745 10.655 10.655m-3.25-3.25 1.7-1.7m-4.75-1.35 1.7-1.7"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M16.3 16.8h3.4l-.7-.7m.7.7-.7.7m.7 1.7h-3.4l.7.7m-.7-.7.7-.7","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

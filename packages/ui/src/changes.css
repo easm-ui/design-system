@@ -1,0 +1,69 @@
+/* DiffCompare and ChangePreview (changes.tsx). A removed line is a pale coral row with a minus, an added one a pale
+   green row with a plus, so the change reads without its colour; tiles are told apart by fill and glyph. */
+
+/* ------------------------------------------------------------------ DiffCompare */
+.easm-ui-diff { container-type: inline-size; display: grid; gap: 8px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-diff-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; font-variant-numeric: tabular-nums; }
+.easm-ui-diff-summary b { color: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-diff-size { display: inline-flex; align-items: center; min-height: 22px; padding: 0 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-diff-size[data-direction='smaller'] { background: var(--easm-ui-chart-teal-tint); color: var(--easm-ui-chart-teal-ink); }
+.easm-ui-diff-heads, .easm-ui-diff-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 8px; }
+.easm-ui-diff[data-layout='inline'] .easm-ui-diff-row { grid-template-columns: minmax(0, 1fr); }
+.easm-ui-diff-heads > span { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; }
+.easm-ui-diff-rows { display: grid; min-width: 0; max-height: var(--_diff-max, 480px); overflow: auto; padding: 4px 0; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); overscroll-behavior: contain; }
+.easm-ui-diff-side { min-width: 0; }
+.easm-ui-diff-cell { display: grid; grid-template-columns: 36px 14px minmax(0, 1fr); min-height: 20px; font: 12.5px/20px ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+.easm-ui-diff-cell[data-kind='removed'] { background: color-mix(in srgb, var(--easm-ui-chart-coral-tint) 70%, transparent); }
+.easm-ui-diff-cell[data-kind='added'] { background: color-mix(in srgb, var(--easm-ui-chart-green-tint) 70%, transparent); }
+.easm-ui-diff-num { padding-inline-end: 6px; color: var(--easm-ui-text-secondary); text-align: end; user-select: none; font-variant-numeric: tabular-nums; }
+.easm-ui-diff-sign { color: var(--easm-ui-text-secondary); font-weight: 700; user-select: none; }
+.easm-ui-diff-cell[data-kind='removed'] .easm-ui-diff-sign { color: var(--easm-ui-chart-coral-ink); }
+.easm-ui-diff-cell[data-kind='added'] .easm-ui-diff-sign { color: var(--easm-ui-chart-green-ink); }
+.easm-ui-diff-text { padding-inline-end: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.easm-ui-diff-fold > span { display: block; padding: 2px 8px; }
+.easm-ui-diff-fold button { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 10px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font: 500 var(--easm-ui-text-xs)/16px var(--easm-ui-font); cursor: pointer; }
+.easm-ui-diff-fold button:hover { background: var(--easm-ui-track-hover); color: var(--easm-ui-text); }
+.easm-ui-diff-fold button:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+/* A narrow box reads the change one line under the other: the before cell of an unchanged pair is dropped. */
+@container (max-width: 559px) {
+  .easm-ui-diff[data-layout='side-by-side'] .easm-ui-diff-heads { display: none; }
+  .easm-ui-diff[data-layout='side-by-side'] .easm-ui-diff-row { grid-template-columns: minmax(0, 1fr); }
+  .easm-ui-diff[data-layout='side-by-side'] .easm-ui-diff-side[data-side='before']:has(.easm-ui-diff-cell[data-kind='same']),
+  .easm-ui-diff[data-layout='side-by-side'] .easm-ui-diff-side:has(> .easm-ui-diff-cell[data-kind='empty']) { display: none; }
+}
+
+/* ------------------------------------------------------------------ ChangePreview */
+.easm-ui-change-preview { container-type: inline-size; display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-change-preview > h3 { margin: 0; font-size: var(--easm-ui-text-md); font-weight: 600; line-height: 20px; }
+.easm-ui-change-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@container (max-width: 559px) { .easm-ui-change-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.easm-ui-change-tile {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'icon count' 'label label'; align-items: center; gap: 6px 10px;
+  min-width: 0; padding: 12px; border: 0; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; text-align: start; cursor: pointer;
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-change-tile:hover { background: var(--easm-ui-track-hover); }
+.easm-ui-change-tile[aria-selected='true'] { background: var(--easm-tone-tint); }
+.easm-ui-change-tile:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-change-tile-icon { grid-area: icon; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--easm-ui-radius-control); background: var(--easm-tone-tint); color: var(--easm-tone-ink); --easm-icon-fill: none; }
+.easm-ui-change-tile[aria-selected='true'] .easm-ui-change-tile-icon { background: var(--easm-ui-surface); }
+.easm-ui-change-tile-count { grid-area: count; font-size: 22px; font-weight: 650; line-height: 28px; font-variant-numeric: tabular-nums; }
+.easm-ui-change-tile-label { grid-area: label; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; }
+.easm-ui-change-tile[aria-selected='true'] .easm-ui-change-tile-label { color: var(--easm-tone-ink); }
+.easm-ui-change-tile[data-empty] .easm-ui-change-tile-count { color: var(--easm-ui-text-secondary); }
+.easm-ui-change-sample { min-width: 0; padding: 4px 0; }
+.easm-ui-change-sample:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: var(--easm-ui-radius-control); }
+.easm-ui-change-sample ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-change-sample li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 6px 10px; border-radius: var(--easm-ui-radius-control); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-change-sample li:nth-child(odd) { background: color-mix(in srgb, var(--easm-ui-track) 50%, var(--easm-ui-surface)); }
+.easm-ui-change-item { min-width: 0; overflow-wrap: anywhere; }
+.easm-ui-change-detail, .easm-ui-change-more, .easm-ui-change-none { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-change-more, .easm-ui-change-none { margin: 6px 10px 0; }
+.easm-ui-change-apply { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 10px 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-primary-surface); }
+.easm-ui-change-apply > p { flex: 1 1 240px; margin: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-change-apply > div { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (forced-colors: active) {
+  .easm-ui-diff-cell[data-kind='removed'], .easm-ui-diff-cell[data-kind='added'] { border-inline-start: 2px solid CanvasText; }
+  .easm-ui-change-tile { border: 1px solid CanvasText; }
+  .easm-ui-change-tile[aria-selected='true'] { border: 2px solid Highlight; }
+}

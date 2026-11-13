@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const LogicSkipToIcon = /* @__PURE__ */ createIcon({"name":"logic-skip-to","body":[{"tag":"path","attrs":{"d":"M3.5 16c1.6-5.4 5.5-8 9.5-8 3.3 0 6 1.7 7.5 4.6"}},{"tag":"path","attrs":{"d":"M20.8 8.2v4.6h-4.6"}},{"tag":"circle","attrs":{"cx":5,"cy":19.5,"r":1,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":9,"cy":19.5,"r":1,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":13,"cy":19.5,"r":1,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":17,"cy":19.5,"r":1.6,"fill":"ink","stroke":"none"}}]});

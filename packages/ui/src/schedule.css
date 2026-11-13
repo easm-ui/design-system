@@ -1,0 +1,72 @@
+/* WeeklyScheduleGrid (schedule.tsx). Days are rows on one grid, so every strip starts and ends at the same hour; the
+   strip draws open time in the blue data mark over a grey track, the bounds a department may not leave as a pale
+   blue band behind it, and a break as the gap between two ranges. Rows are told apart by fill, never by rules. */
+.easm-ui-schedule { container-type: inline-size; display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); font-size: var(--easm-ui-text-md); }
+.easm-ui-schedule-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; }
+.easm-ui-schedule-head .easm-ui-field-description { margin-block-start: 2px; }
+.easm-ui-schedule-key { display: inline-flex; align-items: center; gap: 6px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); }
+.easm-ui-schedule-key > i { width: 18px; height: 10px; border-radius: 5px; background: var(--easm-ui-badge-brand); }
+.easm-ui-schedule-days {
+  display: grid; grid-template-columns: minmax(150px, 176px) minmax(0, max-content) minmax(140px, 1fr) minmax(88px, auto);
+  column-gap: 16px; row-gap: 4px; margin: 0; padding: 0; list-style: none;
+}
+.easm-ui-schedule-day, .easm-ui-schedule-axis { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: start; }
+.easm-ui-schedule-day { row-gap: 6px; padding: 8px 12px; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 50%, var(--easm-ui-surface)); }
+.easm-ui-schedule-day:not([data-open]) { background: transparent; }
+.easm-ui-schedule-axis { padding: 0 12px; }
+.easm-ui-schedule-ticks { position: relative; grid-column: 3; height: 16px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-variant-numeric: tabular-nums; }
+.easm-ui-schedule-ticks > span { position: absolute; translate: -50% 0; }
+.easm-ui-schedule-ticks > span:first-child { translate: 0 0; }
+.easm-ui-schedule-ticks > span:last-child { translate: -100% 0; }
+[dir='rtl'] .easm-ui-schedule-ticks > span { translate: 50% 0; }
+[dir='rtl'] .easm-ui-schedule-ticks > span:first-child { translate: 0 0; }
+[dir='rtl'] .easm-ui-schedule-ticks > span:last-child { translate: 100% 0; }
+.easm-ui-schedule-day-name { min-width: 0; padding-block-start: 4px; }
+.easm-ui-schedule-day-name .easm-ui-field { gap: 2px; }
+.easm-ui-schedule-day-name .easm-ui-field-label { font-weight: 550; }
+.easm-ui-schedule-day-title { font-weight: 550; line-height: 24px; }
+.easm-ui-schedule-day-ranges { display: grid; justify-items: start; gap: 6px; min-width: 0; }
+.easm-ui-schedule-range { display: flex; align-items: center; gap: 6px; }
+.easm-ui-schedule-range .easm-ui-field { width: 116px; }
+.easm-ui-schedule-dash { color: var(--easm-ui-text-secondary); }
+.easm-ui-schedule-closed { color: var(--easm-ui-text-secondary); line-height: 32px; }
+.easm-ui-schedule-summary { line-height: 24px; font-variant-numeric: tabular-nums; }
+.easm-ui-schedule-summary > span { color: var(--easm-ui-text-secondary); }
+.easm-ui-schedule[data-readonly] .easm-ui-schedule-closed { line-height: 24px; }
+.easm-ui-schedule-strip { position: relative; align-self: start; height: 10px; margin-block-start: 11px; border-radius: 5px; background: var(--easm-ui-track); overflow: hidden; }
+.easm-ui-schedule[data-readonly] .easm-ui-schedule-strip { margin-block-start: 7px; }
+.easm-ui-schedule-bound, .easm-ui-schedule-open { position: absolute; inset-block: 0; }
+.easm-ui-schedule-bound { background: var(--easm-ui-badge-brand); }
+.easm-ui-schedule-open { border-radius: 5px; background: var(--easm-ui-chart-blue); }
+.easm-ui-schedule-day[data-problem] .easm-ui-schedule-open { background: var(--easm-ui-chart-coral); }
+.easm-ui-schedule-day-end { display: flex; align-items: center; justify-content: flex-end; gap: 4px; min-height: 32px; }
+.easm-ui-schedule[data-readonly] .easm-ui-schedule-day-end { min-height: 24px; }
+.easm-ui-schedule-total { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.easm-ui-schedule-problem { grid-column: 1 / -1; margin: 0; }
+
+/* A narrow container stacks each day: its name and total, its ranges, then its strip. */
+@container (max-width: 759px) {
+  .easm-ui-schedule-days { display: flex; flex-direction: column; }
+  .easm-ui-schedule-axis { display: none; }
+  .easm-ui-schedule-day { grid-template-columns: minmax(0, 1fr) auto; }
+  .easm-ui-schedule-day-name { grid-column: 1; grid-row: 1; }
+  .easm-ui-schedule-day-end { grid-column: 2; grid-row: 1; }
+  .easm-ui-schedule-day-ranges, .easm-ui-schedule-strip { grid-column: 1 / -1; }
+  .easm-ui-schedule-strip { margin-block-start: 2px; }
+  .easm-ui-schedule-day:not([data-open]) .easm-ui-schedule-strip { display: none; }
+  .easm-ui-schedule-day:not([data-open]) .easm-ui-schedule-day-ranges { grid-column: 2; grid-row: 1; }
+}
+
+.easm-ui-schedule-holidays { display: grid; gap: 8px; margin-block-start: 4px; padding: 12px; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 50%, var(--easm-ui-surface)); }
+.easm-ui-schedule-holidays-title { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.easm-ui-schedule-holidays-title > .easm-ui-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-schedule-holidays-text { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; min-width: 0; }
+.easm-ui-schedule-holidays-text > span { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; }
+.easm-ui-schedule-holidays ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-schedule-holidays li { display: flex; align-items: center; gap: 12px; min-height: 32px; }
+.easm-ui-schedule-holiday-date { flex: 0 0 136px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); font-variant-numeric: tabular-nums; }
+.easm-ui-schedule-holiday-name { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.easm-ui-schedule-holiday-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin-block-start: 4px; }
+.easm-ui-schedule-holiday-add > .easm-ui-field { flex: 1 1 160px; width: auto; }
+@container (max-width: 459px) { .easm-ui-schedule-holidays li { flex-wrap: wrap; gap: 0 12px; } .easm-ui-schedule-holiday-date { flex-basis: 100%; } }
+@media (forced-colors: active) { .easm-ui-schedule-open { background: Highlight; } .easm-ui-schedule-bound { background: GrayText; } .easm-ui-schedule-strip { border: 1px solid CanvasText; } }

@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ToolCallIcon = /* @__PURE__ */ createIcon({"name":"tool-call","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M14 3a6 6 0 0 0-6 8.5L3.7 16a3 3 0 0 0 4.3 4.3l4.5-4.5A6 6 0 0 0 21 10l-4 2-3-3 2-4-2-2Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M16.8 15.9 20.1 18l-3.3 2.1v-4.2Z","fill":"contrast","stroke":"none","stroke-width":1.3}}]});

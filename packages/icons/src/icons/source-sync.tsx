@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const SourceSyncIcon = /* @__PURE__ */ createIcon({"name":"source-sync","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"ellipse","attrs":{"cx":12,"cy":5.5,"rx":8,"ry":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M19.5 17.1a1.9 1.9 0 1 0-.2 1.9","stroke-width":1.15}},{"tag":"path","attrs":{"d":"M19.7 15.7v1.5h-1.5","stroke-width":1.15}}]});

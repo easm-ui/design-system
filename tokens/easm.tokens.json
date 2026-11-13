@@ -1,0 +1,1636 @@
+{
+  "$description": "EASM One design tokens: the single source. Edit this file, then run `pnpm tokens`. Every other token file is generated from it.",
+  "$extensions": {
+    "co.easm": {
+      "format": "DTCG (string values)",
+      "artifactSynced": "2026-11-07"
+    }
+  },
+  "color": {
+    "primary": {
+      "$type": "color",
+      "$value": "#2563EB",
+      "$description": "Enterprise Blue for text and lines: links, selected text, checked controls. Text-safe on white and tints; on the grey float panel use primary-hover (primary is under 4.5:1 there)."
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "#1D4FD8",
+      "$description": "Hover fill for primary controls, and blue text on the grey float panel."
+    },
+    "primary-pressed": {
+      "$type": "color",
+      "$value": "#1E40AF",
+      "$description": "Pressed fill for primary-coloured controls. Components use primary-fill-pressed; kept for applications."
+    },
+    "primary-surface": {
+      "$type": "color",
+      "$value": "#EEF4FF",
+      "$description": "Light blue tint for selected rows, chips and tags. Text on it is primary or text."
+    },
+    "range-fill": {
+      "$type": "color",
+      "$value": "rgb(47 107 235 / 12%)",
+      "$description": "Days between the two ends of a selected date range: primary-fill at 12%.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ],
+          "css": "color-mix(in srgb, {color.primary-fill} 12%, transparent)"
+        }
+      }
+    },
+    "primary-border": {
+      "$type": "color",
+      "$value": "#C9D9FD",
+      "$description": "Soft blue for icon fills and selected tints."
+    },
+    "primary-fill": {
+      "$type": "color",
+      "$value": "#2F6BEB",
+      "$description": "Bright Enterprise Blue for filled actions: primary buttons, the active navigation item, the selected date. White text on it."
+    },
+    "primary-fill-hover": {
+      "$type": "color",
+      "$value": "#2563EB",
+      "$description": "Hover fill for primary-fill."
+    },
+    "primary-fill-pressed": {
+      "$type": "color",
+      "$value": "#1D4FD8",
+      "$description": "Pressed fill for primary-fill."
+    },
+    "on-primary-fill": {
+      "$type": "color",
+      "$value": "#FFFFFF",
+      "$description": "Text and icons on primary-fill in every state (primary buttons, the active navigation item, the selected date)."
+    },
+    "on-primary-fill-muted": {
+      "$type": "color",
+      "$value": "rgb(255 255 255 / 22%)",
+      "$description": "Translucent white for counts and small chips on primary-fill.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ]
+        }
+      }
+    },
+    "halo": {
+      "$type": "color",
+      "$value": "rgb(47 107 235 / 20%)",
+      "$description": "Soft focus glow around the solid focus edge: primary-fill at 20%, so it follows primary-fill.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ],
+          "css": "color-mix(in srgb, {color.primary-fill} 20%, transparent)"
+        }
+      }
+    },
+    "text": {
+      "$type": "color",
+      "$value": "#101318",
+      "$description": "Headings and body text: near-black cool ink."
+    },
+    "text-secondary": {
+      "$type": "color",
+      "$value": "#5E6470",
+      "$description": "Helper text, captions and metadata: warm grey."
+    },
+    "text-disabled": {
+      "$type": "color",
+      "$value": "#9AA1AD",
+      "$description": "Disabled labels only; not for content people must read."
+    },
+    "placeholder": {
+      "$type": "color",
+      "$value": "#69707E",
+      "$description": "Placeholder text inside inputs."
+    },
+    "background": {
+      "$type": "color",
+      "$value": "#FFFFFF",
+      "$description": "The page: clean white."
+    },
+    "surface": {
+      "$type": "color",
+      "$value": "#FFFFFF",
+      "$description": "Cards, inputs, menus and dialogs."
+    },
+    "surface-hover": {
+      "$type": "color",
+      "$value": "#F6F7F9",
+      "$description": "Hover state of surface controls; disabled fill."
+    },
+    "surface-pressed": {
+      "$type": "color",
+      "$value": "#ECEEF2",
+      "$description": "Pressed state of surface controls."
+    },
+    "surface-disabled": {
+      "$type": "color",
+      "$value": "#F3F4F6",
+      "$description": "Fill for disabled controls."
+    },
+    "row-hover": {
+      "$type": "color",
+      "$value": "#F5F7FA",
+      "$description": "Hovered row in a table on a white card."
+    },
+    "track": {
+      "$type": "color",
+      "$value": "#F1F3F6",
+      "$description": "Grey track: tab and segmented-control rails, chips, filled secondary buttons, sidebar cards."
+    },
+    "track-hover": {
+      "$type": "color",
+      "$value": "#E8EBF0",
+      "$description": "Hover on a track or grey fill."
+    },
+    "track-pressed": {
+      "$type": "color",
+      "$value": "#DEE2E8",
+      "$description": "Pressed on a track; switch track when off."
+    },
+    "switch-hover": {
+      "$type": "color",
+      "$value": "#CDD3DC",
+      "$description": "Switch track, off, on hover."
+    },
+    "tint-hover": {
+      "$type": "color",
+      "$value": "rgb(16 19 24 / 7%)",
+      "$description": "Hover wash on a white or grey panel: text at 7%. Rows and options in pickers and lists.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ]
+        }
+      }
+    },
+    "tint-subtle": {
+      "$type": "color",
+      "$value": "rgb(16 19 24 / 4%)",
+      "$description": "Faint wash for inactive or outside-range cells: text at 4%.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ]
+        }
+      }
+    },
+    "float": {
+      "$type": "color",
+      "$value": "#F3F5F8",
+      "$description": "Grey panel for menus, dropdowns and popovers that open over white cards."
+    },
+    "float-hover": {
+      "$type": "color",
+      "$value": "#E8ECF2",
+      "$description": "Highlighted option inside a grey panel."
+    },
+    "ink-panel": {
+      "$type": "color",
+      "$value": "#121826",
+      "$description": "Dark ink panel for toasts and menus opened from a primary action."
+    },
+    "ink-panel-hover": {
+      "$type": "color",
+      "$value": "#232C40",
+      "$description": "Highlighted option inside a dark ink panel."
+    },
+    "on-ink": {
+      "$type": "color",
+      "$value": "#F6F7F9",
+      "$description": "Text on ink-panel."
+    },
+    "on-ink-muted": {
+      "$type": "color",
+      "$value": "#C4CAD6",
+      "$description": "Icons and secondary text on ink-panel."
+    },
+    "on-ink-strong": {
+      "$type": "color",
+      "$value": "#FFFFFF",
+      "$description": "Strongest text and icons on ink-panel: a hovered control."
+    },
+    "on-ink-brand": {
+      "$type": "color",
+      "$value": "#9DBBFF",
+      "$description": "Brand status icon on ink-panel (toasts)."
+    },
+    "on-ink-success": {
+      "$type": "color",
+      "$value": "#6FD49B",
+      "$description": "Success status icon on ink-panel (toasts)."
+    },
+    "on-ink-warning": {
+      "$type": "color",
+      "$value": "#F5C451",
+      "$description": "Warning status icon on ink-panel (toasts)."
+    },
+    "on-ink-danger": {
+      "$type": "color",
+      "$value": "#FF8F85",
+      "$description": "Danger status icon on ink-panel (toasts)."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#858D9B",
+      "$description": "Grey outline for fields, dropdowns, checkboxes and chart axes. Meets 3:1 on white and the page."
+    },
+    "border-subtle": {
+      "$type": "color",
+      "$value": "#E8EAEE",
+      "$description": "Inner dividers and table lines. Decorative only."
+    },
+    "border-hover": {
+      "$type": "color",
+      "$value": "#6F7888",
+      "$description": "Field outline on hover."
+    },
+    "success": {
+      "$type": "color",
+      "$value": "#0C8138",
+      "$description": "Success text and icons on success-surface or surface. Pair with a word or icon."
+    },
+    "success-surface": {
+      "$type": "color",
+      "$value": "#E6F8EC",
+      "$description": "Success badge and alert fill."
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "#D92644",
+      "$description": "Errors and destructive buttons (white text on it). On the grey float panel, red text uses danger-hover."
+    },
+    "danger-hover": {
+      "$type": "color",
+      "$value": "#B81D38",
+      "$description": "Hover fill for destructive buttons, and red text on the grey float panel."
+    },
+    "danger-surface": {
+      "$type": "color",
+      "$value": "#FFF5F6",
+      "$description": "Error badge and alert fill."
+    },
+    "on-danger": {
+      "$type": "color",
+      "$value": "{color.on-primary-fill}",
+      "$description": "Text and icons on danger and danger-hover fills (destructive buttons)."
+    },
+    "danger-highlight": {
+      "$type": "color",
+      "$value": "#FFD3DA",
+      "$description": "Highlighted destructive row in a grey panel. Text on it is danger-hover."
+    },
+    "danger-halo": {
+      "$type": "color",
+      "$value": "rgb(217 38 68 / 16%)",
+      "$description": "Soft glow around a focused field in error: danger at 14%.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ],
+          "css": "color-mix(in srgb, {color.danger} 14%, transparent)"
+        }
+      }
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#94530A",
+      "$description": "Warning text and icons on warning-surface or surface."
+    },
+    "warning-surface": {
+      "$type": "color",
+      "$value": "#FFF3C6",
+      "$description": "Warning badge and alert fill."
+    },
+    "badge-neutral": {
+      "$type": "color",
+      "$value": "#EEF0F3",
+      "$description": "Neutral badge fill."
+    },
+    "badge-brand": {
+      "$type": "color",
+      "$value": "#CFE0FF",
+      "$description": "Brand badge fill (pastel blue)."
+    },
+    "badge-success": {
+      "$type": "color",
+      "$value": "#BFF0D2",
+      "$description": "Success badge fill (pastel green)."
+    },
+    "badge-warning": {
+      "$type": "color",
+      "$value": "#FFE07A",
+      "$description": "Warning badge fill (butter)."
+    },
+    "badge-danger": {
+      "$type": "color",
+      "$value": "#FFD3DA",
+      "$description": "Danger badge fill (blush)."
+    },
+    "icon-success": {
+      "$type": "color",
+      "$value": "#11964A",
+      "$description": "Status icon on a success badge (3:1 on badge-success)."
+    },
+    "icon-warning": {
+      "$type": "color",
+      "$value": "#B27300",
+      "$description": "Status icon on a warning badge (3:1 on badge-warning)."
+    },
+    "icon-danger": {
+      "$type": "color",
+      "$value": "#E0474B",
+      "$description": "Status icon on a danger badge (3:1 on badge-danger)."
+    },
+    "avatar": {
+      "$type": "color",
+      "$value": "#DCE7FD",
+      "$description": "Avatar and initials tile fill."
+    },
+    "avatar-ink": {
+      "$type": "color",
+      "$value": "#1D4FD8",
+      "$description": "Initials on an avatar."
+    },
+    "presence-online": {
+      "$type": "color",
+      "$value": "{color.success}",
+      "$description": "Presence: online. A filled dot; pair with the status in the accessible name."
+    },
+    "presence-away": {
+      "$type": "color",
+      "$value": "{color.warning}",
+      "$description": "Presence: away. A half-filled dot."
+    },
+    "presence-offline": {
+      "$type": "color",
+      "$value": "{color.border}",
+      "$description": "Presence: offline. A hollow ring (3:1 on white and on the faint grey fill)."
+    },
+    "presence-idle": {
+      "$type": "color",
+      "$value": "{color.success}",
+      "$description": "Presence: idle (tab open, no input). A ring in the online colour: there but not at the keys."
+    },
+    "presence-call": {
+      "$type": "color",
+      "$value": "#2F6BEB",
+      "$description": "Presence: on a call. A filled dot with a white phone sign, beside any presence."
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "rgb(35 33 30 / 34%)",
+      "$description": "Warm backdrop behind dialogs and drawers.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "css",
+            "runtime"
+          ]
+        }
+      }
+    },
+    "chart-blue": {
+      "$type": "color",
+      "$value": "#2F6BEB",
+      "$description": "Blue data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-blue-tint": {
+      "$type": "color",
+      "$value": "#DCE7FD",
+      "$description": "Blue tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-blue-ink": {
+      "$type": "color",
+      "$value": "#1D4FD8",
+      "$description": "Blue text on its tint or on white (4.5:1)."
+    },
+    "chart-violet": {
+      "$type": "color",
+      "$value": "#7C5CF0",
+      "$description": "Violet data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-violet-tint": {
+      "$type": "color",
+      "$value": "#E8E2FF",
+      "$description": "Violet tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-violet-ink": {
+      "$type": "color",
+      "$value": "#5B3CC4",
+      "$description": "Violet text on its tint or on white (4.5:1)."
+    },
+    "chart-teal": {
+      "$type": "color",
+      "$value": "#0EA698",
+      "$description": "Teal data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-teal-tint": {
+      "$type": "color",
+      "$value": "#CCF2EC",
+      "$description": "Teal tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-teal-ink": {
+      "$type": "color",
+      "$value": "#0B6F66",
+      "$description": "Teal text on its tint or on white (4.5:1)."
+    },
+    "chart-green": {
+      "$type": "color",
+      "$value": "#17A34A",
+      "$description": "Green data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-green-tint": {
+      "$type": "color",
+      "$value": "#CDF2DA",
+      "$description": "Green tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-green-ink": {
+      "$type": "color",
+      "$value": "#0D7335",
+      "$description": "Green text on its tint or on white (4.5:1)."
+    },
+    "chart-amber": {
+      "$type": "color",
+      "$value": "#CB8500",
+      "$description": "Amber data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-amber-tint": {
+      "$type": "color",
+      "$value": "#FFEBB5",
+      "$description": "Amber tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-amber-ink": {
+      "$type": "color",
+      "$value": "#8A5200",
+      "$description": "Amber text on its tint or on white (4.5:1)."
+    },
+    "chart-coral": {
+      "$type": "color",
+      "$value": "#E5484D",
+      "$description": "Coral data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-coral-tint": {
+      "$type": "color",
+      "$value": "#FFDDE0",
+      "$description": "Coral tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-coral-ink": {
+      "$type": "color",
+      "$value": "#B4213A",
+      "$description": "Coral text on its tint or on white (4.5:1)."
+    },
+    "chart-sky": {
+      "$type": "color",
+      "$value": "#1E96E8",
+      "$description": "Sky data colour: bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-sky-tint": {
+      "$type": "color",
+      "$value": "#D2EBFC",
+      "$description": "Sky tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-sky-ink": {
+      "$type": "color",
+      "$value": "#1A6797",
+      "$description": "Sky text on its tint or on white (4.5:1)."
+    },
+    "chart-honey": {
+      "$type": "color",
+      "$value": "#8B93A1",
+      "$description": "Slate grey data colour (the tone keeps its old id, honey): bars, lines, segments and dots (3:1 on card and page)."
+    },
+    "chart-honey-tint": {
+      "$type": "color",
+      "$value": "#EEF0F3",
+      "$description": "Slate grey tint: legend chips, metric tiles and icon squares."
+    },
+    "chart-honey-ink": {
+      "$type": "color",
+      "$value": "#5E6470",
+      "$description": "Slate grey text on its tint or on white (4.5:1)."
+    },
+    "chart-indigo": {
+      "$type": "color",
+      "$value": "#6366F1",
+      "$description": "Indigo accent (between blue and violet): small marks, icons and dots (3:1 on card and page)."
+    },
+    "chart-indigo-tint": {
+      "$type": "color",
+      "$value": "#E3E4FF",
+      "$description": "Indigo tint: avatars, tags and icon squares."
+    },
+    "chart-indigo-ink": {
+      "$type": "color",
+      "$value": "#3B3FC2",
+      "$description": "Indigo text on its tint or on white (4.5:1)."
+    },
+    "chart-rose": {
+      "$type": "color",
+      "$value": "#DB3F86",
+      "$description": "Rose accent (coral turned towards violet): small marks, icons and dots (3:1 on card and page)."
+    },
+    "chart-rose-tint": {
+      "$type": "color",
+      "$value": "#FFDDEC",
+      "$description": "Rose tint: avatars, tags and icon squares."
+    },
+    "chart-rose-ink": {
+      "$type": "color",
+      "$value": "#A81F5E",
+      "$description": "Rose text on its tint or on white (4.5:1)."
+    },
+    "chart-orange": {
+      "$type": "color",
+      "$value": "#E5620A",
+      "$description": "Orange accent (the signature orange, deepened for marks): small marks, icons and dots (3:1 on card and page)."
+    },
+    "chart-orange-tint": {
+      "$type": "color",
+      "$value": "#FFE5D1",
+      "$description": "Orange tint: avatars, tags and icon squares."
+    },
+    "chart-orange-ink": {
+      "$type": "color",
+      "$value": "#A04300",
+      "$description": "Orange text on its tint or on white (4.5:1)."
+    },
+    "chart-lime": {
+      "$type": "color",
+      "$value": "#5C9A0A",
+      "$description": "Lime accent (green turned towards yellow): small marks, icons and dots (3:1 on card and page)."
+    },
+    "chart-lime-tint": {
+      "$type": "color",
+      "$value": "#E2F4C6",
+      "$description": "Lime tint: avatars, tags and icon squares."
+    },
+    "chart-lime-ink": {
+      "$type": "color",
+      "$value": "#3D6A05",
+      "$description": "Lime text on its tint or on white (4.5:1)."
+    },
+    "chart-plum": {
+      "$type": "color",
+      "$value": "#A43FBF",
+      "$description": "Plum accent (violet turned towards rose): small marks, icons and dots (3:1 on card and page). The Marketing dashboard's accent."
+    },
+    "chart-plum-tint": {
+      "$type": "color",
+      "$value": "#F4E2F9",
+      "$description": "Plum tint: avatars, tags and icon squares."
+    },
+    "chart-plum-ink": {
+      "$type": "color",
+      "$value": "#7A2B91",
+      "$description": "Plum text on its tint or on white (4.5:1)."
+    },
+    "orange": {
+      "$type": "color",
+      "$value": "#FF6A00",
+      "$description": "The second brand colour (#FF6A00 in the logo), for attention: what is new or waiting. Never a control colour; controls stay blue. Too light for text on white: use orange-ink."
+    },
+    "orange-hover": {
+      "$type": "color",
+      "$value": "#E65F00",
+      "$description": "Orange, hovered."
+    },
+    "orange-surface": {
+      "$type": "color",
+      "$value": "#FFF1E6",
+      "$description": "Orange tint behind an attention count or highlight."
+    },
+    "orange-border": {
+      "$type": "color",
+      "$value": "#FFC9A3",
+      "$description": "Orange edge for a highlighted item."
+    },
+    "orange-fill": {
+      "$type": "color",
+      "$value": "#C24E00",
+      "$description": "Solid orange behind white text (the notification count): the step where white passes 4.5:1."
+    },
+    "on-orange-fill": {
+      "$type": "color",
+      "$value": "#FFFFFF",
+      "$description": "Text on orange-fill."
+    },
+    "signature": {
+      "$type": "color",
+      "$value": "#FF6A00",
+      "$description": "Brand orange. Marketing surfaces and the Junction mark only; use dark text on it, never white. Working controls stay blue."
+    },
+    "signature-surface": {
+      "$type": "color",
+      "$value": "#FFF0E5",
+      "$description": "Orange tint for marketing highlights."
+    },
+    "dark": {
+      "$type": "color",
+      "$value": "#0F0F0E",
+      "$description": "Marketing home background only; no component reads it. Text on it is white; accents are signature."
+    },
+    "paper": {
+      "$type": "color",
+      "$value": "#FAFAF8",
+      "$description": "Ground of the paper-world brand films and their storyboards. Text on it is text or orange-ink.",
+      "$extensions": {
+        "co.easm": {
+          "outputs": [
+            "artifact"
+          ]
+        }
+      }
+    },
+    "orange-ink": {
+      "$type": "color",
+      "$value": "#B84700",
+      "$description": "Orange as text on white or on orange-surface (4.5:1): a count, a highlight, what is new."
+    },
+    "ai": {
+      "$type": "color",
+      "$value": "#7C5CF0",
+      "$description": "AI role: marks what the assistant made or did (AI messages, insights, assistant calls, collected responses). A role, not a chart colour; 3:1 on card and page."
+    },
+    "ai-surface": {
+      "$type": "color",
+      "$value": "#EFEBFF",
+      "$description": "AI role fill: chips, tiles and the background of AI-authored content."
+    },
+    "ai-ink": {
+      "$type": "color",
+      "$value": "#5B3CC4",
+      "$description": "AI role text on its fill or on white (4.5:1)."
+    },
+    "stage-1": {
+      "$type": "color",
+      "$value": "#EAF0FD",
+      "$description": "Lead stage 1, Inquiry: the lightest step of one blue ramp. Text is the body text."
+    },
+    "stage-2": {
+      "$type": "color",
+      "$value": "#D3E0FB",
+      "$description": "Lead stage 2, Qualified."
+    },
+    "stage-3": {
+      "$type": "color",
+      "$value": "#B3CBF8",
+      "$description": "Lead stage 3, Applied."
+    },
+    "stage-4": {
+      "$type": "color",
+      "$value": "#2F6BEB",
+      "$description": "Lead stage 4, Admitted. Text on it is white."
+    },
+    "stage-5": {
+      "$type": "color",
+      "$value": "#1E46B8",
+      "$description": "Lead stage 5, Enrolled: the deepest step. Text on it is white."
+    },
+    "stage-closed": {
+      "$type": "color",
+      "$value": "#EEF0F3",
+      "$description": "Lead stage, closed (lost, withdrawn): muted, off the ramp. Text is secondary."
+    },
+    "stage-stopped": {
+      "$type": "color",
+      "$value": "#FFF5F6",
+      "$description": "Lead stage, do not contact: the danger fill, text in danger-hover."
+    },
+    "product-support": {
+      "$type": "color",
+      "$value": "{color.chart-blue}",
+      "$description": "Support dashboard accent (demand list CLR-01): the switcher tile, home hero, breadcrumb and origin chips. Never a status colour."
+    },
+    "product-support-tint": {
+      "$type": "color",
+      "$value": "{color.chart-blue-tint}",
+      "$description": "Support accent fill."
+    },
+    "product-support-ink": {
+      "$type": "color",
+      "$value": "{color.chart-blue-ink}",
+      "$description": "Support accent text on its fill or on white (4.5:1)."
+    },
+    "product-knowledge": {
+      "$type": "color",
+      "$value": "{color.chart-teal}",
+      "$description": "Knowledge dashboard accent (demand list CLR-01): the switcher tile, home hero, breadcrumb and origin chips. Never a status colour."
+    },
+    "product-knowledge-tint": {
+      "$type": "color",
+      "$value": "{color.chart-teal-tint}",
+      "$description": "Knowledge accent fill."
+    },
+    "product-knowledge-ink": {
+      "$type": "color",
+      "$value": "{color.chart-teal-ink}",
+      "$description": "Knowledge accent text on its fill or on white (4.5:1)."
+    },
+    "product-marketing": {
+      "$type": "color",
+      "$value": "{color.chart-plum}",
+      "$description": "Marketing dashboard accent (demand list CLR-01): the switcher tile, home hero, breadcrumb and origin chips. Never a status colour."
+    },
+    "product-marketing-tint": {
+      "$type": "color",
+      "$value": "{color.chart-plum-tint}",
+      "$description": "Marketing accent fill."
+    },
+    "product-marketing-ink": {
+      "$type": "color",
+      "$value": "{color.chart-plum-ink}",
+      "$description": "Marketing accent text on its fill or on white (4.5:1)."
+    },
+    "product-automation": {
+      "$type": "color",
+      "$value": "{color.chart-indigo}",
+      "$description": "Automation dashboard accent (demand list CLR-01): the switcher tile, home hero, breadcrumb and origin chips. Never a status colour."
+    },
+    "product-automation-tint": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-tint}",
+      "$description": "Automation accent fill."
+    },
+    "product-automation-ink": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-ink}",
+      "$description": "Automation accent text on its fill or on white (4.5:1)."
+    },
+    "product-forms": {
+      "$type": "color",
+      "$value": "{color.chart-rose}",
+      "$description": "Forms dashboard accent (demand list CLR-01): the switcher tile, home hero, breadcrumb and origin chips. Never a status colour."
+    },
+    "product-forms-tint": {
+      "$type": "color",
+      "$value": "{color.chart-rose-tint}",
+      "$description": "Forms accent fill."
+    },
+    "product-forms-ink": {
+      "$type": "color",
+      "$value": "{color.chart-rose-ink}",
+      "$description": "Forms accent text on its fill or on white (4.5:1)."
+    },
+    "temperature-hot": {
+      "$type": "color",
+      "$value": "{color.chart-rose}",
+      "$description": "Hot: likely to apply soon. Never coral (danger) or the signature orange. (demand list colour role). Mark: glyphs and dots."
+    },
+    "temperature-hot-tint": {
+      "$type": "color",
+      "$value": "{color.chart-rose-tint}",
+      "$description": "Temperature hot: fill."
+    },
+    "temperature-hot-ink": {
+      "$type": "color",
+      "$value": "{color.chart-rose-ink}",
+      "$description": "Temperature hot: text on its fill or on white (4.5:1)."
+    },
+    "temperature-warm": {
+      "$type": "color",
+      "$value": "{color.chart-amber}",
+      "$description": "Warm: interested, not yet moving. (demand list colour role). Mark: glyphs and dots."
+    },
+    "temperature-warm-tint": {
+      "$type": "color",
+      "$value": "{color.chart-amber-tint}",
+      "$description": "Temperature warm: fill."
+    },
+    "temperature-warm-ink": {
+      "$type": "color",
+      "$value": "{color.chart-amber-ink}",
+      "$description": "Temperature warm: text on its fill or on white (4.5:1)."
+    },
+    "temperature-cold": {
+      "$type": "color",
+      "$value": "{color.chart-sky}",
+      "$description": "Cold: no recent interest. (demand list colour role). Mark: glyphs and dots."
+    },
+    "temperature-cold-tint": {
+      "$type": "color",
+      "$value": "{color.chart-sky-tint}",
+      "$description": "Temperature cold: fill."
+    },
+    "temperature-cold-ink": {
+      "$type": "color",
+      "$value": "{color.chart-sky-ink}",
+      "$description": "Temperature cold: text on its fill or on white (4.5:1)."
+    },
+    "sentiment-positive": {
+      "$type": "color",
+      "$value": "{color.chart-teal}",
+      "$description": "Positive: how a conversation felt. Not green: a feeling is not a success. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sentiment-positive-tint": {
+      "$type": "color",
+      "$value": "{color.chart-teal-tint}",
+      "$description": "Sentiment positive: fill."
+    },
+    "sentiment-positive-ink": {
+      "$type": "color",
+      "$value": "{color.chart-teal-ink}",
+      "$description": "Sentiment positive: text on its fill or on white (4.5:1)."
+    },
+    "sentiment-neutral": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Neutral. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sentiment-neutral-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Sentiment neutral: fill."
+    },
+    "sentiment-neutral-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Sentiment neutral: text on its fill or on white (4.5:1)."
+    },
+    "sentiment-negative": {
+      "$type": "color",
+      "$value": "{color.chart-plum}",
+      "$description": "Negative: a caller’s mood, not an error, so never red. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sentiment-negative-tint": {
+      "$type": "color",
+      "$value": "{color.chart-plum-tint}",
+      "$description": "Sentiment negative: fill."
+    },
+    "sentiment-negative-ink": {
+      "$type": "color",
+      "$value": "{color.chart-plum-ink}",
+      "$description": "Sentiment negative: text on its fill or on white (4.5:1)."
+    },
+    "sentiment-mixed": {
+      "$type": "color",
+      "$value": "{color.chart-indigo}",
+      "$description": "Mixed. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sentiment-mixed-tint": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-tint}",
+      "$description": "Sentiment mixed: fill."
+    },
+    "sentiment-mixed-ink": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-ink}",
+      "$description": "Sentiment mixed: text on its fill or on white (4.5:1)."
+    },
+    "sensitivity-public": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Public answer: fine to show. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sensitivity-public-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Sensitivity public: fill."
+    },
+    "sensitivity-public-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Sensitivity public: text on its fill or on white (4.5:1)."
+    },
+    "sensitivity-personal": {
+      "$type": "color",
+      "$value": "{color.chart-sky}",
+      "$description": "Personal answer: about a person. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sensitivity-personal-tint": {
+      "$type": "color",
+      "$value": "{color.chart-sky-tint}",
+      "$description": "Sensitivity personal: fill."
+    },
+    "sensitivity-personal-ink": {
+      "$type": "color",
+      "$value": "{color.chart-sky-ink}",
+      "$description": "Sensitivity personal: text on its fill or on white (4.5:1)."
+    },
+    "sensitivity-restricted": {
+      "$type": "color",
+      "$value": "{color.chart-indigo}",
+      "$description": "Restricted answer: sealed, read only through Reveal. Guarded, not an error. (demand list colour role). Mark: glyphs and dots."
+    },
+    "sensitivity-restricted-tint": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-tint}",
+      "$description": "Sensitivity restricted: fill."
+    },
+    "sensitivity-restricted-ink": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-ink}",
+      "$description": "Sensitivity restricted: text on its fill or on white (4.5:1)."
+    },
+    "consent-granted": {
+      "$type": "color",
+      "$value": "{color.chart-teal}",
+      "$description": "Consent given. (demand list colour role). Mark: glyphs and dots."
+    },
+    "consent-granted-tint": {
+      "$type": "color",
+      "$value": "{color.chart-teal-tint}",
+      "$description": "Consent granted: fill."
+    },
+    "consent-granted-ink": {
+      "$type": "color",
+      "$value": "{color.chart-teal-ink}",
+      "$description": "Consent granted: text on its fill or on white (4.5:1)."
+    },
+    "consent-withdrawn": {
+      "$type": "color",
+      "$value": "{color.chart-plum}",
+      "$description": "Consent withdrawn: honoured, not an error. (demand list colour role). Mark: glyphs and dots."
+    },
+    "consent-withdrawn-tint": {
+      "$type": "color",
+      "$value": "{color.chart-plum-tint}",
+      "$description": "Consent withdrawn: fill."
+    },
+    "consent-withdrawn-ink": {
+      "$type": "color",
+      "$value": "{color.chart-plum-ink}",
+      "$description": "Consent withdrawn: text on its fill or on white (4.5:1)."
+    },
+    "consent-unknown": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Consent not known. (demand list colour role). Mark: glyphs and dots."
+    },
+    "consent-unknown-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Consent unknown: fill."
+    },
+    "consent-unknown-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Consent unknown: text on its fill or on white (4.5:1)."
+    },
+    "consent-erased": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "The person was erased; the record of it remains. (demand list colour role). Mark: glyphs and dots."
+    },
+    "consent-erased-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Consent erased: fill."
+    },
+    "consent-erased-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Consent erased: text on its fill or on white (4.5:1)."
+    },
+    "priority-low": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Priority low. (demand list colour role). Mark: glyphs and dots."
+    },
+    "priority-low-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Priority low: fill."
+    },
+    "priority-low-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Priority low: text on its fill or on white (4.5:1)."
+    },
+    "priority-normal": {
+      "$type": "color",
+      "$value": "{color.chart-sky}",
+      "$description": "Priority normal. (demand list colour role). Mark: glyphs and dots."
+    },
+    "priority-normal-tint": {
+      "$type": "color",
+      "$value": "{color.chart-sky-tint}",
+      "$description": "Priority normal: fill."
+    },
+    "priority-normal-ink": {
+      "$type": "color",
+      "$value": "{color.chart-sky-ink}",
+      "$description": "Priority normal: text on its fill or on white (4.5:1)."
+    },
+    "priority-high": {
+      "$type": "color",
+      "$value": "{color.chart-amber}",
+      "$description": "Priority high. (demand list colour role). Mark: glyphs and dots."
+    },
+    "priority-high-tint": {
+      "$type": "color",
+      "$value": "{color.chart-amber-tint}",
+      "$description": "Priority high: fill."
+    },
+    "priority-high-ink": {
+      "$type": "color",
+      "$value": "{color.chart-amber-ink}",
+      "$description": "Priority high: text on its fill or on white (4.5:1)."
+    },
+    "priority-urgent": {
+      "$type": "color",
+      "$value": "{color.chart-rose}",
+      "$description": "Priority urgent: still not the SLA’s breached red. (demand list colour role). Mark: glyphs and dots."
+    },
+    "priority-urgent-tint": {
+      "$type": "color",
+      "$value": "{color.chart-rose-tint}",
+      "$description": "Priority urgent: fill."
+    },
+    "priority-urgent-ink": {
+      "$type": "color",
+      "$value": "{color.chart-rose-ink}",
+      "$description": "Priority urgent: text on its fill or on white (4.5:1)."
+    },
+    "consent-suppressed": {
+      "$type": "color",
+      "$value": "{color.chart-indigo}",
+      "$description": "Consent suppressed: held back on purpose, guarded rather than an error. (demand list colour role). Mark: glyphs and dots."
+    },
+    "consent-suppressed-tint": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-tint}",
+      "$description": "Consent suppressed: fill."
+    },
+    "consent-suppressed-ink": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-ink}",
+      "$description": "Consent suppressed: text on its fill or on white (4.5:1)."
+    },
+    "delivery-queued": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Delivery queued: waiting its turn. (demand list colour role). Mark: glyphs and dots."
+    },
+    "delivery-queued-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Delivery queued: fill."
+    },
+    "delivery-queued-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Delivery queued: text on its fill or on white (4.5:1)."
+    },
+    "delivery-accepted": {
+      "$type": "color",
+      "$value": "{color.chart-sky}",
+      "$description": "Delivery accepted: the provider took the request, nothing more. (demand list colour role). Mark: glyphs and dots."
+    },
+    "delivery-accepted-tint": {
+      "$type": "color",
+      "$value": "{color.chart-sky-tint}",
+      "$description": "Delivery accepted: fill."
+    },
+    "delivery-accepted-ink": {
+      "$type": "color",
+      "$value": "{color.chart-sky-ink}",
+      "$description": "Delivery accepted: text on its fill or on white (4.5:1)."
+    },
+    "delivery-matched": {
+      "$type": "color",
+      "$value": "{color.chart-teal}",
+      "$description": "Delivery matched: the provider tied it to a person. (demand list colour role). Mark: glyphs and dots."
+    },
+    "delivery-matched-tint": {
+      "$type": "color",
+      "$value": "{color.chart-teal-tint}",
+      "$description": "Delivery matched: fill."
+    },
+    "delivery-matched-ink": {
+      "$type": "color",
+      "$value": "{color.chart-teal-ink}",
+      "$description": "Delivery matched: text on its fill or on white (4.5:1)."
+    },
+    "delivery-suppressed": {
+      "$type": "color",
+      "$value": "{color.chart-indigo}",
+      "$description": "Delivery suppressed: held back because consent was missing. Guarded, not failed. (demand list colour role). Mark: glyphs and dots."
+    },
+    "delivery-suppressed-tint": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-tint}",
+      "$description": "Delivery suppressed: fill."
+    },
+    "delivery-suppressed-ink": {
+      "$type": "color",
+      "$value": "{color.chart-indigo-ink}",
+      "$description": "Delivery suppressed: text on its fill or on white (4.5:1)."
+    },
+    "delivery-failed": {
+      "$type": "color",
+      "$value": "{color.chart-coral}",
+      "$description": "Delivery dead-lettered: it will not be retried and needs a person. (demand list colour role). Mark: glyphs and dots."
+    },
+    "delivery-failed-tint": {
+      "$type": "color",
+      "$value": "{color.chart-coral-tint}",
+      "$description": "Delivery failed: fill."
+    },
+    "delivery-failed-ink": {
+      "$type": "color",
+      "$value": "{color.chart-coral-ink}",
+      "$description": "Delivery failed: text on its fill or on white (4.5:1)."
+    },
+    "freshness-fresh": {
+      "$type": "color",
+      "$value": "{color.chart-teal}",
+      "$description": "Fresh: reviewed within its schedule. (demand list colour role). Mark: glyphs and dots."
+    },
+    "freshness-fresh-tint": {
+      "$type": "color",
+      "$value": "{color.chart-teal-tint}",
+      "$description": "Freshness fresh: fill."
+    },
+    "freshness-fresh-ink": {
+      "$type": "color",
+      "$value": "{color.chart-teal-ink}",
+      "$description": "Freshness fresh: text on its fill or on white (4.5:1)."
+    },
+    "freshness-due": {
+      "$type": "color",
+      "$value": "{color.chart-amber}",
+      "$description": "Due soon: its review falls due shortly. (demand list colour role). Mark: glyphs and dots."
+    },
+    "freshness-due-tint": {
+      "$type": "color",
+      "$value": "{color.chart-amber-tint}",
+      "$description": "Freshness due: fill."
+    },
+    "freshness-due-ink": {
+      "$type": "color",
+      "$value": "{color.chart-amber-ink}",
+      "$description": "Freshness due: text on its fill or on white (4.5:1)."
+    },
+    "freshness-stale": {
+      "$type": "color",
+      "$value": "{color.chart-honey}",
+      "$description": "Stale: past its review. A stale page is not an error, so never red. (demand list colour role). Mark: glyphs and dots."
+    },
+    "freshness-stale-tint": {
+      "$type": "color",
+      "$value": "{color.chart-honey-tint}",
+      "$description": "Freshness stale: fill."
+    },
+    "freshness-stale-ink": {
+      "$type": "color",
+      "$value": "{color.chart-honey-ink}",
+      "$description": "Freshness stale: text on its fill or on white (4.5:1)."
+    },
+    "effect-read": {
+      "$type": "color",
+      "$value": "{color.chart-sky}",
+      "$description": "Reads data only. (demand list colour role). Mark: glyphs and dots."
+    },
+    "effect-read-tint": {
+      "$type": "color",
+      "$value": "{color.chart-sky-tint}",
+      "$description": "Effect read: fill."
+    },
+    "effect-read-ink": {
+      "$type": "color",
+      "$value": "{color.chart-sky-ink}",
+      "$description": "Effect read: text on its fill or on white (4.5:1)."
+    },
+    "effect-write": {
+      "$type": "color",
+      "$value": "{color.chart-amber}",
+      "$description": "Changes data: calm but unmistakable, never danger red. (demand list colour role). Mark: glyphs and dots."
+    },
+    "effect-write-tint": {
+      "$type": "color",
+      "$value": "{color.chart-amber-tint}",
+      "$description": "Effect write: fill."
+    },
+    "effect-write-ink": {
+      "$type": "color",
+      "$value": "{color.chart-amber-ink}",
+      "$description": "Effect write: text on its fill or on white (4.5:1)."
+    },
+    "attention": {
+      "$type": "color",
+      "$value": "{color.orange}",
+      "$description": "Attention (CLR-14): \"Needs you\" on every dashboard. The signature orange as a mark, never a control."
+    },
+    "attention-tint": {
+      "$type": "color",
+      "$value": "{color.orange-surface}",
+      "$description": "Attention: fill of a \"Needs you\" chip."
+    },
+    "attention-ink": {
+      "$type": "color",
+      "$value": "{color.orange-ink}",
+      "$description": "Attention: text and glyph on its fill (4.5:1, checked as orange-ink on orange-surface)."
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "$value": "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "$description": "Product typeface. Applications load Inter; the stack falls back to system fonts."
+    },
+    "size": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Captions, counts and compact metadata."
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "13px",
+        "$description": "Helper text, small buttons and table metadata."
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "Default control, body and table text."
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Container titles, large buttons and body copy."
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "Dialog and drawer titles."
+      }
+    },
+    "line-height": {
+      "$type": "number",
+      "$value": 1.5,
+      "$description": "Line height for body and control text."
+    },
+    "weight": {
+      "label": {
+        "$type": "fontWeight",
+        "$value": 600,
+        "$description": "Field and button labels."
+      }
+    },
+    "style": {
+      "text-sm": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family}",
+          "fontSize": "{font.size.sm}",
+          "lineHeight": "{font.line-height}",
+          "fontWeight": 400
+        },
+        "$description": "Helper text, captions, small buttons."
+      },
+      "text-md": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family}",
+          "fontSize": "{font.size.md}",
+          "lineHeight": "{font.line-height}",
+          "fontWeight": 400
+        },
+        "$description": "Default control and table text."
+      },
+      "text-lg": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family}",
+          "fontSize": "{font.size.lg}",
+          "lineHeight": "{font.line-height}",
+          "fontWeight": 400
+        },
+        "$description": "Body copy and large buttons."
+      },
+      "label": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family}",
+          "fontSize": "{font.size.md}",
+          "lineHeight": "{font.line-height}",
+          "fontWeight": "{font.weight.label}"
+        },
+        "$description": "Field labels and button labels."
+      }
+    }
+  },
+  "size": {
+    "sm": {
+      "$type": "dimension",
+      "$value": "32px",
+      "$description": "Control height (sm)."
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "40px",
+      "$description": "Control height (md)."
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "48px",
+      "$description": "Control height (lg)."
+    },
+    "touch": {
+      "$type": "dimension",
+      "$value": "44px",
+      "$description": "Minimum target on coarse pointers."
+    }
+  },
+  "icon": {
+    "sm": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "stroke": {
+      "$type": "number",
+      "$value": 1.6,
+      "$description": "Icon stroke width in a 24-unit viewBox."
+    }
+  },
+  "radius": {
+    "mark": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Checkboxes, small marks, and rows or buttons nested 4 px inside an 8 px corner."
+    },
+    "inner": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "Blocks, days and small buttons inside a control or floating panel."
+    },
+    "control": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Buttons, inputs, selects and other single controls. Composite rails (tab tracks, segmented controls) use card."
+    },
+    "float": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Menus, popovers, pickers, select lists and tooltips: the same corner as the control they open from, so the corners line up when one opens over a button."
+    },
+    "card": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "Cards, panels, sections, list cards and composite fields such as the composer."
+    },
+    "overlay": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Dialogs, drawers, bottom sheets and chat bubbles."
+    },
+    "pill": {
+      "$type": "dimension",
+      "$value": "999px",
+      "$description": "Badges, chips, switches."
+    }
+  },
+  "space": {
+    "0": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "1": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Icon-to-text hairline gaps."
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Gaps inside controls and button groups."
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "Small button padding."
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Control padding, card gaps."
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$description": "Large button padding."
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Card padding; product grid unit."
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "32px",
+      "$description": "Section gaps."
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": "40px",
+      "$description": "Default control height."
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "48px",
+      "$description": "Large control height."
+    }
+  },
+  "motion": {
+    "fast": {
+      "$type": "duration",
+      "$value": "140ms",
+      "$description": "Feedback: hover, press, focus."
+    },
+    "medium": {
+      "$type": "duration",
+      "$value": "200ms",
+      "$description": "Selections, menus and popovers."
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": "280ms",
+      "$description": "Dialogs, drawers and expansion."
+    },
+    "enter": {
+      "$type": "duration",
+      "$value": "320ms",
+      "$description": "Content arriving: a page, a section, a list."
+    },
+    "stagger": {
+      "$type": "duration",
+      "$value": "36ms",
+      "$description": "The gap between items that arrive one after another."
+    },
+    "ease": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.2,
+        0,
+        0,
+        1
+      ]
+    },
+    "ease-out": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.16,
+        1,
+        0.3,
+        1
+      ],
+      "$description": "Entrances: starts quickly, settles softly."
+    },
+    "ease-in": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.4,
+        0,
+        1,
+        1
+      ],
+      "$description": "Exits: leaves without lingering."
+    },
+    "press": {
+      "$type": "duration",
+      "$value": "90ms",
+      "$description": "A control sinking under a press: quick, so it answers the finger at once."
+    },
+    "release": {
+      "$type": "duration",
+      "$value": "460ms",
+      "$description": "A control springing back on release, a toggle crossing, a selection settling (with ease-spring)."
+    },
+    "arrive": {
+      "$type": "duration",
+      "$value": "380ms",
+      "$description": "A menu, popover, dialog or drawer arriving (with ease-spring-soft)."
+    },
+    "exit": {
+      "$type": "duration",
+      "$value": "150ms",
+      "$description": "Anything leaving: faster than it arrived, so it never holds up the next step (with ease-in)."
+    },
+    "ease-spring": {
+      "$type": "string",
+      "$value": "linear(0, 0.0343, 0.1194, 0.2328, 0.3579, 0.4827, 0.5993, 0.703, 0.7912, 0.8636, 0.9207, 0.9639, 0.9951, 1.0163, 1.0293, 1.0361, 1.0384, 1.0374, 1.0343, 1.0301, 1.0253, 1.0205, 1.016, 1.0119, 1.0084, 1.0056, 1.0033, 1.0016, 1.0003, 0.9995, 0.9989, 0.9986, 0.9985, 0.9986, 0.9987, 0.9988, 1)",
+      "$description": "A spring, damping 0.72: about 4% overshoot, then rest. Releases, toggles and selections."
+    },
+    "ease-spring-soft": {
+      "$type": "string",
+      "$value": "linear(0, 0.0258, 0.0899, 0.1761, 0.2729, 0.372, 0.4678, 0.5569, 0.6371, 0.7077, 0.7685, 0.8198, 0.8625, 0.8973, 0.9253, 0.9474, 0.9646, 0.9776, 0.9873, 0.9944, 0.9993, 1.0026, 1.0046, 1.0058, 1.0062, 1.0062, 1.006, 1.0055, 1.0049, 1.0043, 1.0036, 1.0031, 1.0025, 1.0021, 1.0016, 1.0013, 1)",
+      "$description": "A spring, damping 0.85: under 1% overshoot. Things arriving: menus, dialogs, the sliding selection."
+    },
+    "operation-delay": {
+      "$type": "duration",
+      "$value": "0ms",
+      "$description": "No artificial delays; operations take their real time."
+    }
+  },
+  "shadow": {
+    "card": {
+      "$type": "shadow",
+      "$value": "none",
+      "$description": "Cards are separated from the page by fill, not shadow."
+    },
+    "overlay": {
+      "$type": "shadow",
+      "$value": "none",
+      "$description": "Floating layers use a contrasting panel fill (white, grey or ink), not shadow."
+    }
+  },
+  "focus": {
+    "ring": {
+      "$type": "shadow",
+      "$value": "0 0 0 2px {color.primary-fill}, 0 0 0 6px {color.halo}",
+      "$description": "Halo focus: one solid 2px edge plus a soft glow, never an offset double ring."
+    },
+    "field": {
+      "$type": "shadow",
+      "$value": "0 0 0 4px {color.halo}",
+      "$description": "Field focus: the outline turns primary-fill and this soft halo surrounds it (one ring, no outline)."
+    },
+    "inset": {
+      "$type": "shadow",
+      "$value": "inset 0 0 0 2px {color.primary-fill}",
+      "$description": "Focus inside a clipped row or shell (menu rows, list items, accordion headers): one solid inset edge."
+    },
+    "field-error": {
+      "$type": "shadow",
+      "$value": "0 0 0 4px {color.danger-halo}",
+      "$description": "Field focus while the field is in error: the outline turns danger and this soft red halo surrounds it."
+    },
+    "on-fill": {
+      "$type": "shadow",
+      "$value": "0 0 0 2px {color.surface}, 0 0 0 4px {color.primary-fill}",
+      "$description": "Focus on a filled item (current sidebar link, selected day, checked control): a surface gap, then the primary edge, so the ring never merges into the fill."
+    }
+  },
+  "z": {
+    "dialog": {
+      "$type": "number",
+      "$value": 1000,
+      "$description": "Dialogs and drawers."
+    },
+    "popover": {
+      "$type": "number",
+      "$value": 1100,
+      "$description": "Menus, popovers and select lists."
+    },
+    "tooltip": {
+      "$type": "number",
+      "$value": 1200,
+      "$description": "Tooltips, above everything."
+    }
+  },
+  "layer": {
+    "offset": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "Raised by nested overlay layers at runtime."
+    }
+  },
+  "breakpoint": {
+    "$description": "Screen size classes (min-width of each class): compact < medium, medium 600-1023, expanded 1024-1439, large 1440-1919, wide 1920 and up. Screen media queries only; components follow their container.",
+    "medium": {
+      "$type": "dimension",
+      "$value": "600px",
+      "$description": "Medium and wider: tablets, split views, small laptops. Below it is compact (phones)."
+    },
+    "expanded": {
+      "$type": "dimension",
+      "$value": "1024px",
+      "$description": "Expanded: laptops and desktops."
+    },
+    "large": {
+      "$type": "dimension",
+      "$value": "1440px",
+      "$description": "Large desktops."
+    },
+    "wide": {
+      "$type": "dimension",
+      "$value": "1920px",
+      "$description": "Wide screens."
+    }
+  }
+}

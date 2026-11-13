@@ -1,0 +1,31 @@
+/* @easm/motion 1.1.0: motion tokens for the EASM One app (generated from the kit by tools/tokens.mjs; do not edit). */
+:root {
+  --easm-motion-ease-io: cubic-bezier(0.65, 0, 0.35, 1); /* Ease in and out: blends between states, drains, docking. */
+  --easm-motion-ease-soft: cubic-bezier(0.45, 0, 0.2, 1); /* Sets off from rest and lands softly: light leaving the core, fills. */
+  --easm-motion-ease-snap: cubic-bezier(0.5, 0, 0.2, 1); /* A quicker landing. */
+  --easm-motion-ease-dots: cubic-bezier(0.45, 0, 0.55, 1); /* The three-dot indicators. */
+  --easm-motion-duration-blend: 500ms; /* Every change of icon state blends over this. */
+  --easm-motion-duration-blend-one-shot: 280ms; /* A change into done or error (an event) blends faster. */
+  --easm-motion-duration-wave-blend: 450ms; /* Every change of waveform mode blends over this. */
+  --easm-motion-duration-icon-connecting: 1600ms; /* connecting: one cycle. */
+  --easm-motion-duration-icon-thinking: 1500ms; /* thinking: one cycle. */
+  --easm-motion-duration-icon-searching: 1800ms; /* searching: one cycle. */
+  --easm-motion-duration-icon-tool-calling: 1600ms; /* One tool call (the loop visits all six systems). */
+  --easm-motion-duration-icon-writing: 3600ms; /* writing: one cycle. */
+  --easm-motion-duration-icon-awaiting: 2400ms; /* awaiting: one cycle. */
+  --easm-motion-duration-icon-done: 1250ms; /* done: plays once, then the still mark. */
+  --easm-motion-duration-icon-error: 1500ms; /* error: plays once, then the still mark. */
+  --easm-motion-duration-icon-voice-loop: 7150ms; /* The EASM voice rhythm that speaking and listening follow without live audio. */
+  --easm-motion-duration-wave-loading: 1400ms; /* One loading crest across the waveform, then rest. */
+  --easm-motion-duration-dots-typing: 1200ms; /* typing dots: one cycle at speed 1. */
+  --easm-motion-duration-dots-searching: 1500ms; /* searching dots: one cycle at speed 1. */
+  --easm-motion-duration-dots-thinking: 1800ms; /* thinking dots: one cycle at speed 1. */
+  --easm-motion-color-core: #FF6A00; /* The core and every light: signature orange, always fully opaque. */
+  --easm-motion-color-core-glow: #FF8A33; /* The core at the top of a syllable while speaking. */
+  --easm-motion-color-rail-on-light: #161616; /* Rails on light surfaces (ink). */
+  --easm-motion-color-rail-on-dark: #FAFAF8; /* Rails on dark surfaces (paper). */
+  --easm-motion-size-icon-min: 16px; /* Smallest icon size; every state stays legible here. */
+  --easm-motion-size-icon-default: 24px; /* Status lines and chat avatars. */
+  --easm-motion-size-dots-default: 6px; /* Dot diameter for chat bubbles. */
+  --easm-motion-size-wave-default: 28px; /* Waveform height in a composer. */
+}

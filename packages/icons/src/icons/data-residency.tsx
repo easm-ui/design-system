@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const DataResidencyIcon = /* @__PURE__ */ createIcon({"name":"data-residency","body":[{"tag":"circle","attrs":{"cx":10.5,"cy":10.5,"r":8,"fill":"surface"}},{"tag":"path","attrs":{"d":"M2.5 10.5h16M10.5 2.5c-4 4.5-4 11.5 0 16M10.5 2.5c4 4.5 4 11.5 0 16","stroke-width":1.2}},{"tag":"path","attrs":{"d":"M21.6 15.6c0 2.9-3.7 6.3-3.7 6.3s-3.7-3.4-3.7-6.3a3.7 3.7 0 0 1 7.4 0Z","fill":"background","stroke-width":1.35}},{"tag":"circle","attrs":{"cx":17.9,"cy":15.5,"r":1.25,"fill":"none","stroke-width":1.1}}]});

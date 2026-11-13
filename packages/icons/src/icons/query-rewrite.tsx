@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const QueryRewriteIcon = /* @__PURE__ */ createIcon({"name":"query-rewrite","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"circle","attrs":{"cx":10.5,"cy":10.5,"r":6.5,"fill":"surface"}},{"tag":"path","attrs":{"d":"m15.3 15.3 5.2 5.2"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M16.1 19.3l.3-1.3 2.3-2.3 1 1-2.3 2.3Z","stroke-width":1.15}}]});

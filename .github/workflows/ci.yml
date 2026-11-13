@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Tokens, types, build, tests, accessibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4 # version comes from packageManager in package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Tokens are generated from the source and meet contrast
+        run: pnpm tokens:check
+      # Build first: @easm-ui/ui type-checks against the built @easm-ui/icons and @easm-ui/brand.
+      - name: Build
+        run: pnpm build
+      - name: Type-check
+        run: pnpm lint
+      - name: Component and icon tests
+        run: pnpm test
+      - name: Accessibility (axe-core, WCAG 2.2 A/AA)
+        run: pnpm test:a11y
+      - name: Browser for the icon motion test
+        run: pnpm exec playwright-core install --with-deps chromium-headless-shell
+      - name: Directed icon motion, original artwork and interaction states
+        run: pnpm test:icon-motion
+      - name: Tests left no tracked files changed
+        run: git diff --exit-code
+
+  conventions:
+    name: Commit messages and changesets
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Conventional Commits
+        run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+      - name: Package changes include a changeset
+        # The release pull request consumes the changesets, so it has none of its own.
+        if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
+        run: pnpm exec changeset status --since=origin/${{ github.base_ref }}

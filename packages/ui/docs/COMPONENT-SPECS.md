@@ -1,0 +1,3674 @@
+# EASM Core Components — specification v2.1.0
+
+Contract updated 2026-10-13 for the white theme: white page (#FFFFFF), white cards, bright blue (#2F6BEB) filled actions, separation by fill instead of outlines or shadows, no one-sided rules, and a single-edge focus with a soft halo. The library exports 47 typed React components from `@easm-ui/ui`. Import `@easm-ui/ui/styles.css` once at the application boundary. Select now uses the shared themed DropdownSelect implementation; its value callback and public ref require the documented v2 migration. These specifications describe the library contract; existing app consumers remain unchanged until a separately validated migration. Current-version source and browser verification must be completed before packaging.
+
+Every component has the exact 15 requested design headings, followed by its API, code example and migration rule. Examples are composition fragments: event handlers and controlled state belong to the application; they do not implement persistence or network transport.
+
+Foundation: [tokens, naming and state rules](FOUNDATIONS.md). Source baseline: [inventory](../audit/source-inventory.md), [findings](../audit/findings.md), [exhaustive migration map](../audit/migration-map.json). Machine source: [component-specs.json](component-specs.json).
+
+## Button
+
+Family: Actions.
+
+### Purpose
+
+Execute one clearly named action, such as saving an agent or creating a conversation. A primary button identifies the main action in a local task.
+
+### Anatomy
+
+Native button; text label; optional leading/trailing EASM icon; centered loading indicator over the preserved content layout. block controls layout width and selected exposes a toggle state.
+
+### Variants
+
+primary for the principal action; secondary for supporting actions; subtle for low emphasis; destructive for an explicitly destructive action. A variant is a semantic emphasis, not a destination or custom color.
+
+### Sizes
+
+sm: 32 px; md: 40 px (default); lg: 48 px. These are minimum heights, so translated or wrapped text may increase height. Coarse pointers receive a minimum 44 px target.
+
+### States
+
+Default, hover, pressed, keyboard focus, disabled, loading and selected. Native disabled removes activation and sequential focus. Loading keeps focus, sets aria-busy/aria-disabled and blocks click/Enter/Space; label and glyph layout remain in place with opacity zero, preserving the accessible name while the centered spinner is visible.
+
+### Color behavior
+
+Primary: #2F6BEB (primary-fill) → #2563EB hover → #1D4FD8 pressed, with white text. Secondary is a grey track fill (#F1F3F6 → #E8EBF0 hover → #DEE2E8 pressed) with #101318 text and no outline. Subtle is #2563EB text on transparent, #EEF4FF on hover. Destructive is #D92644 → #B81D38 with white text. Selected keeps a persistent fill; disabled uses neutral tokens and drops any outline.
+
+### Icon behavior
+
+UIIconName (the approved @easm-ui/icons registry); 16/20/24 px for sm/md/lg, 1.6 px standard stroke and currentColor. Icons supplement the label. Loading uses the shared branded spinner at 16/20/24px in an absolute centered overlay, preserving the existing content width; icons inherit the button foreground, including white on primary.
+
+### Typography
+
+13/14/16 px for sm/md/lg; weight 600; line-height 20 px at sm/md and 24 px at lg. Label can wrap without truncating the action.
+
+### Spacing
+
+Horizontal padding 12/16/20 px for sm/md/lg; icon-to-label gap 8 px; adjacent actions separated by 8 px. block stretches within its layout, not the viewport.
+
+### Borders & surfaces
+
+8 px radius. No variant draws an outline: buttons are told apart by fill (blue, grey track, transparent, red). A disabled button keeps its shape with a transparent border, and a disabled subtle button stays transparent. No gradients, shadows or signature-orange fill for routine actions.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation. Loading rotation is functional; reduced motion retains a static busy indicator and the accessible busy state.
+
+### Accessibility
+
+Native button with type=button by default; set type=submit intentionally for form submission. Keep its visible label meaningful. selected maps to aria-pressed for a toggle action. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Allow the label to wrap; choose block for narrow forms. Avoid forcing equal widths across unrelated actions. sm/md target height expands to 44 px for coarse pointers.
+
+### Content rules
+
+Use a verb and object when needed: Save agent, Create ticket, Retry upload. Keep the same accessible label and target dimensions during loading; do not imply success before the application confirms it.
+
+### Usage rules
+
+Use a link for navigation. Keep one primary action per local task. selected is for reversible toggle actions; avoid combining it with destructive commands. Own asynchronous loading/success/error in application state; use ConfirmationDialog when destructive confirmation is required.
+
+### API
+
+ButtonProps: native button attributes; variant=primary|secondary|subtle|destructive; size=sm|md|lg; leadingIcon/trailingIcon: UIIconName; loading, block, selected: boolean. Native ref forwards to HTMLButtonElement.
+
+### Code example
+
+```tsx
+<Button variant="primary" size="md" leadingIcon="save" onClick={() => saveAgent()}>Save agent</Button>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## IconButton
+
+Family: Actions.
+
+### Purpose
+
+Perform a familiar compact action when its icon is sufficiently recognizable, such as closing a drawer or opening a menu.
+
+### Anatomy
+
+Button foundation, one centered icon, and a required label rendered for assistive technology. No visible text slot, leading/trailing icon pair, or block layout.
+
+### Variants
+
+primary, secondary, subtle (default), destructive. Pick emphasis using the action context; the icon shape and name do not change between hover and pressed states.
+
+### Sizes
+
+Square 32/40/48 px for sm/md/lg with glyph 16/20/24 px. sm/md expand to at least 44×44 px for coarse pointers.
+
+### States
+
+All Button states: hover, pressed, focus, disabled, loading and selected. loading preserves the target and its accessible action name while preventing repeated execution.
+
+### Color behavior
+
+Inherits Button colours. Primary and destructive glyphs are white on #2F6BEB and #D92644; secondary sits on the grey track (#F1F3F6) with a #101318 glyph; subtle uses a #2563EB glyph and an #EEF4FF hover fill. Disabled colours affect the glyph and target together.
+
+### Icon behavior
+
+Exactly one UIIconName. Use close for dismiss and the approved action icon for commands. more-horizontal is the approved @easm-ui/icons v 1.2 registry glyph, matching the 24-unit rounded geometry. Keep decoration out of the accessible name.
+
+### Typography
+
+No visible typography. The label is a complete localized action name, not a glyph ID or tooltip fragment.
+
+### Spacing
+
+Center glyph on both axes; no ad hoc offsets to compensate for an unrelated icon set. Keep at least 8 px between separate compact targets.
+
+### Borders & surfaces
+
+8 px corner radius, no outline in any variant; the focus halo sits outside the target. Never crop the glyph or the focus ring within a tight parent.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation. No hover spin, bounce or shape replacement.
+
+### Accessibility
+
+label is required and sets aria-label. Native Enter/Space activation and disabled behavior. A Tooltip may supplement the name, but never provide its only accessible name. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Use the coarse-pointer expansion; if the command is ambiguous, expose a Button label on narrow or unfamiliar workflows instead of relying on density.
+
+### Content rules
+
+Name the action: Close dialog, Remove attachment, More actions for Aisha. Include the object where multiple identical controls exist.
+
+### Usage rules
+
+Use only for compact, recognizable actions. Do not rely on icon-only destructive commands where users need consequences explained.
+
+### API
+
+IconButtonProps: Button props except children, leadingIcon, trailingIcon and block; required icon: UIIconName and label: string; default variant=subtle.
+
+### Code example
+
+```tsx
+<IconButton icon="close" label="Close details" onClick={() => closeDetails()} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## SplitButton
+
+Family: Actions.
+
+### Purpose
+
+Expose a frequent default action beside related alternative commands without hiding that default action in a menu.
+
+### Anatomy
+
+Main text Button plus adjoining chevron IconButton, each with independent activation, wrapped as one visual group. DropdownMenu owns the alternative items.
+
+### Variants
+
+Same main-button emphasis variants as Button. Both segments share size and emphasis. The arrow is not a second primary business action.
+
+### Sizes
+
+sm: 32 px; md: 40 px (default); lg: 48 px. These are minimum heights, so translated or wrapped text may increase height. Coarse pointers receive a minimum 44 px target. The chevron segment is square at the matching control height.
+
+### States
+
+Main action supports Button states; arrow supports closed/open menu, hover/focus, disabled. Main disabled or loading also disables the menu trigger, preventing contradictory actions during processing.
+
+### Color behavior
+
+Both segments use the same Button fill, separated by a 2 px gap of the surface behind them rather than a line. A primary SplitButton opens a dark ink menu (#121826 with #FFFFFF text); other variants open a white menu over the page or a grey panel over cards.
+
+### Icon behavior
+
+Optional leadingIcon on the main action; fixed chevron-down on the menu segment. Menu items may have one EASM icon each. Avoid redundant trailing icons beside the chevron.
+
+### Typography
+
+Main label uses Button 13/14/16 px and weight 600; menu commands use readable 14 px. menuLabel names the alternatives for assistive technology.
+
+### Spacing
+
+No gap between segments. Main label padding follows Button; arrow remains an independently usable target. Leave 8 px around neighboring action groups.
+
+### Borders & surfaces
+
+8 px radius on the two outer ends, square adjoining edges and no doubled outline between the parts. The menu spans the whole button and uses the overlay surface contract (fill, no shadow).
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation. Menu opens/closes with the 200 ms anchored-overlay transition; reduced motion removes it.
+
+### Accessibility
+
+Two native buttons; main label identifies the default action and menuLabel identifies the alternatives. Menu trigger exposes expanded/menu relationship; menu provides arrows, Home/End, typeahead, Escape and focus return. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Preserve two full targets; wrap the main label as needed. On constrained layouts prefer a named main Button and a separate overflow control rather than shrinking the arrow.
+
+### Content rules
+
+The default action must be obvious: Export CSV with Export XLSX as an alternative. Alternative items are related verbs and outcomes, not unrelated settings.
+
+### Usage rules
+
+Use when a stable default is much more common than its alternatives. Do not encode mutually exclusive persistent options as commands; use Select or SegmentedControl.
+
+### API
+
+SplitButtonProps: Button props except trailingIcon; required items: MenuItem[]; menuLabel defaults More actions. onClick handles the main action; item.onSelect handles alternatives.
+
+### Code example
+
+```tsx
+<SplitButton leadingIcon="download" menuLabel="Other export formats" onClick={() => exportCsv()} items={[{ id: "xlsx", label: "Export XLSX", onSelect: () => exportXlsx() }]}>Export CSV</SplitButton>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## ButtonGroup
+
+Family: Actions.
+
+### Purpose
+
+Visually and programmatically associate related independent actions, such as previous/next or a compact action toolbar.
+
+### Anatomy
+
+Named role=group wrapper containing Button or IconButton children; optional attached seams; horizontal or vertical orientation.
+
+### Variants
+
+attached=false keeps normal 8 px separation; attached=true joins related segments. orientation=horizontal or vertical. Each child retains its own Button variant.
+
+### Sizes
+
+No independent control size; children use matching sm 32/md 40/lg 48. Mixed child sizes create inconsistent target edges and are discouraged.
+
+### States
+
+Wrapper has no pressed, selected, loading or disabled state. Individual children own those states; one pending action need not disable unrelated actions.
+
+### Color behavior
+
+No group background or accent. Children keep their Button fills; a selected action stays visible without recolouring the wrapper.
+
+### Icon behavior
+
+Child icons follow the Button/IconButton contract. The wrapper adds no icon or decorative label. Attached seams stay 1 px, logical corners support RTL, and an only child retains all four outer corners.
+
+### Typography
+
+No visible wrapper label unless the surrounding layout renders one. Child labels keep Button typography; the required group label is an accessible summary.
+
+### Spacing
+
+Separate children by 8 px, or by 0 px only when attached. Horizontal loose groups can wrap; vertical groups stretch consistently.
+
+### Borders & surfaces
+
+No frame around the group. Attached groups keep only the outer 8 px corners and raise the focused child so its halo shows; children draw no outlines of their own.
+
+### Motion & micro-interactions
+
+Only children transition; do not animate reordering, attachment or width when a button becomes busy. Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+label names role=group. Tab reaches each native button; a group is not a toolbar/radiogroup and does not add roving arrow-key behavior. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Loose groups wrap in reading order; choose vertical for narrow forms. Attached horizontal sets must retain full target sizes and not force content off screen.
+
+### Content rules
+
+Group label describes a shared purpose, such as Record actions. Each child label must make sense independently.
+
+### Usage rules
+
+Use for independent commands. Use SegmentedControl for a mutually exclusive value and Tabs for changing panels.
+
+### API
+
+ButtonGroupProps: div attributes; label:string required; attached?:boolean; orientation?:horizontal|vertical; children:ReactNode.
+
+### Code example
+
+```tsx
+<ButtonGroup label="Record actions"><Button>Save</Button><Button variant="secondary">Cancel</Button></ButtonGroup>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## TextField
+
+Family: Inputs.
+
+### Purpose
+
+Collect a single short textual or numeric value, such as a user name, institutional email or endpoint URL.
+
+### Anatomy
+
+Label and single native input; optional decorative leading/trailing icon slots. Validation copy is linked to the same input.
+
+### Variants
+
+type=text (default), email, password, tel, url or number. Password is a native masked value; there is no automatic reveal toggle in this version.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Empty/filled, hover, focus, disabled, read-only, required, error and success. Disabled is noninteractive; read-only preserves reviewable content and prevents mutation.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+leadingIcon/trailingIcon are noninteractive EASM glyphs: 16/20/24 px for sm/md/lg. Give actionable trailing controls their own implementation instead of making a decorative glyph clickable.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Label the object (Institutional email). Match autocomplete/inputMode and constraints to the value. Do not use type=number for student IDs, telephone numbers or codes with leading zeros.
+
+### Usage rules
+
+Use TextArea for paragraphs, SearchField for querying, DateField/TimeField for temporal values. A number field still needs domain bounds and server validation.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. type?:text|email|password|tel|url|number; leadingIcon/trailingIcon?:IconName; native input onChange.
+
+### Code example
+
+```tsx
+<TextField label="Institutional email" type="email" name="email" autoComplete="email" required description="Use your university email address." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## PasswordField
+
+Family: Inputs.
+
+### Purpose
+
+Enter a secret credential when an account or sign-in workflow requires it. The user can deliberately reveal the entered text to check it.
+
+### Anatomy
+
+TextField foundation with native password input, visible label, linked description/validation, optional leading glyph and one named visibility action.
+
+### Variants
+
+Revealable by default; revealable=false keeps a permanently masked input. Native read-only and disabled states remain available. The component never assesses password strength.
+
+### Sizes
+
+Standard sm 32/md 40/lg 48 minimum input heights with 16/20/24px supporting artwork. Visibility action uses 32px target, expanding to 44px on coarse pointers.
+
+### States
+
+Masked/revealed, default, hover, keyboard focus, disabled, read-only, error and success. Disabled/non-revealable state remasks content; form reset also remasks it.
+
+### Color behavior
+
+Opaque white input, neutral text, functional border; blue focus and visibility action. Error/success use linked semantic text and borders. No signature-orange credential emphasis.
+
+### Icon behavior
+
+Shared eye and eye-off switch only in response to an explicit visibility change. Decorative leading artwork remains 16/20/24px. The button name describes Show password or Hide password.
+
+### Typography
+
+Input label 13/14/16px for sm/md/lg,600 weight; entered text same size, regular weight; supporting/error text 13px. Secret values are never substituted into the action label.
+
+### Spacing
+
+Uses TextField label/message gaps and input padding. One fixed trailing slot reserves 44px on fine pointers/56px coarse, with 4px inset; toggling never changes field width.
+
+### Borders & surfaces
+
+8px input radius with a single rounded white/blue focus halo. Visibility target stays inside the field with its own clean rounded focus edge; validation does not alter control thickness.
+
+### Motion & micro-interactions
+
+140ms action/focus color response; type and pressed state update immediately. No animation of the actual secret, delayed reveal or artificial busy state; reduced motion removes color transitions.
+
+### Accessibility
+
+Native password/text input keeps name, autocomplete, required and ref behavior. Visibility button has a connected aria-controls and pressed state; activation preserves value, selection and input focus. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Field stretches to its form column. Long labels/messages wrap, the fixed action slot remains visible and coarse pointers receive 44px targets. Never squeeze the secret below usable input width.
+
+### Content rules
+
+Use Password or Confirm password with explicit credential instructions. Supply current-password or new-password autocomplete intentionally. Do not show, log or announce the secret in supporting text.
+
+### Usage rules
+
+Use for actual credentials; use TextField for nonsecret identifiers. Server validation and password policy belong to the product. The visibility toggle changes only local presentation, never authentication state.
+
+### API
+
+PasswordFieldProps: TextField props except type/trailingIcon/trailingControls; revealable=true; native HTMLInputElement ref; value/defaultValue/onChange, name, autocomplete, required and validation remain native.
+
+### Code example
+
+```tsx
+<PasswordField label="Password" name="password" autoComplete="current-password" required />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## NumberField
+
+Family: Inputs.
+
+### Purpose
+
+Enter a numeric quantity or configurable limit, with optional discrete increase/decrease controls and native numeric constraints.
+
+### Anatomy
+
+TextField foundation, native number input, label, linked supporting/validation text and two bounded step actions. The input remains the semantic spinbutton.
+
+### Variants
+
+steppers=true by default; steppers=false keeps keyboard/native numeric editing. step may be a positive number or any; any disables fixed-step buttons rather than inventing an increment.
+
+### Sizes
+
+Input follows sm 32/md 40/lg 48 minimums. Both independent step actions use 32px targets, expanded to 44px coarse. The component exposes no arbitrary field-height override.
+
+### States
+
+Empty/entered, default, hover, focus, disabled, read-only, error/success and min/max action availability. Empty editing reports null; invalid native text remains subject to browser validity.
+
+### Color behavior
+
+Opaque white input with neutral value; blue action glyphs and focus. Disabled/read-only use neutral surfaces. Minimum/maximum availability is communicated through button disabled state, not a color-only warning.
+
+### Icon behavior
+
+Shared subtract and add artwork at 16px in 32px action targets. The visible value stays aligned with ordinary fields; glyphs cannot shrink or become substituted local drawings.
+
+### Typography
+
+Numeric entry uses the regular 13/14/16px input scale. Label 600; descriptions/errors 13px. Values are not silently currency-formatted, rounded or replaced by localized unit strings.
+
+### Spacing
+
+Two fixed trailing slots reserve 80px on fine pointers/104px coarse; each target remains separate with 4px gap and 4px edge inset. Empty/disabled values retain identical geometry.
+
+### Borders & surfaces
+
+Standard 8px field frame and one rounded white/blue focus halo; both inner actions have clean control radii. Native duplicate browser spin artwork is hidden while keyboard numeric semantics remain.
+
+### Motion & micro-interactions
+
+140ms button/color response with immediate native stepping. No rolling-digit animation or delayed commit; focus stays on the numeric input and reduced motion removes optional transitions.
+
+### Accessibility
+
+Native type=number retains required, min, max, step, form, name and validity. Named Decrease/Increase actions become unavailable at bounds. onValueChange reports number|null without fabricating native change events. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Use a reasonable form-column width; labels/validation wrap while the step targets stay whole. Set steppers=false for extremely narrow numeric cells and preserve accessible keyboard editing.
+
+### Content rules
+
+Name the unit in the label or persistent description, such as Daily capacity or Timeout in seconds. Supply finite bounds and a positive step; avoid placeholder-only labels and unexplained abbreviations.
+
+### Usage rules
+
+Use for quantities and limits. Use TextField for identifiers such as phone numbers, account numbers and codes. Money/large-precision decimals require an explicit product formatting/storage contract; this component uses native browser number semantics.
+
+### API
+
+NumberFieldProps: TextField props excluding type/value/defaultValue/onChange/trailing slots/min/max/step/inputMode; value:number|null, defaultValue:number, min/max:number, step:number|any, onValueChange(number|null), steppers=true; native HTMLInputElement ref.
+
+### Code example
+
+```tsx
+<NumberField label="Daily capacity" name="capacity" defaultValue={25} min={0} max={500} step={5} description="Maximum conversations assigned per day." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## TextArea
+
+Family: Inputs.
+
+### Purpose
+
+Collect multiline prose such as an agent instruction, ticket note or explanation.
+
+### Anatomy
+
+Visible label and native textarea with rows=4 by default; optional linked description and validation messages.
+
+### Variants
+
+Editable, read-only, error and success. Native rows controls initial content capacity; there is no rich-text or auto-growing editor variant.
+
+### Sizes
+
+sm/md/lg set typography and inset density. Height follows rows (default 4) and content needs, not a single-line 32/40/48 box; keep an ergonomic minimum and allow vertical resizing.
+
+### States
+
+Empty/filled, hover, focus, disabled, read-only, required, error and success. Disabled is noninteractive; read-only preserves reviewable content and prevents mutation.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+No leading/trailing decorative icon slots. Error/success message symbols follow field rules; avoid placing a glyph inside paragraph content.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Width follows the form grid. Preserve multiline capacity and vertical resize on narrow layouts; never lock a long instruction into a one-line height.
+
+### Content rules
+
+Use concise writing guidance and any length limit in the description. Preserve intentional newlines. Never include actionable HTML inside a plain-text placeholder.
+
+### Usage rules
+
+Use for unformatted prose. Character limits belong in native maxLength plus domain validation; a live counter is a separate application composition.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. native textarea props and ref; rows defaults 4; onChange receives ChangeEvent<HTMLTextAreaElement>.
+
+### Code example
+
+```tsx
+<TextArea label="Agent instructions" name="instructions" rows={6} maxLength={4000} description="Describe scope, tone and escalation rules." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## SearchField
+
+Family: Inputs.
+
+### Purpose
+
+Capture a query for a list or search workflow while making querying and clearing recognizable.
+
+### Anatomy
+
+Native search input, search glyph, visible label (defaults Search), optional named clear button and linked field messages.
+
+### Variants
+
+clearable=true by default; clearable=false for externally managed query removal. onSearch adds an explicit Enter submission contract; typing alone only changes the query.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Empty/filled, hover/focus, clear available, disabled/read-only, error/success. Clear is rendered only for nonempty editable enabled values and returns focus to the input.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+Search glyph uses 16/20/24 px for sm/md/lg; clear uses close 16 px inside its own target. Icon presence never replaces the visible label.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Clear search is a separately named native button. Enter invokes onSearch unless the caller prevents default; do not put a redundant search landmark around every filter field.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Prefer a context-specific label, such as Search conversations. Describe which fields are searched and use an honest empty-results message outside the control.
+
+### Usage rules
+
+Use onValueChange for filtering; onSearch for deliberate query submission. Debouncing and network cancellation belong to the application and must not be described as component behavior.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. value/defaultValue:string; onValueChange(value); native onChange for typing; onSearch(value) for Enter; clearable defaults true. Clearing invokes onValueChange and keeps focus.
+
+### Code example
+
+```tsx
+<SearchField label="Search conversations" value={query} onValueChange={setQuery} onSearch={runSearch} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Select
+
+Family: Inputs.
+
+### Purpose
+
+Choose one committed value from a known finite list with the shared EASM themed selector. This is the default finite selection control across components, navigation, data and interaction patterns.
+
+### Anatomy
+
+Visible label; named button trigger with selected text or placeholder and chevron; collision-aware Radix portal; scrolling option list; reserved selected-check column; linked messages. A hidden native select supplies form serialization and reset, never the visible menu.
+
+### Variants
+
+Single selection; controlled value/open or uncontrolled defaultValue/defaultOpen; disabled and readOnly. Select delegates the same themed implementation as DropdownSelect. No multi-select, grouped-option or operating-system picker mode.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Placeholder/selected, closed/open, hover/focus, highlighted/selected/disabled options, disabled/read-only and error/success. A removed or disabled committed option shows an explicit unavailable-selection error and fails validation. Read-only prevents opening or changing while retaining the visible value; uncontrolled selection follows native form reset and controlled parents own reset. Disabling an ancestor fieldset suppresses and closes the portaled menu, blocks value changes and preserves the native first-legend exception. Re-enabling never reopens an uncontrolled dismissed menu; controlled parents must honor the closure request.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+Chevron-down uses 16/20/24 px for sm/md/lg and rotates with disclosure; the 16 px selected check uses a reserved trailing column. Shared EASM icons remain decorative; selected state is also exposed programmatically.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary. The popup is a compact grey panel (#F3F5F8 over cards, white over the page) with no outline or shadow, an 8 px radius, the trigger's width at minimum, and a white selected pill with a check.
+
+### Motion & micro-interactions
+
+Popup opening and selection start immediately; the chevron uses 140 ms rotation and popup feedback follows the shared 200 ms scale where applied. Reduced motion removes optional transitions; no delay is added to commit or keyboard navigation.
+
+### Accessibility
+
+The visible label names the button trigger; linked descriptions and validation preserve aria-describedby, aria-invalid and aria-errormessage. Radix supplies listbox semantics, arrows, Home/End, typeahead, Escape and trigger focus return. The public ref targets HTMLButtonElement. A genuine hidden form select retains name/form/required submission and reset; invalid submission focuses the visible trigger. Options require unique nonempty values and readable labels. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Trigger follows the form column; selected text truncates without hiding its chevron, while option labels can wrap. Popup follows the trigger width, leaves a 6 px gap and 12 px viewport collision inset, and scrolls within 320 px or the available height. Coarse-pointer triggers/options receive 44 px targets. Test the complete device workflow; no system-owned dropdown is shown.
+
+### Content rules
+
+Use labels people understand, not stored IDs. Keep option ordering deliberate; placeholder describes choosing an option and is never a valid nonempty domain value.
+
+### Usage rules
+
+Use for small/medium finite lists; use Combobox for searchable options and DropdownMenu for commands. Existing DropdownSelect consumers can keep that name because both exports share the same themed behavior. In v 2 migrate native Select onChange to onValueChange and HTMLSelectElement refs to HTMLButtonElement; never target the hidden form bridge.
+
+### API
+
+SelectProps: same contract as DropdownSelectProps; common field props and button trigger attributes/ref; options:readonly InputOption[] where {value,label,disabled?}; value/defaultValue:string; placeholder defaults Select an option; onValueChange(value:string, option?:InputOption); name/form/required/autoComplete/readOnly/disabled/dir; open/defaultOpen/onOpenChange. Ref targets HTMLButtonElement; no native select onChange, multiple or size-count API.
+
+### Code example
+
+```tsx
+<Select label="Department" name="department" options={[{ value: "admissions", label: "Admissions" }, { value: "finance", label: "Finance" }]} required />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## DropdownSelect
+
+Family: Inputs.
+
+### Purpose
+
+Choose one persistent value from a finite non-searchable set while keeping the popup aligned with the EASM product theme, including inside dialogs and drawers.
+
+### Anatomy
+
+Visible field label; button trigger with selected value/placeholder and chevron; Radix portal, scrolling viewport, option rows and shared check indicator; genuine native form selection managed by the primitive.
+
+### Variants
+
+Controlled value/open or uncontrolled defaultValue/defaultOpen; disabled and readOnly. Select and DropdownSelect share this same themed implementation in v 2; use Select as the default finite-choice name and Combobox when options require search.
+
+### Sizes
+
+Trigger sm 32/md 40/lg 48 minimum heights and glyph 16/20/24px. Option rows follow named density with readable text; interactive targets grow to 44px on coarse pointers.
+
+### States
+
+Empty/selected, closed/open, hover, keyboard focus, highlighted/selected/disabled option, read-only, error and success. Unavailable selected values are explicitly explained rather than silently remapped. Disabling an ancestor fieldset closes the popup and blocks changes; re-enabling preserves the value without reopening an uncontrolled menu. Controlled parents own open state and must honor closure requests. The native first-legend exception stays enabled.
+
+### Color behavior
+
+Opaque white trigger/popup, functional neutral border and text; blue-tint highlighted/selected rows with blue check. Error/success remain associated with the field; orange does not encode a value selection.
+
+### Icon behavior
+
+Shared chevron-down indicates opening; shared check communicates the committed option. The check column stays reserved across all options, so selecting does not move labels horizontally.
+
+### Typography
+
+Trigger and option labels 13/14/16px according to density; field label 600, row 500. Supporting/error text 13px. Long trigger text truncates within a named field while the full option text remains available in the list.
+
+### Spacing
+
+Trigger standard field insets; popup follows control width,6px anchor gap and 12px collision inset. Popup inset 4px; rows use 10px horizontal padding with a 12px label/check-column gap; no empty phantom row before the first option.
+
+### Borders & surfaces
+
+8px trigger radius, rounded opaque popup with subtle border and scoped overlay shadow. Reserved modal scroll gutters protect the field halo; popup portals escape clipping parents and fit available viewport height.
+
+### Motion & micro-interactions
+
+Opening begins immediately; shared 200ms popup feedback and 140ms chevron response where applied. Selecting commits immediately. No artificial process delay; reduced motion retains the same visible value and focus behavior.
+
+### Accessibility
+
+Radix supplies listbox selection, arrows, Home/End, typeahead, Escape and trigger focus return. The named trigger forwards an HTMLButtonElement ref; Root owns actual native name/form/required serialization and reset. Read-only blocks change while keeping the value. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Collision-aware portal flips and scrolls within 320px or the available height without pushing form content. Control width follows the field column; long selected text truncates inside the trigger and complete option labels can wrap. Coarse-pointer triggers/options have 44px targets. Both Select and DropdownSelect use this behavior on every device.
+
+### Content rules
+
+Use unique nonempty stable option values and readable labels; placeholder explains the expected choice. Disabled options remain understandable and are skipped for selection. Keep a visible label even when one option is selected.
+
+### Usage rules
+
+Use for a short or medium finite single-value field. Select is the default name for this same implementation; existing DropdownSelect usage remains valid. Use DropdownMenu for commands and Combobox for searching. Keep persistent modal workflow state outside dismissible Popover content, and retain a surviving focus-return control.
+
+### API
+
+DropdownSelectProps: common field props, genuine button trigger events and HTMLButtonElement ref; options:readonly InputOption[], value/defaultValue, onValueChange(value:string, option?:InputOption), placeholder, name, form, autoComplete, required, disabled, readOnly, dir, open/defaultOpen/onOpenChange. Same contract as SelectProps; no native select onChange or hidden select ref.
+
+### Code example
+
+```tsx
+<DropdownSelect label="Assigned agent" name="agentId" options={[{ value: "aisha", label: "Aisha Khan" }, { value: "omar", label: "Omar Ali" }]} value={agentId} onValueChange={setAgentId} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Combobox
+
+Family: Inputs.
+
+### Purpose
+
+Search within a finite option set and commit one known value, such as assigning a conversation to an agent.
+
+### Anatomy
+
+Editable search input with role=combobox, linked label, chevron/clear control, collision-aware portalled filtered listbox, active option, selected checkmark and a hidden form field containing the committed ID.
+
+### Variants
+
+Single finite selection with clearable=true by default. onQueryChange exposes query text; onValueChange exposes committed value/option. Freeform entry, async fetching and multi-select are outside this API.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Closed/open; querying/no matches; active option versus committed selection; invalid/unavailable selection; disabled/read-only. Removed/disabled committed options show an explicit error and fail validation. Typing never commits arbitrary text. Escape/blur restore selected label; clear commits empty. Read-only skips the native required trap; uncontrolled selection supports native form reset.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+Chevron-down uses 16/20/24 px for sm/md/lg; clear close and selected checkmark remain 16 px. No custom option artwork slots in this version.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary. The listbox uses the same grey popup panel without outline or shadow; the active row (#E8EBF0) is visibly different from the selected row (white pill with a check).
+
+### Motion & micro-interactions
+
+Popup opening/closing, active-row changes and scrolling are immediate. The disclosure chevron rotates with the 140 ms fast token; reduced motion removes that transition. Selection and keyboard navigation never wait for motion.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Input owns aria-expanded/controls/activedescendant; listbox options expose selection and disabled states. Arrow Up/Down move active option without wrapping; Home/End first/last; Enter commits active; Escape closes; Tab closes without trapping. Disabled options cannot commit.
+
+### Responsive behavior
+
+A Radix-anchored portal follows the field width, leaves a 6 px anchor gap, flips at viewport edges with 12 px collision padding, and constrains the scrollable list to the smaller of 240 px or available height. Input focus stays on the combobox. All option targets become at least 44 px for coarse pointers; never let a popup clip inside an overflow-hidden form.
+
+### Content rules
+
+Option labels are searchable human names. No matching options is visible status copy; unavailable selection tells the user to choose another option. Query text and selected value are different facts.
+
+### Usage rules
+
+Supply stable unique nonempty option IDs. The hidden form field submits only a currently available committed value. If fetching options, manage request race/loading/error separately; do not claim autocomplete has completed until a value is committed.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. options:readonly InputOption[]; value/defaultValue:string; onValueChange(value, option?); onQueryChange(query); clearable defaults true; ref points to visible input; no native onChange API.
+
+### Code example
+
+```tsx
+<Combobox label="Assigned agent" name="agentId" options={[{ value: "agent-1", label: "Aisha Khan" }, { value: "agent-2", label: "Omar Ali" }]} value={agentId} onValueChange={setAgentId} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Checkbox
+
+Family: Inputs.
+
+### Purpose
+
+Set one independent boolean choice or select multiple items from a group.
+
+### Anatomy
+
+Native checkbox, visible clickable label, optional description/validation; visual checkmark or mixed-state mark overlays the native square without intercepting input.
+
+### Variants
+
+Unchecked, checked and indeterminate/mixed. indeterminate represents a partial aggregate, not a third stored boolean. Use checked/defaultChecked for the underlying value.
+
+### Sizes
+
+Choice row minimum 32/40/48 px for sm/md/lg; square mark remains visually compact. Whole label is clickable; row expands to 44 px for coarse pointers.
+
+### States
+
+Unchecked/checked/mixed plus hover, focus, disabled, read-only, required and validation. Changing checked does not clear caller-owned indeterminate; the application recomputes aggregate state.
+
+### Color behavior
+
+Unchecked: white box with the #858D9B grey border, #2563EB on hover. Checked and mixed: #2F6BEB fill with a white mark. Focus shows a 3 px #2F6BEB halo. Error copy is #D92644; disabled is neutral and the label stays readable.
+
+### Icon behavior
+
+Checkmark denotes checked; mixed state uses a horizontal mark from the approved set. Both are aria-hidden; native aria-checked=mixed carries state.
+
+### Typography
+
+Inter/system; option label 13/14/16 px for sm/md/lg, regular weight, line-height 1.5; description/validation 13 px. The label remains readable and clickable without making every option visually dominant.
+
+### Spacing
+
+8–12 px between mark and label; descriptions align to readable text. Keep neighboring option rows distinct with at least 8 px separation.
+
+### Borders & surfaces
+
+1 px functional border and 4 px corners on the box only; the group wrapper has no card border. Keep the whole row as the target even though the mark is small.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Native Space toggles; programmatic indeterminate is synchronized and announced mixed. Wrap related choices in fieldset/legend at the application level. readOnly guards click/change.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Label names the enabled option, such as Include archived conversations. Describe consequences when selecting the choice changes notification or data behavior.
+
+### Usage rules
+
+Use multiple Checkbox controls for independent multi-selection; use Radio for a single choice and Switch for an immediate on/off setting. Recompute master mixed state from child selection.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. native checked/defaultChecked and onChange; indeterminate?:boolean; onCheckedChange(checked:boolean).
+
+### Code example
+
+```tsx
+<Checkbox label="Include archived conversations" checked={includeArchived} onCheckedChange={setIncludeArchived} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Radio
+
+Family: Inputs.
+
+### Purpose
+
+Choose exactly one value from a short visible set where comparing all alternatives is useful.
+
+### Anatomy
+
+Native radio circle and visible clickable label with optional linked description/error/success. A native name joins separate Radio instances into one group.
+
+### Variants
+
+Unchecked or checked; group selection is controlled by native name and caller value. No indeterminate radio state.
+
+### Sizes
+
+Choice row minimum 32/40/48 px for sm/md/lg; small circle remains optically centered. Coarse-pointer rows expand to 44 px.
+
+### States
+
+Unchecked/checked, hover/focus, disabled/read-only, required and validation. Disabled items are unavailable; read-only prevents mutation while retaining the selected value.
+
+### Color behavior
+
+Unselected: white circle with the #858D9B border, #2563EB on hover. Selected: #2F6BEB border and dot. Error copy is linked #D92644 text; focus shows a 3 px blue halo.
+
+### Icon behavior
+
+Native styled circular dot represents selection. Do not put checkmarks or status icons inside the radio mark.
+
+### Typography
+
+Inter/system; option label 13/14/16 px for sm/md/lg, regular weight; description/validation 13 px. Use a separate group legend for stronger hierarchy.
+
+### Spacing
+
+8–12 px from circle to label; group rows separated by 8 px. Long descriptions wrap beneath their option without merging targets.
+
+### Borders & surfaces
+
+A circular 1 px functional border; no pill container. A border around the group is a form-layout decision, not a Radio variant.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Use a shared nonempty name and unique values, inside fieldset/legend. Native arrow navigation changes the checked radio; Space activates. Name the group separately from each option.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Use parallel option labels that answer the group question. Avoid preselecting a consequential option solely to simplify implementation.
+
+### Usage rules
+
+Prefer for 2–5 alternatives; Select for long sets. The application handles consistent checked ownership across siblings and supplies a group error when required.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. native name/value/checked/defaultChecked; onCheckedChange(checked:boolean) plus native onChange.
+
+### Code example
+
+```tsx
+<fieldset><legend>Reply mode</legend><Radio name="replyMode" value="assist" label="AI assisted" defaultChecked /><Radio name="replyMode" value="manual" label="Manual" /></fieldset>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Switch
+
+Family: Inputs.
+
+### Purpose
+
+Turn an immediate persistent setting on or off, such as enabling notification delivery.
+
+### Anatomy
+
+Native checkbox exposed as role=switch, visual track/thumb, visible clickable setting label, optional description and validation.
+
+### Variants
+
+Off or on only. No mixed state or automatic pending-state transport; application ownership determines when a setting is committed.
+
+### Sizes
+
+Choice row minimum 32/40/48 px for sm/md/lg; track remains a compact fixed visual. Coarse pointers receive a 44 px row target.
+
+### States
+
+Off/on, hover/focus, disabled/read-only, required and error/success. A save failure must restore or clearly explain the actual persisted state through application state.
+
+### Color behavior
+
+Off: grey track (#F1F3F6) with a #9AA1AD thumb edge; on: #2F6BEB track with a white thumb. Error messages use #D92644 rather than a red off state. Disabled keeps a visible thumb in #9AA1AD.
+
+### Icon behavior
+
+Track/thumb convey toggle state; no checkmark, power glyph or additional moving icon is necessary.
+
+### Typography
+
+Inter/system; setting label 13/14/16 px for sm/md/lg, regular weight; description/validation 13 px. Keep a stable label rather than using bold switching verbs.
+
+### Spacing
+
+8–12 px between track and label; description follows the same label, with 4 px message gap. Keep the entire labeled row activatable.
+
+### Borders & surfaces
+
+Pill-shaped track and circular thumb, separated by fill; the off track carries a 1 px functional border for 3:1. Never use signature orange for the on state.
+
+### Motion & micro-interactions
+
+Thumb translation and track color use 140 ms. Reduced motion changes instantly; persistence begins immediately and is owned by the application.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. role=switch with native checked state and Space activation. The visible setting label remains stable whether on or off; readOnly guard prevents mutation.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Label the setting positively (Email notifications) and explain scope in description. Do not change the label from Enable to Disable as it toggles.
+
+### Usage rules
+
+Use for immediate reversible settings; Checkbox for choices applied on a later Submit action. Do not claim successful persistence from the local switch transition alone.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. native checked/defaultChecked/name/value; onCheckedChange(checked:boolean) plus native onChange; fixed role=switch.
+
+### Code example
+
+```tsx
+<Switch label="Email notifications" description="Send updates for conversations assigned to you." checked={notifications} onCheckedChange={setNotifications} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## DateField
+
+Family: Inputs.
+
+### Purpose
+
+Capture a calendar date using the browser date input with locale-appropriate display.
+
+### Anatomy
+
+Field foundation and native input type=date; noninteractive calendar indicator, native browser picker and linked messages.
+
+### Variants
+
+Editable, read-only, error/success. min/max/step are native date constraints; there is no custom range-picker or calendar overlay API.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Empty/filled, hover, focus, disabled, read-only, required, error and success. Disabled is noninteractive; read-only preserves reviewable content and prevents mutation.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+Calendar glyph identifies the field while the native picker remains the actual interaction. Avoid rendering a second custom calendar button.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Native date semantics and platform picker keyboard behavior are retained. Provide a label and bounds in description; test the intended browser locale.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Explain the business date and any bounds. Native value is YYYY-MM-DD, while display follows the browser locale. Specify timezone interpretation in application copy when needed.
+
+### Usage rules
+
+Use for calendar dates, not timestamps or date ranges. The application validates date limits and timezone meaning; combine with TimeField only when the domain requires both.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. TextField native props except type and icon slots; type is fixed date; min/max/step/value/onChange are native.
+
+### Code example
+
+```tsx
+<DateField label="Follow-up date" name="followUpDate" min="2026-10-01" description="Choose a date on or after 1 October 2026." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## TimeField
+
+Family: Inputs.
+
+### Purpose
+
+Capture a time of day with a native time control for schedules or a follow-up deadline.
+
+### Anatomy
+
+Field foundation and native input type=time; noninteractive clock indicator, browser picker and linked messages.
+
+### Variants
+
+Editable, read-only, error/success. Native min/max/step constraints define valid times; there is no custom timezone or duration selector.
+
+### Sizes
+
+md 40 is the default; lg 48 for spacious forms; sm 32 is an explicit compact mode. Use minimum heights and coarse-pointer 44 px targets; do not assign arbitrary heights.
+
+### States
+
+Empty/filled, hover, focus, disabled, read-only, required, error and success. Disabled is noninteractive; read-only preserves reviewable content and prevents mutation.
+
+### Color behavior
+
+White field surface (#FFFFFF) with #101318 entered text and #69707E placeholder; #858D9B grey border (3:1 on white and on the #FFFFFF page), #6F7888 on hover, #2F6BEB with the focus halo. Error uses #D92644 with an explanatory message; success uses #0C8138 with a message. Disabled uses #F3F4F6 and #9AA1AD; read-only takes the page fill (#FFFFFF) and stays legible.
+
+### Icon behavior
+
+Clock glyph identifies time input; native picker remains interactive. Do not duplicate it with a decorative clickable icon.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit.
+
+### Spacing
+
+Label/control and control/description gaps use 8 px; control/validation and description/validation gaps use 4 px. Horizontal control inset is 12 px; icon slots reserve space rather than overlap text. Adjacent fields use at least 16 px.
+
+### Borders & surfaces
+
+1 px functional grey border (#858D9B) and 8 px control radius: inputs are the one place the theme keeps an outline, because a field boundary must meet 3:1. The parent field has no extra card. Error and success borders remain distinct from focus. Never use #E8EAEE (border-subtle) for a control boundary.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Retain native time semantics and picker keyboard behavior; describe expected precision and timezone adjacent to the label.
+
+### Responsive behavior
+
+Control width follows its form grid; allow labels/messages to wrap and collapse multi-column forms before controls become cramped. Coarse-pointer control height is at least 44 px.
+
+### Content rules
+
+Name the intended time and timezone. Native values use HH:mm (or seconds when step requires them); display can use locale 12/24-hour format.
+
+### Usage rules
+
+Use for time of day, not elapsed duration. Pair with DateField and an explicit application timezone when constructing a timestamp; validate daylight-saving/domain rules outside the component.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. DateField-compatible native props; type is fixed time; min/max/step/value/onChange are native.
+
+### Code example
+
+```tsx
+<TimeField label="Follow-up time" name="followUpTime" step={60} description="Time in Asia/Karachi." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## FileUpload
+
+Family: Inputs.
+
+### Purpose
+
+Choose or drop local files, validate declared type/size/count constraints, and report accepted files for the application to upload.
+
+### Anatomy
+
+Labeled native file input over a drop zone; upload illustration and instructions; declared acceptance/size rules; selected-file list with named removal buttons; per-file rejection reasons and linked field error.
+
+### Variants
+
+Single file by default or multiple=true; allowRemove=true by default; accept extension/MIME list and maxBytes are optional constraints. No built-in network uploader, upload-progress or remote-file manager.
+
+### Sizes
+
+Field density uses sm/md/lg, but drop-zone height follows its instruction/list content. Picker and remove targets are at least 32 px desktop and 44 px on coarse pointers. Do not shrink the entire zone to a single-line control.
+
+### States
+
+Idle, drag-over, locally selected, rejected, disabled/read-only, required/invalid. Same-file retry resets picker before opening; cancel restores previous selection. A new accepted batch replaces the previous local batch. Changed accept/maxBytes/multiple constraints revalidate the current accepted files.
+
+### Color behavior
+
+Drop zone on a grey fill (#F6F7F9) with #101318 text; drag-over turns #EEF4FF with #2563EB text. Rejections use #D92644 text and explicit reasons; disabled and read-only suppress changes without hiding requirements.
+
+### Icon behavior
+
+Upload and document glyphs use 16/20/24 px for sm/md/lg; close 16 px in named remove targets. These glyphs are decorative; visible instructions/file names convey the meaning.
+
+### Typography
+
+Inter/system; 14 px control text at md, 13 px at sm, 16 px at lg; label follows the same 13/14/16 px size scale at weight 600; explanatory and validation copy 13 px. Line-height 1.5; do not shrink text to fit. Upload instructions and file names use weight 600. File names wrap without hiding their extension; file-size and rejection copy remains 13 px.
+
+### Spacing
+
+16–24 px zone padding;8 px illustration/instruction gaps;12 px between listed files; removal targets do not overlap names. Requirements sit 8 px beneath the zone. Clear/remove targets use 32 px desktop and 44 px coarse, with 8 px text-to-action spacing.
+
+### Borders & surfaces
+
+12 px radius filled drop zone, never a dashed or one-sided line; dragging strengthens the fill. Selected files are flat filled rows, not nested cards.
+
+### Motion & micro-interactions
+
+140 ms drag-over color/border transition; no bouncing upload illustration. Dropping/validation is immediate; reduced motion removes transition. Transport animation belongs to a separate actual upload state.
+
+### Accessibility
+
+A visible label is programmatically linked to the native control. description, error and success IDs join existing aria-describedby; error sets aria-invalid and aria-errormessage. Validation messages are linked descriptions, not automatic live announcements; the application owns validation summaries or focus on an invalid field. Use native required and an explicit form-level explanation of required fields. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Native picker is keyboard reachable; drag/drop is optional. File names and rejection reasons are text. Named remove buttons include the file name. Unsupported DataTransfer attachment reports a browser limitation instead of silently pretending files were attached.
+
+### Responsive behavior
+
+Zone fills its layout; file names wrap, instructions remain readable, and remove targets expand to 44 px on coarse pointers. Dropping is never the only way to select files.
+
+### Content rules
+
+State accepted types, per-file maximum and single/multiple behavior before selection. Distinguish local Added from Uploaded; the library performs browser metadata validation, not content scanning or server acceptance.
+
+### Usage rules
+
+onFiles receives accepted and rejected arrays; application owns transport, server validation, progress and retry. Keep accept/maxBytes aligned with server policy. Do not submit rejected files or represent local selection as durable storage.
+
+### API
+
+Common field props: label required (SearchField defaults Search); description/error/success: ReactNode; size=sm|md|lg; className on wrapper, controlClassName on native control. Native id/disabled/readOnly/required/name/form and control ref are retained. onFiles(accepted:File[], rejected:FileRejection[]) required; accept, maxBytes, multiple, allowRemove; onCancel?(event:Event) is the native DOM cancel event. Rejection reasons use code accept|size|multiple|unsupported-browser and message. No value/defaultValue/native onChange API.
+
+### Code example
+
+```tsx
+<FileUpload label="Knowledge documents" accept=".pdf,.docx" maxBytes={10 * 1024 * 1024} multiple onFiles={(accepted, rejected) => stageFiles(accepted, rejected)} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Tabs
+
+Family: Selection.
+
+### Purpose
+
+Switch between related panels within one local view while keeping panel context and navigation visible.
+
+### Anatomy
+
+Named tablist; tab buttons with optional icon, active indicator; one associated tabpanel per item. Stable item IDs link tabs to panels; inactive panels remain mounted and hidden.
+
+### Variants
+
+horizontal (default) or vertical; activation=manual (default) or automatic. Manual separates arrow focus from panel activation; automatic is appropriate only for immediately available panels.
+
+### Sizes
+
+sm: 32 px; md: 40 px (default); lg: 48 px. These are minimum heights, so translated or wrapped text may increase height. Coarse pointers receive a minimum 44 px target. Height applies to the tab target; panel height follows content.
+
+### States
+
+Unselected/selected, hover/focus, disabled; focus and selection are separate in manual mode. The roving tab stop follows manual arrow focus and returns to the selected/first enabled tab when focus leaves the group. Disabled tabs cannot activate.
+
+### Color behavior
+
+The tab list is a grey track (#F1F3F6); unselected tabs are #5E6470, hover #E8EBF0 with #101318; the selected tab is a white pill (#FFFFFF) with #101318 semibold text. Disabled #9AA1AD. No underline or divider.
+
+### Icon behavior
+
+Optional icon per TabItem,16/20/24 px at sm/md/lg; EASM glyph supplements the visible panel label and inherits its state foreground. Glyph slots do not shrink or overlap wrapped text. Do not animate selected icons.
+
+### Typography
+
+13/14/16 px for sm/md/lg, weight 600, labels use parallel noun phrases. Panel content follows its own typography hierarchy.
+
+### Spacing
+
+4 px list gap/inset; target padding 8×12 px at md; panel gap 20 px. Vertical layout leaves 16 px between list and panel.
+
+### Borders & surfaces
+
+12 px track radius with a 4 px inset, so the tab pills take the 8 px control corner and sit concentric with the track. No underline, no one-sided rule and no enclosing card. Overflowing rows show fade edges and paging buttons on the hidden side.
+
+### Motion & micro-interactions
+
+Color/surface transitions use the 140 ms fast token. Panel activation is immediate with no fade that delays focus or content. Reduced motion removes transition.
+
+### Accessibility
+
+role=tablist with label; tabs expose selected/controls; panels expose labelledby. Arrows follow orientation and RTL; Home/End first/last enabled. Manual Enter/Space activates; automatic arrows also activate. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Horizontal list scrolls rather than compressing labels/targets; glyphs retain their size and long labels may wrap. Vertical tabs leave 16 px between strip and panel; the strip scrolls at a maximum height of min(480 px,65dvh), with logical edges for RTL. Compose horizontally when the destination lacks sufficient width. Coarse targets are at least 44 px.
+
+### Content rules
+
+Name panels with short distinct nouns: Overview, Knowledge, Activity. Keep essential error/context visible even if its panel is inactive; announce meaningful changes through application feedback.
+
+### Usage rules
+
+Use for panels, not route navigation or a stored field value. Provide unique nonempty IDs and meaningful labels; validate fetching and focus effects when using automatic activation.
+
+### API
+
+TabsProps: label:string; items:TabItem[] {id,label,disabled?,icon?,content}; value/defaultValue:string; onValueChange; size; orientation; activation manual|automatic.
+
+### Code example
+
+```tsx
+<Tabs label="Agent details" items={[{ id: "overview", label: "Overview", content: <p>Agent summary</p> }, { id: "activity", label: "Activity", content: <p>Recent activity</p> }]} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## SegmentedControl
+
+Family: Selection.
+
+### Purpose
+
+Choose one value from a short visible set, such as a time window or display mode, while keeping every alternative available.
+
+### Anatomy
+
+Named radiogroup container, radio-like segment buttons, persistent selected surface and optional hidden input for form submission.
+
+### Variants
+
+One selection; enabled/disabled group; options may have icons or individual disabled states. No multiple-selection or tabpanel behavior.
+
+### Sizes
+
+Outer container minimum 32/40/48 px for sm/md/lg; inner segment minimum 24/32/40 px, plus 3 px container inset and 1 px border on each side. Coarse-pointer segment targets expand to 44 px.
+
+### States
+
+Unselected/selected, hover/focus, disabled and unavailable selection. Arrow movement selects/focuses the next enabled option. Removed/disabled selected IDs show a linked invalid-state message and the hidden form value becomes empty instead of submitting a stale ID. Group disabled blocks every option. Native form reset restores an uncontrolled default; controlled parents own reset.
+
+### Color behavior
+
+Container is the grey track (#F1F3F6); the selected segment is a white pill with #101318 semibold text; unselected text #5E6470, hover #E8EBF0. Disabled is neutral.
+
+### Icon behavior
+
+Optional one EASM icon per segment,16/20/24 px at sm/md/lg, using currentColor. Visible labels are preferred; selection remains evident beyond color.
+
+### Typography
+
+13/14/16 px for sm/md/lg, weight 600, consistent short labels. Use parallel values, such as Day/Week/Month.
+
+### Spacing
+
+3 px container inset, 4 px segment gap; md segment padding 4×12 px, compact 0×8 px. Avoid changing these to arbitrary small values to fit many choices.
+
+### Borders & surfaces
+
+12 px outer radius with a 4 px even inset, so the white selected pill takes the 8 px control corner and sits concentric; it has no outline. Segments are separated by fill only.
+
+### Motion & micro-interactions
+
+Color/surface transitions use the 140 ms fast token; selection and hidden input update immediately. No sliding indicator that crosses unselected options. Reduced motion removes transition.
+
+### Accessibility
+
+role=radiogroup with label; each segment role=radio and aria-checked. Roving Tab, arrows/Home/End follow enabled options and RTL direction; native Enter/Space activates. name submits the available enabled selected value through hidden input; unavailable selection submits empty. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Keep short option sets; the container may wrap while preserving reading order. Coarse-pointer expansion can increase total height; do not scale down to force one row.
+
+### Content rules
+
+Use 2–5 mutually exclusive choices with clear consequences. Stored IDs are stable and labels are human-readable.
+
+### Usage rules
+
+Use for value selection, not switching named content panels. Supply unique nonempty IDs. For many options use Select or Combobox.
+
+### API
+
+SegmentedControlProps: label:string; options:SelectionOption[] {id,label,disabled?,icon?}; value/defaultValue; onValueChange; size; disabled; name?:string.
+
+### Code example
+
+```tsx
+<SegmentedControl label="Activity period" options={[{ id: "week", label: "Week" }, { id: "month", label: "Month" }]} defaultValue="week" />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Chip
+
+Family: Selection.
+
+### Purpose
+
+Show a compact selected item or filter with optional selection and removal, such as an active department filter.
+
+### Anatomy
+
+Pill wrapper; label/icon content; optional independent selection button and independent remove button. Selection and removal are sibling controls, never nested buttons.
+
+### Variants
+
+Display-only, selectable (onSelectedChange), removable (onRemove), or selectable plus removable. selected is explicit caller-owned state; disabled blocks available controls.
+
+### Sizes
+
+Display sm 24/md 32. Selection and removal targets remain at least 32 px even for sm; coarse-pointer interactive targets are at least 44 px. Long labels may grow the chip.
+
+### States
+
+Unselected/selected, hover/focus for each action, disabled; removed item is application-owned. A display-only Chip has no invented interactive hover behavior.
+
+### Color behavior
+
+Neutral chips are #101318 on the grey track (#F1F3F6); selected chips are #2563EB on #EEF4FF. The remove action hovers to #DEE2E8 (#C9D9FD when selected). Disabled text #9AA1AD.
+
+### Icon behavior
+
+Optional 16 px leading icon; remove uses close inside its own named target. Both follow text color. Do not turn a status icon into an implicit chip selection affordance.
+
+### Typography
+
+sm 12/md 13 px, weight 500; labels wrap without ellipsis hiding the selected value.
+
+### Spacing
+
+Content inset 8 px compact or 12 px md, icon gap 8 px; remove target at least 32 px with a small optical end inset. Neighboring chips have 8 px gap.
+
+### Borders & surfaces
+
+Pill radius with no outline in any state; selection is shown by fill and colour. No broken seam between the label and the remove action.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation. Removal never animates before the application updates the list; preserve focus to the next sensible control after removal.
+
+### Accessibility
+
+Selectable child is a button with aria-pressed. Remove child has removeLabel, defaulting to Remove plus text where possible; give an explicit label for rich children. Wrapper is not another button. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Chip groups wrap; keep full labels and independent remove targets. Interactive compact chips expand on coarse pointers.
+
+### Content rules
+
+Use the selected value, such as Admissions, not a generic Selected. Explicit removeLabel should include the object when multiple chips exist.
+
+### Usage rules
+
+Use Tag for purely classificatory labels and Badge for counts/status emphasis. Application owns list selection and focus after deletion.
+
+### API
+
+ChipProps: children; icon?:IconName; size=sm|md; selected; onSelectedChange(selected:boolean); onRemove; removeLabel; disabled.
+
+### Code example
+
+```tsx
+<Chip selected onRemove={() => removeDepartment("admissions")} removeLabel="Remove Admissions filter">Admissions</Chip>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Tag
+
+Family: Selection.
+
+### Purpose
+
+Label a category or attribute without implying an action, count or live status.
+
+### Anatomy
+
+Noninteractive span with text and optional icon; compact rounded rectangle.
+
+### Variants
+
+tone=neutral (default) or brand. This is a category label; semantic success/danger statuses belong to StatusBadge.
+
+### Sizes
+
+sm 24/md 32 minimum visual heights; no touch-target expansion is needed because Tag is noninteractive. Long text may increase height.
+
+### States
+
+Static display; no hover, pressed, selected, loading or disabled control state. Native span attributes do not turn it into a button.
+
+### Color behavior
+
+Neutral tags are #101318 on the grey track (#F1F3F6); brand tags are #2563EB on #EEF4FF. Orange is reserved for a separate signature context.
+
+### Icon behavior
+
+Optional approved 16 px glyph, decorative and text-colored. The text itself names the category.
+
+### Typography
+
+sm 12/md 13 px, weight 500; sentence case and readable category nouns.
+
+### Spacing
+
+2×8 px inset at sm and 4×8 px at md, with 8 px icon gap; surrounding tag group gap 8 px. Keep category clusters adjacent to the content they describe.
+
+### Borders & surfaces
+
+Pill radius and no outline; tags never wrap inside table cells. Tell tags from chips by size and the absence of a remove action, not by a border.
+
+### Motion & micro-interactions
+
+No default animation or interactive transition. Content updates are immediate; the surrounding application may announce meaningful changes.
+
+### Accessibility
+
+Ordinary text span, no interactive role, no tabindex and decorative icon. Do not convey a category only through a color.
+
+### Responsive behavior
+
+Allow groups and text to wrap; do not truncate meaningful distinctions or compress below sm 24.
+
+### Content rules
+
+Use short nouns, such as Undergraduate or Policy. Avoid combining multiple categories into one slash-separated tag.
+
+### Usage rules
+
+Use Chip when selection/removal is needed, Badge for a compact count, StatusBadge for a named workflow state. Do not attach click handlers to Tag.
+
+### API
+
+TagProps: native span attributes; children required; tone=neutral|brand; size=sm|md; icon?:IconName.
+
+### Code example
+
+```tsx
+<Tag tone="brand" icon="document">Policy</Tag>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## FilterControl
+
+Family: Selection.
+
+### Purpose
+
+Choose multiple filters in a compact anchored panel while keeping an active count on the trigger.
+
+### Anatomy
+
+Named Button with filter/chevron glyphs and selected count; titled Popover; fieldset of Checkbox options; Clear filters command.
+
+### Variants
+
+Multi-selection only; controlled value/defaultValue string[]; group/option disabled support. Changes are immediate; no separate Apply button or draft filter state.
+
+### Sizes
+
+sm: 32 px; md: 40 px (default); lg: 48 px. These are minimum heights, so translated or wrapped text may increase height. Coarse pointers receive a minimum 44 px target. Trigger size follows Button; option targets follow Checkbox; popup height follows content.
+
+### States
+
+No selections/active count, closed/open, hover/focus, disabled and disabled options. Active count includes only available enabled IDs; stale/disabled IDs show an explicit review/clear message. A selection change prunes stale IDs; Clear resets the full array. Opening does not alter selection. Disabling the group closes its panel; an empty option set has explicit content.
+
+### Color behavior
+
+The trigger uses the secondary grey fill; an active selection shows its count. Options follow the Checkbox selected state. The popover is a white sheet over the page or a grey panel over cards, without outline or shadow.
+
+### Icon behavior
+
+Filter leading glyph and chevron-down trailing glyph; checkbox marks convey selection. Optional option glyphs use 16/20/24 px at sm/md/lg without shrinking. Keep icon count distinct from textual selected count.
+
+### Typography
+
+Trigger 13/14/16 px weight 600; popup title and option labels follow Popover/Checkbox typography.
+
+### Spacing
+
+Trigger padding follows size; popup inset follows Popover, options separated by 12 px, Clear filters separated by 12 px. Keep controls inside the popup boundary.
+
+### Borders & surfaces
+
+8 px trigger radius and an 8 px popover radius (radius-float), so the corners line up when the popover opens over a button; the popover opens from the trigger's start edge, at least as wide as the trigger and up to 320 px. Separation is by fill; no overlay shadow.
+
+### Motion & micro-interactions
+
+200 ms anchored-overlay enter/exit; selections update immediately. Reduced motion removes overlay transition; no delay before applying filters.
+
+### Accessibility
+
+Trigger is a named button with expanded relation; popup has a title. Native checkboxes and legend provide group semantics; Escape dismisses and returns focus. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Popover is collision-aware and constrained by viewport width/height; wrap long labels and use a scrollable option list when needed. Coarse targets 44.
+
+### Content rules
+
+Label names the filter dimension, such as Departments. Count means selected options, not matching records. Clear filters describes precisely what resets.
+
+### Usage rules
+
+Use for compact multi-filters. Keep option IDs stable; controlled callers reconcile unavailable IDs while visible invalid feedback prevents silent meaning changes. Application owns query changes and request races. If users must review a draft before Apply, compose an explicit form instead.
+
+### API
+
+FilterControlProps: label:string; options:SelectionOption[]; value/defaultValue:string[]; onValueChange(values:string[]); size; disabled; className.
+
+### Code example
+
+```tsx
+<FilterControl label="Departments" options={[{ id: "admissions", label: "Admissions" }, { id: "finance", label: "Finance" }]} value={departments} onValueChange={setDepartments} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Badge
+
+Family: Feedback.
+
+### Purpose
+
+Add a compact count or short emphasized label adjacent to the object it describes.
+
+### Anatomy
+
+Noninteractive inline span, meaningful children, optional decorative leading EASM icon. The badge stays attached to its contextual label.
+
+### Variants
+
+tone=neutral, brand, success, warning or danger. Semantic tones describe meaning; do not choose a danger tone just to make a message noticeable.
+
+### Sizes
+
+sm 24/md 32 visual minimum heights, with compact inset and readable text. Badge is noninteractive and has no mandatory 44 px target.
+
+### States
+
+Static display and content updates; no hover, pressed, loading or selected interaction. A changed count alone does not automatically announce itself.
+
+### Color behavior
+
+Brand #2563EB on #EEF4FF; success #0C8138 on #E6F8EC; warning #94530A on #FFF3C6; danger #D92644 on #FFF5F6. Pastel badge fills are #CFE0FF, #BFF0D2, #FFE07A and #FFD3DA with dark #101318 text and a coloured icon (#1E9E5A, #B98600, #E5483D). Main text stays #101318 and supporting copy #5E6470. Meaning is conveyed in words or symbols as well as colour. Neutral badges are #101318 on #EEF0F3; each semantic badge sets dark text on its pastel fill and colours only its icon.
+
+### Icon behavior
+
+Optional 16 px EASM glyph supplements the count/text. A badge icon is decorative and does not encode an unlabeled status.
+
+### Typography
+
+Compact readable text, at least 12 px; default 13 px; medium weight. Numeric counts can use tabular numerals where column comparison matters.
+
+### Spacing
+
+8 px horizontal inset, 4–8 px icon/text gap; 8 px separation from the contextual noun. Do not float an isolated count without its meaning.
+
+### Borders & surfaces
+
+Pill radius, no outline and no shadow; the pastel fill carries the emphasis.
+
+### Motion & micro-interactions
+
+Static by default; immediate text updates. Announce meaningful changing counts through a dedicated application live region rather than animating the badge.
+
+### Accessibility
+
+Ordinary text; children must be nonempty meaningful content. Context must identify what a number counts. Avoid duplicating accessible status text in a decorative icon.
+
+### Responsive behavior
+
+Allow text to wrap if localization expands. Prefer full meaning over arbitrary max-width/ellipsis; noninteractive badges retain their visual size on touch.
+
+### Content rules
+
+Counts represent a known quantity; 99+ is allowed only with a truthful accessible exact/meaningful count nearby. Use concise labels, such as New or Internal.
+
+### Usage rules
+
+Use StatusBadge for a workflow state with an explicit status icon. Use Tag for categories and Button/Chip for actions. Never add click handlers to Badge.
+
+### API
+
+BadgeProps: span attributes; children:meaningful ReactNode; tone=neutral|brand|success|warning|danger; size=sm|md; icon?:IconName.
+
+### Code example
+
+```tsx
+<span>Open conversations <Badge tone="brand">24</Badge></span>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## StatusBadge
+
+Family: Feedback.
+
+### Purpose
+
+Show a named operational or workflow state consistently, including its semantic symbol.
+
+### Anatomy
+
+Badge foundation plus a fixed state symbol and default human-readable label; optional children replace the visible label while retaining the state meaning.
+
+### Variants
+
+status=active, pending, inactive, success, warning, error or processing. Each state maps deliberately to a tone and glyph; processing is a static symbol, not a fake progress percentage.
+
+### Sizes
+
+sm 24/md 32 visual heights inherited from Badge; the symbol remains 16 px. Noninteractive display does not need a 44 px target.
+
+### States
+
+Declared status only; no hover, pressed, focus, selection or automatic live state. Updates are application facts, not inferred from elapsed time.
+
+### Color behavior
+
+Active and success use the green pastel (#BFF0D2); pending and warning the amber pastel (#FFE07A); error the red pastel (#FFD3DA); processing the blue pastel (#CFE0FF); inactive the neutral #EEF0F3. Text stays #101318; each status has its own symbol.
+
+### Icon behavior
+
+Active/success check-circle; pending clock; inactive pause; warning warning; error error-circle; processing spinner symbol. Shapes remain static; Spinner is the component for active progress indication.
+
+### Typography
+
+Badge typography: compact, medium-weight readable state text. Use sentence case; no all-caps operational jargon.
+
+### Spacing
+
+Consistent Badge inset and icon/text gap. Keep status adjacent to the entity title or its status column.
+
+### Borders & surfaces
+
+Pill fill without outline; no state-specific shapes, gradients or frames.
+
+### Motion & micro-interactions
+
+No automatic animation. State updates are immediate; if the user initiated a process, separately announce outcome with Alert/Toast or a managed live region.
+
+### Accessibility
+
+Visible state text and distinct symbol avoid color-only meaning. No default role=status because lists may contain many static states. Caller owns meaningful change announcements.
+
+### Responsive behavior
+
+Keep the label visible, wrapping when needed. Do not replace state words with a colored dot on narrow layouts.
+
+### Content rules
+
+Default labels are usable; custom children should name the real domain state, such as Indexing or Sync failed. Do not use success for merely queued work.
+
+### Usage rules
+
+Choose status from actual application state. Use Progress for measured completion and Spinner for active indeterminate work; processing alone does not certify an operation is healthy.
+
+### API
+
+StatusBadgeProps: Badge props except tone/icon/children; status required; children optional. Status drives tone, glyph and default label.
+
+### Code example
+
+```tsx
+<StatusBadge status="processing">Indexing</StatusBadge>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Tooltip
+
+Family: Feedback.
+
+### Purpose
+
+Provide short supplemental explanation for an already named focusable control.
+
+### Anatomy
+
+Existing ReactElement trigger, portal tooltip content and anchored positioning managed by Radix. Content is a plain string; no embedded interactive elements.
+
+### Variants
+
+side=top|right|bottom|left and align=start|center|end. Placement describes preferred location; collision handling may adjust it. No persistent help-panel variant.
+
+### Sizes
+
+Content-driven width constrained to the viewport and a readable short line measure. Target size belongs to the trigger; keep it at least 32 desktop/44 coarse when it is a compact action.
+
+### States
+
+Closed, pointer hover, keyboard focus, open, dismissed. Pointer reveal uses delayDuration 350 ms by default; keyboard focus opens immediately. Each Tooltip owns its provider: the 300 ms skip-delay window applies to re-entering that same instance, not to neighboring Tooltip components.
+
+### Color behavior
+
+Dark surface (#101318) with white text; no semantic blue or red fills. A tooltip supplements its trigger and never competes with the action colour.
+
+### Icon behavior
+
+Tooltip body is text-only. Trigger may have an EASM icon under its own IconButton contract; tooltip does not replace the accessible trigger name.
+
+### Typography
+
+Readable compact explanatory copy at least 12 px, medium weight, normal sentence case and comfortable line-height.
+
+### Spacing
+
+8 px vertical/12 px horizontal content inset; 6 px side offset keeps the panel distinct from the trigger. Avoid long paragraphs that force large surfaces.
+
+### Borders & surfaces
+
+8 px radius, no outline and no shadow. Content stays unclipped within the viewport. An InfoHint tip also opens on click and tap (openOnClick).
+
+### Motion & micro-interactions
+
+140 ms opacity/2 px entrance; reduced motion removes it. Delay is a reveal policy, not a delay on control activation.
+
+### Accessibility
+
+Radix associates role=tooltip content with the focusable trigger; opens on focus and hover, Escape closes. trigger must accept a ref/event props and already have an accessible name. String content cannot contain links or buttons.
+
+### Responsive behavior
+
+Keyboard and pointer interactions remain available; touch must not depend on hover for essential instructions. Move important help into visible description or Popover.
+
+### Content rules
+
+One short sentence with genuinely supplemental information. Never hide a required field instruction, critical validation error or the only action name in a tooltip.
+
+### Usage rules
+
+Use for brief explanation. Use Popover for richer or interactive content; leave destructive consequences visible in a confirmation rather than a tooltip.
+
+### API
+
+TooltipProps: trigger:ReactElement; children:string; side/align; delayDuration?:number (default350); className.
+
+### Code example
+
+```tsx
+<Tooltip trigger={<IconButton icon="info" label="About indexing" />}>Documents become searchable after indexing completes.</Tooltip>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Toast
+
+Family: Feedback.
+
+### Purpose
+
+Report a concise outcome or asynchronous event without moving focus away from the current task.
+
+### Anatomy
+
+Notification surface, semantic glyph, titled message, optional description, optional action and named dismiss control. Only the message participates in the live region.
+
+### Variants
+
+tone=neutral, brand, success, warning or danger. Semantic tones describe meaning; do not choose a danger tone just to make a message noticeable. action may provide a deliberate follow-up. The component has no built-in auto-dismiss timer or toast-stack manager.
+
+### Sizes
+
+Content-driven notification width, capped by the viewport; standard surface inset 16 px. Dismiss target minimum 32 desktop and 44 coarse; message height grows with text.
+
+### States
+
+Visible, action available, dismissed by application. There is no automatic disappearance. A supplied onDismiss renders a dismiss button; caller owns visibility and stacking.
+
+### Color behavior
+
+Brand #2563EB on #EEF4FF; success #0C8138 on #E6F8EC; warning #94530A on #FFF3C6; danger #D92644 on #FFF5F6. Pastel badge fills are #CFE0FF, #BFF0D2, #FFE07A and #FFD3DA with dark #101318 text and a coloured icon (#1E9E5A, #B98600, #E5483D). Main text stays #101318 and supporting copy #5E6470. Meaning is conveyed in words or symbols as well as colour. Toasts sit on the dark ink panel (#121826) with #FFFFFF text and #C4CAD6 supporting copy; the semantic icon carries the tone.
+
+### Icon behavior
+
+One semantic EASM icon chosen by tone; dismiss uses close. Do not duplicate the same status phrase as a second screen-reader name.
+
+### Typography
+
+Title 14 px/600, description 13–14 px regular; adequate line-height and wrapping. Action uses Button typography.
+
+### Spacing
+
+16 px padding, 12 px glyph/content gap, 4–8 px title/description gap,12 px action gap. Reserve separate space for the dismiss target.
+
+### Borders & surfaces
+
+12 px radius, no outline and no shadow: the ink panel separates the toast from the page by fill. It must not cover the task's required control or focus ring.
+
+### Motion & micro-interactions
+
+No required entry/exit animation or timer; application may use the shared 200 ms overlay transition, with reduced-motion support and immediate state updates.
+
+### Accessibility
+
+Message role=status for normal/brand/success/warning and role=alert for danger. Action/dismiss controls sit outside the live-region message. Do not forcibly move focus. Wrapper live/role overrides are intentionally excluded to avoid duplicate announcements. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Viewport-constrained width with wrapped copy; move stack placement to a visible safe region at narrow widths. Dismiss/action targets remain 44 px on coarse pointers.
+
+### Content rules
+
+State the actual outcome: Agent saved or Upload failed. Include one useful corrective action; do not echo sensitive content or advertise a success before the operation resolves.
+
+### Usage rules
+
+Keep a small manageable queue at the application level. Persistent important problems belong to Alert near the affected task. If adding timeouts, provide user control and ensure enough reading time.
+
+### API
+
+ToastProps: title required; description?; tone defaultneutral; action?:ReactNode; onDismiss?; dismissLabel defaultDismiss notification. No timer; wrapper aria-live/role overrides excluded.
+
+### Code example
+
+```tsx
+<Toast title="Agent saved" description="Your changes are available to the support team." tone="success" onDismiss={() => hideToast()} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Alert
+
+Family: Feedback.
+
+### Purpose
+
+Explain important persistent information or a problem at the point where it affects a workflow.
+
+### Anatomy
+
+Inline semantic surface, icon, title, optional description/body and optional action. Message and interactive action are separated for announcements.
+
+### Variants
+
+tone=brand (default), neutral, success, warning or danger; live=false by default for existing/static content, live=true for newly introduced feedback.
+
+### Sizes
+
+Width follows the containing section; height follows content.16 px standard inset; action controls use the standard 32/40/48 scale and coarse 44 targets.
+
+### States
+
+Static visible, newly announced if live, action available. No automatic dismiss, hover, selection or invented loading state on the surface.
+
+### Color behavior
+
+Brand #2563EB on #EEF4FF; success #0C8138 on #E6F8EC; warning #94530A on #FFF3C6; danger #D92644 on #FFF5F6. Pastel badge fills are #CFE0FF, #BFF0D2, #FFE07A and #FFD3DA with dark #101318 text and a coloured icon (#1E9E5A, #B98600, #E5483D). Main text stays #101318 and supporting copy #5E6470. Meaning is conveyed in words or symbols as well as colour. The alert fill is the tone's light surface (#EEF4FF, #E6F8EC, #FFF3C6, #FFF5F6); the title stays #101318 and the semantic icon identifies the tone.
+
+### Icon behavior
+
+Tone maps to one EASM semantic glyph. Icon is decorative because title/body carry the meaning. Do not use signature orange to imply warning.
+
+### Typography
+
+Title 14 px/600, description/body 13–14 px regular. Use readable paragraphs/list items; no small all-caps warning blocks.
+
+### Spacing
+
+16 px inset;12 px icon/content gap;4–8 px title/body gap;12 px before action. Long copy should remain a coherent readable block.
+
+### Borders & surfaces
+
+12 px radius, filled, no outline and no coloured side rule. Avoid nesting alert cards.
+
+### Motion & micro-interactions
+
+Static by default. Newly inserted content appears immediately; optional surrounding 200 ms transition must respect reduced motion and not delay announcement.
+
+### Accessibility
+
+live=false has no automatic alert/status role; live=true announces danger as alert and other tones as status. Interactive action remains outside live message. wrapper role/aria-live overrides are excluded. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Wrap title/body and let action move below copy. Never reduce text size or omit consequences to fit a narrow column.
+
+### Content rules
+
+Explain what happened, who/what is affected and the correction. Reserve danger for an actual error/risk; warning for a pending consequence; informational brand for context.
+
+### Usage rules
+
+Place beside the affected task; use Toast for brief outcome notices. Field-specific validation belongs to the field error, not a detached page-wide alert.
+
+### API
+
+AlertProps: title required; description/children/action optional; tone defaultbrand; live defaults false. Native wrapper props except role/live overrides.
+
+### Code example
+
+```tsx
+<Alert title="Source connection needs attention" tone="warning" description="Reconnect WordPress to resume synchronization." action={<Button variant="secondary">Reconnect</Button>} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## InlineValidation
+
+Family: Feedback.
+
+### Purpose
+
+Explain one actionable field or local validation outcome beside the relevant control, especially when a larger Alert would add unnecessary visual weight.
+
+### Anatomy
+
+Shared semantic 16px icon, concise text and optional lightly tinted surface. An id allows the message to be referenced by aria-describedby or aria-errormessage.
+
+### Variants
+
+tone=error(default)|success|info; appearance=plain(default)|surface; live=off(default)|polite|assertive. The type describes feedback, not a replacement for a complete field component.
+
+### Sizes
+
+One standardized compact recipe:13px text with 20px line-height,16px artwork and 8px gap. Surface appearance adds 12px padding and 8px radius; it has no arbitrary size parameter.
+
+### States
+
+Appears/updates/removes according to real validation or confirmed outcomes. Color does not imply asynchronous success. There is no decorative loading state or automatic dismissal timer.
+
+### Color behavior
+
+Error #D92644, success #0C8138 and information #2563EB. Optional surfaces use #FFF5F6, #E6F8EC and #EEF4FF respectively; plain appearance intentionally inherits its parent surface.
+
+### Icon behavior
+
+Shared error-circle/check-circle/info-circle supplements explicit text. Icon is decorative for assistive technology and stays 16px with a 2px top alignment against the 20px first text line.
+
+### Typography
+
+13px regular message text,20px line-height. Text wraps naturally and is never truncated before the correction instruction; no uppercase severity prefix is required.
+
+### Spacing
+
+8px icon/text gap; place 6px beneath a related field or in the field message slot. Surface variant has 12px inset. Allow the complete message to wrap without collapsing adjacent target spacing.
+
+### Borders & surfaces
+
+Plain appearance has no frame or translucent fill; tinted surface is opaque with 8px corners. Forced colors receives a visible system border. It does not paint a second outline over a field.
+
+### Motion & micro-interactions
+
+Message changes occur immediately with the actual validation state. No slide, bounce or reserved artificial delay. Consumers may reserve layout space when frequent validation would move nearby controls.
+
+### Accessibility
+
+Default live=off avoids announcing every initial form error. Link the message id from its field. Use polite status for meaningful dynamic outcomes and assertive alert only when interruption is warranted; updates are atomic.
+
+### Responsive behavior
+
+Message follows available form width and wraps without horizontal overflow. The icon remains whole and aligned to the first line on mobile; do not shrink font size to force a single line.
+
+### Content rules
+
+Name the problem and useful correction: Choose an available agent before saving. Keep concise, specific text; avoid blame, raw server exceptions and success claims before confirmation.
+
+### Usage rules
+
+Use for a single local issue or outcome. Use Alert for section-wide consequences and an application-owned summary for several invalid fields. Prefer TextField error/success props when that built-in message already fits.
+
+### API
+
+InlineValidationProps: children:string required; tone=error|success|info, appearance=plain|surface, live=off|polite|assertive; standard div attributes/id/className; role and aria-live are owned by the semantic live prop.
+
+### Code example
+
+```tsx
+<InlineValidation id="assignment-error" tone="error">Choose an available agent before saving.</InlineValidation>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Progress
+
+Family: Feedback.
+
+### Purpose
+
+Show measured completion or honest indeterminate work, tied to a named process.
+
+### Anatomy
+
+Visible label, optional displayed numeric value, native progress track and optional linked description. State describes default, complete or failed progress.
+
+### Variants
+
+Determinate when value is supplied; indeterminate when omitted. state=default|success|error. Success without a value uses max; explicitly supplied success must equal max. Error requires a last-recorded numeric value.
+
+### Sizes
+
+Full available width;8 px visual track; label and description determine total height. No sm/md/lg control sizing because Progress is noninteractive data.
+
+### States
+
+Indeterminate, partial, complete, error. Validate finite positive max and finite value in 0..max; never fabricate a percentage from elapsed time.
+
+### Color behavior
+
+Fill #2563EB by default, #0C8138 when completed and #D92644 when failed, on an #E8EAEE track. Description and explicit state copy explain meaning beyond colour.
+
+### Icon behavior
+
+No decorative icon is required on the track; state meaning lives in label/description. Combine with StatusBadge only if it conveys a distinct domain status.
+
+### Typography
+
+Label 14 px, optional percentage uses tabular numerals; description 13 px. Preserve text readability beside the numeric value.
+
+### Spacing
+
+8 px label/track and track/description gaps;16 px between label and numeric value. Width is controlled by the surrounding layout.
+
+### Borders & surfaces
+
+Pill track edges; the fill stays inside the track without a broken edge. No enclosing card or outline.
+
+### Motion & micro-interactions
+
+Determinate fill changes use 200 ms where supported; indeterminate movement is functional and stops under reduced motion, leaving a visible static indicator. Values update immediately.
+
+### Accessibility
+
+Native progress exposes label, max and value. Omitted value means indeterminate, never zero. Description is linked. Application should announce meaningful milestones/outcomes rather than every percentage change.
+
+### Responsive behavior
+
+Track fills its section; label and value wrap without overlap. Do not reduce track width so much that meaningful comparison disappears.
+
+### Content rules
+
+Label the task (Indexing documents). Show exact measured units or percent only when known; error description states failure and next step.
+
+### Usage rules
+
+Use Spinner for short indeterminate work without measured progression. Domain state controls complete/error. Keep last recorded progress when a measured process fails.
+
+### API
+
+ProgressProps: label:string; value?:number; max?:number default100; state=default|success|error; description?:string; showValue?:boolean. Invalid ranges/states throw.
+
+### Code example
+
+```tsx
+<Progress label="Indexing documents" value={42} max={100} showValue description="42 of 100 documents indexed." />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Spinner
+
+Family: Feedback.
+
+### Purpose
+
+Indicate actual ongoing indeterminate work, such as waiting for search results.
+
+### Anatomy
+
+Inline status wrapper with a hidden meaningful label and a decorative animated EASM loading glyph.
+
+### Variants
+
+One functional loading indicator; label defaults Loading. No success/error/percentage or decorative idle-animation variant.
+
+### Sizes
+
+Glyph size 16,20(default),24 or 32 px. Spinner is noninteractive, so these are visual sizes rather than hit targets.
+
+### States
+
+Mounted while work is active; removed when the application resolves the operation. Reduced motion presents a static loading symbol while preserving status semantics.
+
+### Color behavior
+
+#2563EB by default, or the colour of its context (white inside a primary button). Never success or danger colours while the outcome is unknown.
+
+### Icon behavior
+
+Approved animated loading glyph; active/repeat are driven by real pending work. Do not use the static processing StatusBadge as a substitute for an active indicator.
+
+### Typography
+
+Hidden label names the task; optional surrounding visible text follows 14 px product typography. No changing ellipsis copy is necessary.
+
+### Spacing
+
+Keep 8 px from adjacent visible loading text. Reserve stable space in a layout to avoid shifting task controls as it mounts.
+
+### Borders & surfaces
+
+No surrounding border or tile; the glyph keeps the library stroke and rounded geometry.
+
+### Motion & micro-interactions
+
+Functional loading motion follows the icon motion contract; prefers-reduced-motion disables rotation/shape movement while status remains perceivable. Do not delay task start or outcome for a full cycle.
+
+### Accessibility
+
+role=status with a text label; glyph is aria-hidden. Use a specific label such as Loading conversations. Avoid adding several competing live spinners in one task.
+
+### Responsive behavior
+
+Maintain the chosen visual size; no pointer enlargement because it is not interactive. Pair with visible text when the process is long or its scope is ambiguous.
+
+### Content rules
+
+Describe the real activity, not a generic Please wait when context is absent. Do not say completed while the spinner is present.
+
+### Usage rules
+
+Display only for actual pending work. Use Skeleton for an expected content layout and Progress when measured completion exists; long tasks need contextual text and failure handling.
+
+### API
+
+SpinnerProps: label?:string defaultLoading; size?:16|20|24|32 default20; native span props compatible with fixed status semantics.
+
+### Code example
+
+```tsx
+<Spinner label="Loading conversations" size={20} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Skeleton
+
+Family: Feedback.
+
+### Purpose
+
+Reserve an expected content layout while its data is loading, reducing disruptive layout shifts.
+
+### Anatomy
+
+Decorative inert placeholder; shape=text/rect/circle, optional multiline text layout, optional custom content layout.
+
+### Variants
+
+shape=text (default), rect or circle; lines 1..20 for text; animated=false (default), opt-in subtle pulse. children may construct only decorative placeholder layout.
+
+### Sizes
+
+The one component allowed content-layout width/height overrides because placeholders must match the eventual layout. Defaults: text 16 px height, rect 96 px height, circle 40×40; multiline uses 16 px lines and 8 px gaps.
+
+### States
+
+Placeholder present/removed; animated or static. Skeleton is never an error/empty-data display and never remains after loading resolves.
+
+### Color behavior
+
+Neutral #E8EAEE on the page or a card. No brand-colour shimmer and no status colours.
+
+### Icon behavior
+
+No icon is required; circles reserve avatar space, rectangles reserve content surfaces. Do not show real interactive icons inside inert placeholders.
+
+### Typography
+
+No readable text content. Text skeleton approximates line measure without pretending placeholder blocks are actual typography.
+
+### Spacing
+
+Match the eventual content spacing; multiline gap 8 px and a shorter final line. Preserve correct aspect ratios rather than drawing many arbitrary shapes.
+
+### Borders & surfaces
+
+4 px corners for text lines, 12 px for rectangles and a pill radius for circles. No shadow or outline.
+
+### Motion & micro-interactions
+
+Opt-in 1600 ms restrained opacity pulse; static is the default. Reduced motion disables pulse. Placeholder removal follows actual data readiness immediately.
+
+### Accessibility
+
+aria-hidden and inert; no buttons, links, focusable controls or meaningful text inside. Mark the owning data region aria-busy and provide a separate appropriately scoped loading status.
+
+### Responsive behavior
+
+Width may follow the responsive content grid and line measure. Avoid fixed viewport-wide placeholders inside narrow containers; maintain expected layout height.
+
+### Content rules
+
+No faux personal names or text. Only represent content that will actually appear; do not imply a large data set when the response shape is unknown.
+
+### Usage rules
+
+Use to reserve likely structure. Use Alert/EmptyState application patterns after errors/empty responses; never keep decorative Skeleton as an indefinite substitute for handling outcomes.
+
+### API
+
+SkeletonProps: shape=text|rect|circle; width/height CSSProperties dimensions; lines default1 (1..20); animated defaultfalse; children?:ReactNode (decorative/inert only).
+
+### Code example
+
+```tsx
+<div aria-busy="true"><Spinner label="Loading agent details" /><Skeleton shape="text" lines={3} width="100%" /></div>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Card
+
+Family: Containers.
+
+### Purpose
+
+Group related content in a clear surface, such as one agent summary or settings cluster.
+
+### Anatomy
+
+Div surface; optional title/description header and actions; body children; optional separated footer. Card has no automatic click behavior.
+
+### Variants
+
+outlined(default), elevated or plain. In the white theme all three are separated from the page by fill alone (no outline, no shadow); elevated and outlined are kept for compatibility. padding=none|sm|md|lg.
+
+### Sizes
+
+No fixed height/width. Padding none 0/sm 16/md 20(default)/lg 24 px. Content determines dimensions; use the application grid, not custom card-size variants.
+
+### States
+
+Static content surface; no automatic hover, pressed, selected, disabled or loading. Child controls own their states; a whole-card link requires an explicit accessible composition.
+
+### Color behavior
+
+White surface (#FFFFFF) on the white page (#FFFFFF), #101318 titles and #5E6470 descriptions. An optional icon sits in a tinted tile in one of the chart tones. Blue is for actions and status, not large card fills.
+
+### Icon behavior
+
+No mandatory card glyph. Optional actions and body content use EASM icons with their own semantics; decorative module art belongs to ModuleIcon.
+
+### Typography
+
+Optional title 16 px/600 with 24 px line-height; description 13 px/20. Card title is h 3; use Panel when the region requires a different heading level.
+
+### Spacing
+
+16 px header/body separation and explicit body-sibling vertical flow; direct child margins normalized and compact controls retain intrinsic width; description gap 4; header actions wrap with 8 px gap; footer margin 20 plus top inset 16 and 8 px action gaps. Keep content aligned rather than nesting repeated tiny cards.
+
+### Borders & surfaces
+
+12 px radius and no outline or shadow: the card is separated from the page by fill alone (elevated also has no shadow; shadow-card is none). The footer is separated by space, never by a rule. Inside a card, pills and nested blocks take the grey track so they still read.
+
+### Motion & micro-interactions
+
+Static surface. Do not add hover lift or transition every card. Child interactions follow their own motion; application content changes remain immediate.
+
+### Accessibility
+
+Div has no invented landmark/role. Optional heading communicates structure; meaningful child controls retain independent labels and focus. Do not make a card with nested actions a single button.
+
+### Responsive behavior
+
+min-width 0 allows content wrapping; header actions can wrap below title at narrow widths. Keep body controls full-sized and prevent overflow from tables/code.
+
+### Content rules
+
+Title names the grouped content, not a promotional sentence. Description explains scope; footer contains related actions or metadata.
+
+### Usage rules
+
+Use for content grouping. Use Panel for a named semantic region, Dialog/Drawer for overlays. Avoid equal-card layouts where a single linear section communicates better.
+
+### API
+
+CardProps: div attributes; variant=outlined|elevated|plain; padding=none|sm|md|lg; title?:string; description/actions/footer?:ReactNode; children.
+
+### Code example
+
+```tsx
+<Card title="Agent knowledge" description="Sources available to this agent." footer={<Button variant="secondary">Manage sources</Button>}><p>12 indexed documents</p></Card>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Panel
+
+Family: Containers.
+
+### Purpose
+
+Present a named page section with a semantic heading, content and optional local actions.
+
+### Anatomy
+
+section aria-labelledby its required title; headingLevel 2/3/4; optional description/actions; body and optional footer.
+
+### Variants
+
+One outlined section surface; padding=sm|md|lg. headingLevel sets document structure rather than visual size.
+
+### Sizes
+
+Content-driven dimensions, padding 16/20/24 px for sm/md/lg. No fixed-height or viewport-sized variant.
+
+### States
+
+Static region; no automatic active/selected/hover/busy state. Child content owns operational feedback.
+
+### Color behavior
+
+White surface on the white page, #101318 title and #5E6470 description, with an optional tinted icon tile. Keep the surface neutral so its controls carry emphasis.
+
+### Icon behavior
+
+No mandatory panel icon. Use ModuleIcon only when a recognizable module marker adds navigation context.
+
+### Typography
+
+Title 16 px/600, description 13 px; headingLevel changes semantic depth without altering visual consistency.
+
+### Spacing
+
+Header/body 16 px and explicit 16 px body-sibling vertical flow; direct child margins normalized and compact controls retain intrinsic width; description 4 px; wrapping header actions 8 px apart; footer 20 px margin,16 px top inset and 8 px action gap.
+
+### Borders & surfaces
+
+12 px radius, no outline, no shadow and no accent rail; footers are separated by space.
+
+### Motion & micro-interactions
+
+No panel animation by default. Loading and expansion are separate explicit components or application states.
+
+### Accessibility
+
+Required visible title labels the section. Choose headingLevel consistent with the page hierarchy and avoid multiple unrelated h 1 elements. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Header actions wrap beneath title on narrow widths; body content must retain min-width 0 and readable wrapping.
+
+### Content rules
+
+Use a concrete section title, such as Delivery settings. Avoid generic Details where several neighboring panels have the same title.
+
+### Usage rules
+
+Use for named in-page sections; Drawer for modal side tasks; Card for non-landmark content grouping. Do not use Panel as an unlabelled generic wrapper.
+
+### API
+
+PanelProps: HTMLElement attributes; title:string required; headingLevel=2|3|4 default2; description/actions/footer?:ReactNode; padding=sm|md|lg; children.
+
+### Code example
+
+```tsx
+<Panel title="Delivery settings" headingLevel={2}><Switch label="Email notifications" defaultChecked /></Panel>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Accordion
+
+Family: Containers.
+
+### Purpose
+
+Organize several related expandable sections when users usually inspect a subset.
+
+### Anatomy
+
+Bounded list of Collapsible items; each heading contains a named native trigger, optional contextual EASM icon, description, chevron and controlled content region.
+
+### Variants
+
+multiple=false(default) permits one open item; multiple=true permits several. Item disabled states and headingLevel 2/3/4 are supported.
+
+### Sizes
+
+Content-driven width/height; each trigger has 16 px inset and readable 14 px title with 20 px line height. No compact height overrides; minimum target height 56 px.
+
+### States
+
+All closed, one/multiple open, trigger hover/focus, disabled item. Open IDs belong to value/defaultValue; unavailable/duplicate IDs do not block an available open section and are pruned on the next interaction. The application receives the complete next valid list.
+
+### Color behavior
+
+Each item is a white block on the page (#F6F7F9 inside a white card), #101318 titles and #5E6470 descriptions; the expanded title and chevron are #2563EB; hover #F6F7F9 and pressed #ECEEF2; disabled #9AA1AD.
+
+### Icon behavior
+
+Optional 20 px EASM contextual icon; fixed 20 px chevron-down per trigger rotates 180° when open. The leading icon remains stationary and nested disclosures keep their own state. It supplements aria-expanded and visible content; no arbitrary plus/minus icon swaps.
+
+### Typography
+
+Trigger title 14 px/600; description 13 px. headingLevel preserves page hierarchy; expanded content uses its own proper headings.
+
+### Spacing
+
+16 px trigger inset;12 px contextual-icon/text gap;16 px title/chevron separation;4 px description gap. Content has 16 px side margins,16 px top inset after a subtle rule,20 px bottom inset, and 16 px between sibling content blocks. With a contextual icon, content gains 32 px start inset to align with the title. Neighbor items separated structurally, not by many cards.
+
+### Borders & surfaces
+
+Items are separate 12 px rounded blocks with a 6 px gap: no outer frame, no separators between items and no rule above the content. Focus inside a clipped item uses an inset 2 px #2F6BEB edge. Forced colours keep a system outline.
+
+### Motion & micro-interactions
+
+280 ms grid-height reveal and chevron rotation; reduced motion makes expansion instant. Closed content is inert/hidden for interaction from the start.
+
+### Accessibility
+
+Heading/button relationship, aria-expanded and aria-controls for each item; native Enter/Space and Tab order. Closed regions are aria-hidden and inert. Optional arrow-key accordion navigation is not implemented; do not promise it. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Titles/descriptions wrap; expanded content follows available width. Do not use an accordion to hide essential form validation or irretrievable navigation.
+
+### Content rules
+
+Titles name distinct sections and predict what will open. Keep crucial instructions available in visible context rather than behind an unrelated heading.
+
+### Usage rules
+
+Use for related optional detail. Supply unique nonempty IDs; retain errors/progress visibility when a section closes. Use Tabs for peer panels users repeatedly switch between.
+
+### API
+
+AccordionProps: div props; items:{id,title,description?,icon?:UIIconName,content,disabled?}[]; value/defaultValue:string[]; onValueChange; multiple defaultfalse; headingLevel default3.
+
+### Code example
+
+```tsx
+<Accordion items={[{ id: "scope", title: "Agent scope", content: <p>Handles admissions questions.</p> }, { id: "handoff", title: "Handoff rules", content: <p>Escalate uncertain responses.</p> }]} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Collapsible
+
+Family: Containers.
+
+### Purpose
+
+Show or hide one optional content region while retaining a clear named trigger.
+
+### Anatomy
+
+Heading with button/title/optional contextual icon/description/chevron, linked region and clipped content wrapper. Closed content stays mounted but inert and hidden.
+
+### Variants
+
+open/defaultOpen with controlled/uncontrolled behavior; disabled trigger; headingLevel 2/3/4. One independent region; Accordion composes related instances.
+
+### Sizes
+
+Width follows parent;16 px trigger inset and 56 px minimum target. Expanded height follows content; no arbitrary collapsed button height.
+
+### States
+
+Closed/open, trigger hover/focus/disabled. onOpenChange reports the requested next boolean; application can control the final state.
+
+### Color behavior
+
+White surface; hover #F6F7F9, pressed #ECEEF2, disabled #9AA1AD and #5E6470 for description and content. The blue title and chevron mark the open section without recolouring the surface; appearance='card' shows a tinted icon tile.
+
+### Icon behavior
+
+Optional 20 px EASM contextual glyph remains stationary. Only the 20 px chevron rotates 180° to signal expansion; its blue open state supplements aria-expanded. Nested disclosures do not inherit the parent rotation.
+
+### Typography
+
+Title 14 px/600 and description 13 px; headingLevel changes semantic structure, not label size.
+
+### Spacing
+
+Trigger 16 px inset; contextual-icon/text gap 12 px; chevron gap 16 px; description 4 px. Content has 16 px side margins,2 px top and 18 px bottom inset, separated from the trigger by space rather than a rule; sibling blocks have 16 px spacing. With a contextual icon, content gains 32 px start inset to align with the title.
+
+### Borders & surfaces
+
+No border and no rule between the header and the content; spacing separates them. The surrounding layout owns any framing.
+
+### Motion & micro-interactions
+
+280 ms grid-height and chevron rotation. Reduced motion removes transitions. aria-hidden/inert protect closed content immediately, independent of visual timing.
+
+### Accessibility
+
+Native named button with aria-expanded/controls inside a heading; linked region; hidden inert closed content has no reachable controls. Enter/Space toggles. Controlled closure returns descendant focus to the trigger; if that trigger is disabled in the same update, the named wrapper receives focus with tabindex=-1. Unrelated outside focus remains untouched, and mounted content preserves its values. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Trigger label wraps; content grows naturally and remains within layout. Keep any essential information visible when the region closes.
+
+### Content rules
+
+Title describes optional details, such as Advanced settings. Do not change the title to Hide after opening; expanded state already communicates this.
+
+### Usage rules
+
+Use for one optional section. Avoid collapsing mandatory steps or current errors without a visible summary. Restore focus to trigger if application actions close a region while focus is inside.
+
+### API
+
+CollapsibleProps: div attributes excluding title/onChange; title:string; description?; icon?:UIIconName; open/defaultOpen; onOpenChange; disabled; headingLevel=2|3|4 default3; children.
+
+### Code example
+
+```tsx
+<Collapsible title="Advanced settings"><TextField label="Request timeout" type="number" min={1} max={60} description="Seconds." /></Collapsible>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Divider
+
+Family: Containers.
+
+### Purpose
+
+Separate adjacent content groups with a quiet structural rule or a meaningful separator when semantics warrant it.
+
+### Anatomy
+
+One horizontal or vertical line; optional label provides an accessible name when semantic. It does not render a visible text heading.
+
+### Variants
+
+orientation=horizontal(default)|vertical; decorative=true(default) hides semantics; decorative=false or a label gives role=separator.
+
+### Sizes
+
+1 px rule; horizontal fills available width; vertical stretches in its flex row with a 24 px minimum span. Surrounding layout controls length and spacing.
+
+### States
+
+Static structure; no hover, focus, selected, disabled or loading. Divider is never an interactive resize handle.
+
+### Color behavior
+
+#E8EAEE (border-subtle). Components never draw their own rules; use Divider only where a layout genuinely needs one. Forced colours keep a visible system-colour rule. It must not be the only sign of an interactive boundary.
+
+### Icon behavior
+
+No icon or glyph; this is a layout rule, not a decorative punctuation character.
+
+### Typography
+
+No visible typography. Use a heading or text element if users need a readable group title.
+
+### Spacing
+
+Use 16–24 px around distinct sections and 8–12 px within compact toolbars. Spacing is owned by the parent rather than arbitrary divider margins.
+
+### Borders & surfaces
+
+A straight 1 px filled rule with no radius or shadow. Vertical dividers align with adjacent controls.
+
+### Motion & micro-interactions
+
+No animation; do not expand a divider as a loading indicator or hover decoration.
+
+### Accessibility
+
+Decorative rule is aria-hidden. Meaningful rule has role=separator and aria-orientation; label supplies its accessible name. No tabindex or keyboard behavior.
+
+### Responsive behavior
+
+Allow parent layout to choose orientation at a breakpoint; avoid leaving a vertical rule after a toolbar wraps to multiple lines.
+
+### Content rules
+
+Accessible label describes the separated groups only when useful. An unlabeled decorative rule is appropriate for visual rhythm.
+
+### Usage rules
+
+Use sparingly where spacing alone is insufficient. Use real headings to communicate document hierarchy and avoid separator spam between every small item.
+
+### API
+
+DividerProps: div attributes; orientation horizontal|vertical; decorative defaulttrue; label?:string.
+
+### Code example
+
+```tsx
+<Divider />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## DropdownMenu
+
+Family: Overlays.
+
+### Purpose
+
+Expose a compact set of commands belonging to one object or action trigger.
+
+### Anatomy
+
+Existing trigger ReactElement; portalled menu surface; ordered command items with label, optional icon, disabled/destructive semantics and selection handler.
+
+### Variants
+
+side=top|right|bottom|left (defaultbottom), align=start|center|end (defaultend); controlled open or defaultOpen. Flat command list only; no submenu, checkbox-item or radio-item API.
+
+### Sizes
+
+Rows minimum 40 px for fine pointers on wider layouts, and 44 px for coarse pointers or layouts 600 px wide and below. Menu width follows readable command text within viewport constraints. Keep full targets instead of arbitrary narrow rows.
+
+### States
+
+Closed/open, highlighted/focused row, disabled/destructive item. Selecting normally closes the menu; item.onSelect can prevent default when deliberately retaining it.
+
+### Color behavior
+
+The panel colour follows where the menu opens (surface='auto'): a white sheet over the white page, a grey panel (#F3F5F8) over cards, or the dark ink panel for a primary action. Highlighted rows use the track (#F1F3F6, #E8ECF2 on the grey panel); destructive rows are #D92644 with #FFD3DA highlight; disabled #9AA1AD.
+
+### Icon behavior
+
+Optional one EASM glyph per item, size 16 and currentColor. Glyphs cannot shrink. When any row has an icon, iconless rows retain a decorative 16 px spacer so every label shares the same text column.
+
+### Typography
+
+14 px/500 command labels; wrap at sensible widths rather than shrinking. Use verbs describing the command outcome.
+
+### Spacing
+
+Menu inset 6 px; row inset 8 px vertical/10 px horizontal; icon/text gap 10 px. Trigger offset 6 px and viewport collision inset 12 px. Text columns stay aligned for mixed icon/no-icon rows.
+
+### Borders & surfaces
+
+8 px menu radius (radius-float, the same corner as the trigger) with 4 px row corners concentric with the 4 px inset, no outline and no shadow; separation is by fill. At least 196 px wide and never narrower than the trigger. Scoped portal layers keep anchored children above their own surface and below deeper modals.
+
+### Motion & micro-interactions
+
+200 ms anchored-overlay fade/small translation; reduced motion removes it. Item execution starts immediately; closing never delays the selected command.
+
+### Accessibility
+
+Radix menu semantics, trigger expanded/haspopup, roving focus, arrows/Home/End, typeahead and Escape with focus return. Item IDs/labels must be unique/nonempty. Trigger must accept ref and event props. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Destructive rows retain a danger-colored keyboard outline; forced colors uses system highlights.
+
+### Responsive behavior
+
+Collision-aware portal and available-height scrolling; labels wrap; rows 44 px for coarse pointers or layouts 600 px wide and below. Do not render more commands than users can inspect comfortably.
+
+### Content rules
+
+Use distinct action labels, such as Edit agent or Archive agent. Explain dangerous consequences in ConfirmationDialog when needed; disabled commands should have an accessible contextual explanation nearby.
+
+### Usage rules
+
+Use for commands. Use Select/Combobox for a persistent form value and Popover for a richer form. Keep business permission checks in handlers as well as disabled presentation.
+
+### API
+
+DropdownMenuProps: trigger:ReactElement; items:MenuItem[] {id,label,icon?,disabled?,destructive?,onSelect?(event:Event)}; open/defaultOpen/onOpenChange; label defaults Actions; side/align; className.
+
+### Code example
+
+```tsx
+<DropdownMenu trigger={<Button variant="secondary">Agent actions</Button>} items={[{ id: "edit", label: "Edit agent", icon: "edit", onSelect: () => editAgent() }, { id: "archive", label: "Archive agent", destructive: true, onSelect: () => reviewArchive() }]} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Popover
+
+Family: Overlays.
+
+### Purpose
+
+Show anchored contextual content or a small interactive task without taking over the full page.
+
+### Anatomy
+
+Existing trigger; portalled, collision-aware surface; optional visible title or required accessible label; content children. It is a nonmodal contextual overlay by default.
+
+### Variants
+
+Preferred side/align; controlled open/defaultOpen. Untitled content must have label. No menu semantics or automatic business-action closure.
+
+### Sizes
+
+Content-width contract constrained to viewport width/available height, with a 320 px standard surface. Use controls at the standard 32/40/48 scale, not custom tiny popup controls.
+
+### States
+
+Closed/open, focused content, outside-pointer/Escape dismissal. Focus returns to the trigger when closing; children own input/loading/validation states.
+
+### Color behavior
+
+Same surface rule as menus: white over the page, grey (#F3F5F8) over cards, or the ink panel. #101318 title and body, #5E6470 supporting copy. Brand blue appears in controls or selected values only.
+
+### Icon behavior
+
+No required overlay icon. Trigger/children use named EASM icons; decorative symbols cannot replace the popover title or control labels.
+
+### Typography
+
+Title 16 px/600, body 14 px/1.5. Keep content short enough to remain contextual; long explanations belong to an in-page section.
+
+### Spacing
+
+16–20 px surface inset;12 px title/body gap; fields 16 px apart; inner focus gutter prevents clipped focus rings. Leave clear room between the trigger and surface; avoid actions against the frame.
+
+### Borders & surfaces
+
+8 px radius (radius-float, the same corner as the trigger it opens from), no outline and no shadow; never narrower than its trigger. The portal avoids clipping by parent overflow while keeping a clean anchored relationship.
+
+### Motion & micro-interactions
+
+200 ms fade/small translation; reduced motion removes it. Opening begins immediately and keyboard focus remains deterministic.
+
+### Accessibility
+
+Radix popover dialog semantics and focus management; title or label names the surface. Trigger must accept ref/event props. Escape/outside dismiss without trapping the page; do not claim it is modal. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Collision-aware positioning and viewport-constrained width/height; content scrolls when needed. For long or critical mobile tasks, compose Dialog/Drawer rather than shrinking controls.
+
+### Content rules
+
+Title describes the local task, such as Filter departments. Keep help useful and concise; links/actions are allowed unlike Tooltip.
+
+### Usage rules
+
+Use for anchored supplemental tasks. Use DropdownMenu for a command list, Tooltip for a short noninteractive sentence and Dialog for modal decisions.
+
+### API
+
+PopoverProps: trigger:ReactElement; title?:ReactNode; label?:string (required when untitled); children; open/defaultOpen/onOpenChange; side/align; className.
+
+### Code example
+
+```tsx
+<Popover trigger={<Button variant="secondary">Filter help</Button>} title="Filtering conversations"><p>Choose departments to narrow the conversation list.</p></Popover>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Dialog
+
+Family: Overlays.
+
+### Purpose
+
+Focus attention on a bounded task or detail that requires a modal layer, such as editing an agent.
+
+### Anatomy
+
+Optional trigger, modal backdrop, titled panel, optional description inside the scrollable body, optional footer and named close IconButton. Business content remains caller-owned.
+
+### Variants
+
+size=sm|md|lg; controlled open/defaultOpen; optional trigger; restoreFocusRef for an external launcher. The size describes a panel width preset, not a control height.
+
+### Sizes
+
+Preset widths sm 420/md 560/lg 760 px constrained by viewport margins; body height capped to available viewport and scrolls. Controls keep md 40/default or approved density; never shrink to fit the dialog.
+
+### States
+
+Closed/open, focused content, dismissing; child loading/error states. Escape, close and outside interaction request closure for ordinary dialogs; preserve unsaved-work decisions in application logic.
+
+### Color behavior
+
+White panel with #101318 title and #5E6470 description over a warm scrim (rgb(35 33 30 / 34%)). Primary and destructive controls keep their semantic fills.
+
+### Icon behavior
+
+Named close glyph; other icons belong to task content. Do not add a warning symbol to every generic dialog.
+
+### Typography
+
+Title 20 px/600 with readable line-height; body 14 px and description 14 px. Use nested headings appropriately and avoid long all-caps titles.
+
+### Spacing
+
+Panel inset 24 px desktop/20 px narrow; title/description gap 8 px, description/content gap 20 px, content sibling gap 16 px; body focus gutter 6 px reserves the 4 px halo plus 2 px rounding allowance without changing the visible inset; action gap 10 px; close target has reserved header space.
+
+### Borders & surfaces
+
+16 px panel radius with no outline or shadow; the scrim separates it. Below 600 px it becomes a bottom sheet with top corners only and full-width stacked actions. Descriptions and content scroll together; nested overlays share scoped layer bands.
+
+### Motion & micro-interactions
+
+280 ms backdrop fade and opaque panel movement with small translation; reduced motion removes it. No delayed action or forced full-cycle wait on closure.
+
+### Accessibility
+
+Radix supplies the modal focus trap, background interaction isolation, accessible title/description, Escape dismissal and trigger focus return. Provide restoreFocusRef for externally controlled launchers without a built-in trigger. Do not manually add competing roles or a second trap. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Give every dialog a meaningful title and provide description when it explains the task. Use a deliberate initial focus appropriate to the first step.
+
+### Responsive behavior
+
+Viewport margins and dynamic-viewport height keep the panel visible; body scrolls, footer wraps, targets 44 px coarse. Verify the form with the on-screen keyboard in intended mobile browsers.
+
+### Content rules
+
+Title names the task (Edit agent), description explains scope, footer verbs state outcomes (Save changes/Cancel). Keep essential error copy within the dialog.
+
+### Usage rules
+
+Use only for a bounded modal task. Use ConfirmationDialog for consequential confirm/cancel decisions and Drawer for contextual side workflows. Caller closes only when its operation is actually complete.
+
+### API
+
+DialogProps: title:ReactNode; children:ReactNode; trigger?; description?; footer?; size=sm|md|lg; closeLabel defaultClose dialog; open/defaultOpen/onOpenChange; restoreFocusRef?:RefObject<HTMLElement|null>; className.
+
+### Code example
+
+```tsx
+<Dialog trigger={<Button>Edit agent</Button>} title="Edit agent" description="Update the agent display name." footer={<Button>Save changes</Button>}><TextField label="Display name" defaultValue="Admissions agent" /></Dialog>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Drawer
+
+Family: Overlays.
+
+### Purpose
+
+Present a modal side task or detail while keeping the originating page visually recognizable.
+
+### Anatomy
+
+Dialog foundation with side-attached panel, fixed title, named close action, scrollable description/body and optional separated footer.
+
+### Variants
+
+side=left|right (defaultright); size=sm|md|lg; controlled or uncontrolled open; optional trigger/external restoreFocusRef. Drawer is modal, not a permanently visible navigation rail.
+
+### Sizes
+
+Preset widths sm 360/md 440/lg 560 px constrained by viewport; full dynamic-viewport height. Controls retain standard density and 44 px coarse targets.
+
+### States
+
+Closed/open, focused modal content, child validation/loading. Escape/outside/close request dismissal; application owns any unsaved-work rule.
+
+### Color behavior
+
+White side panel, #101318 title and body, #5E6470 supporting copy, over the warm scrim. Blue remains action and selection emphasis.
+
+### Icon behavior
+
+Named close icon and content-specific EASM icons. No chevron is required simply because the panel enters from a side.
+
+### Typography
+
+Title 20 px/600, body 14 px. Long names wrap; hierarchy and font sizes match Dialog.
+
+### Spacing
+
+24 px desktop horizontal inset and 24–28 px vertical inset;20 px horizontal inset on narrow viewports;16 px content-sibling gaps; description/content 20 px; body focus gutter 6 px reserves the 4 px halo plus 2 px rounding allowance without changing the visible inset; footer 16 px top inset with subtle divider. Keep close target separate from title.
+
+### Borders & surfaces
+
+16 px radius on the free corners and a flush attached edge; no outline, no shadow and no rule above the footer (space separates it). Full width below 600 px. Nested overlays share scoped layer bands.
+
+### Motion & micro-interactions
+
+280 ms side translation plus backdrop fade; reduced motion shows/hides instantly. Side determines motion direction, not business meaning.
+
+### Accessibility
+
+Radix supplies the modal focus trap, background interaction isolation, accessible title/description, Escape dismissal and trigger focus return. Provide restoreFocusRef for externally controlled launchers without a built-in trigger. Do not manually add competing roles or a second trap. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline. Its modal semantics are the same as Dialog; visible page context is not keyboard reachable while open.
+
+### Responsive behavior
+
+Near-full width at narrow viewports with a small safe margin; content/keyboard must remain scrollable. Do not shrink field or close targets to preserve a desktop width.
+
+### Content rules
+
+Title names the contextual entity/task, such as Conversation details. Keep task actions inside the drawer and explain any destructive effect before confirmation.
+
+### Usage rules
+
+Use for focused contextual work. Use Panel for an in-page region and persistent navigation outside this modal component. Avoid deeply nested drawers/dialogs.
+
+### API
+
+DrawerProps: DialogProps plus side=left|right default right; closeLabel defaults Close drawer; restoreFocusRef supports external launchers.
+
+### Code example
+
+```tsx
+<Drawer trigger={<Button variant="secondary">Conversation details</Button>} title="Conversation details" side="right"><p>Assigned to Admissions support.</p></Drawer>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## ConfirmationDialog
+
+Family: Overlays.
+
+### Purpose
+
+Ask for an explicit decision before a consequential action, with clear consequences and safe cancellation.
+
+### Anatomy
+
+AlertDialog modal foundation; title, optional explanation/details; optional destructive symbol; cancel and confirm Buttons. Business callback owns the action and final closure.
+
+### Variants
+
+destructive=false default gives a normal primary confirm; destructive=true gives danger confirm and relevant warning symbol. loading reflects actual pending confirmation.
+
+### Sizes
+
+Compact dialog preset constrained by viewport. Standard action targets 40 px (44 coarse); enough width for explicit verb labels; body grows/scrolls if consequences need detail.
+
+### States
+
+Closed/open, safe cancel focus, confirmation pending, error/outcome managed by application. loading blocks duplicate confirmation and dismissal/cancel until the operation resolves; confirm never automatically closes on invocation.
+
+### Color behavior
+
+White panel; the warning tile is #D92644 on #FFF5F6. Confirm is destructive red only for a destructive action, otherwise the primary blue fill. Cancel stays the secondary grey fill.
+
+### Icon behavior
+
+Destructive warning indicator only when appropriate; confirm/cancel text carries meaning. No success icon before the operation finishes.
+
+### Typography
+
+Title 20 px/600, explanation 14 px; action labels 14 px/600. Consequences use plain readable prose.
+
+### Spacing
+
+24 px panel inset (20 narrow);6 px body focus gutter protects the 4 px halo with 2 px rounding allowance;16–20 px explanation/action gaps;8–12 px action gap. Keep cancel and confirm distinguishable, with room for long localized labels.
+
+### Borders & surfaces
+
+16 px modal radius with no outline or shadow; the warning tile has 11 px corners and no accent rail.
+
+### Motion & micro-interactions
+
+280 ms opaque panel translation and backdrop fade on entry/exit; reduced motion removes it. Confirmation callback runs immediately; loading animation never determines whether the dialog closes.
+
+### Accessibility
+
+Radix AlertDialog title/description and modal trap; initial focus favors Cancel, or the alert-dialog panel if opened already loading because Cancel is disabled. Escape/outside cannot discard a loading operation. External launchers use restoreFocusRef. Specific confirm label and visible consequences support an informed choice. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Actions can wrap while preserving logical order and full target sizes. Consequence copy remains visible or scrollable; never omit it on mobile.
+
+### Content rules
+
+State the object and consequence: Archive Admissions agent? Explain reversibility if known. Use Archive agent and Cancel rather than Yes/No or OK.
+
+### Usage rules
+
+Caller controls loading/errors and closes on actual success. Preserve open state on failure with actionable feedback. Use only when the consequence warrants interruption; not for every reversible minor edit.
+
+### API
+
+ConfirmationDialogProps: title required; description/children/trigger optional; onConfirm required; onCancel?; confirmLabel/cancelLabel; destructive; loading; open/defaultOpen/onOpenChange; restoreFocusRef. No automatic confirm closure.
+
+### Code example
+
+```tsx
+<ConfirmationDialog open={confirmOpen} onOpenChange={setConfirmOpen} title="Archive Admissions agent?" description="The agent will stop accepting new conversations." destructive confirmLabel="Archive agent" loading={archiving} onConfirm={archiveAgent} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## Avatar
+
+Family: Utilities.
+
+### Purpose
+
+Represent a named person with a photo or a deterministic initials fallback.
+
+### Anatomy
+
+Circle(default) or rounded-square span; optional image cropped with object-fit cover; initials fallback; optional online/away/offline status marker. Wrapper owns the accessible image name.
+
+### Variants
+
+Photo or initials fallback; shape=circle(default)|rounded; decorative=false by default; optional status=online|away|offline. No random color assignment or interactive avatar variant.
+
+### Sizes
+
+Visual diameter sm 32/md 40(default)/lg 48 px. Noninteractive avatar does not expand to 44; if used in a button the surrounding control owns the target.
+
+### States
+
+Image loading/displayed or failed-image initials fallback; src change can retry. Presence is caller-supplied status, not inferred from image/network availability.
+
+### Color behavior
+
+Initials fallback is #1D4FD8 on #DCE7FD with a #C9D9FD edge. Presence: online #0C8138, away #94530A, offline #9AA1AD, each with a ring in the surface colour behind it.
+
+### Icon behavior
+
+Initials/photo replace a generic user glyph; presence marker remains decorative to the named wrapper. Use a user icon only when representing an unknown generic role outside Avatar.
+
+### Typography
+
+Initials sm 12/md 14/lg 16 px, weight 600, centered. Use first/last word initials without slicing UTF-16 surrogate pairs.
+
+### Spacing
+
+Centered circular content, no external inset; keep 8 px beside the person’s visible name. Presence marker sits consistently at the lower edge without covering recognition.
+
+### Borders & surfaces
+
+1 px edge; the circle mask follows the circle, the rounded frame uses an 8 px radius with a 7 px image mask inside the edge. The presence marker has a 2 px ring in the surrounding surface colour so it never looks broken.
+
+### Motion & micro-interactions
+
+No pulse, photo zoom or presence animation by default. Image failure changes directly to the stable fallback.
+
+### Accessibility
+
+name is required. Nondecorative wrapper role=img announces name and status; inner image has empty alt to avoid duplicate names. decorative=true hides the entire graphic when nearby text supplies identity.
+
+### Responsive behavior
+
+Keep selected visual diameter; do not scale initials down arbitrarily. Name text in a surrounding composition wraps independently.
+
+### Content rules
+
+Supply the actual display name; respect user-provided scripts and naming conventions. Status must be a verified application fact, not an assumption about availability.
+
+### Usage rules
+
+Use with visible identity text in most lists. Do not rely on photos/initials alone to distinguish people with similar names; permissions and profile navigation belong to the parent.
+
+### API
+
+AvatarProps: native span attributes; name:string required; src?:string; shape=circle|rounded; size=sm|md|lg; decorative?:boolean; status=online|away|offline.
+
+### Code example
+
+```tsx
+<Avatar name="Aisha Khan" size="md" status="online" />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## UserChip
+
+Family: Utilities.
+
+### Purpose
+
+Represent a selected/assigned person with visible identity and optional removal, such as the assigned agent.
+
+### Anatomy
+
+Opaque rounded rectangular surface containing a decorative rounded Avatar, visible name, optional description and hidden status text; optional named remove IconButton.
+
+### Variants
+
+Display-only or removable via onRemove; size=sm|md; optional src/status/description; disabled blocks removal, not identity review.
+
+### Sizes
+
+sm 40px row with 32px avatar; md 48px row with 40px avatar. Removable coarse-pointer rows use 56px minimum with 48px avatar to preserve the 4px border-inclusive inset and 44px action.
+
+### States
+
+Photo/fallback, status, remove hover/focus, disabled remove. UserChip has no automatic selection state or profile-navigation action.
+
+### Color behavior
+
+Removable chips sit on #F6F7F9 with #101318 name and #5E6470 description; avatar and presence use their own tokens. Inside table cells a non-removable chip is plain (no fill). Disabled removes action emphasis without hiding the person.
+
+### Icon behavior
+
+Avatar supplies identity; close in the independent remove target. No generic user icon repeated beside a recognizable avatar.
+
+### Typography
+
+Name sm 13px/16px line-height or md 14px/20px line-height,600 weight; description 12px/16px line-height. Full name wraps; do not collapse to initials when that loses identity.
+
+### Spacing
+
+4px border-inclusive avatar inset (3px padding plus 1px border),8px avatar/text gap; removable end inset also 4px, display-only copy end inset 8px. Long copy grows naturally without shrinking the avatar.
+
+### Borders & surfaces
+
+No outline. The 12 px frame minus a 4 px inset equals the 8 px avatar radius; the image mask follows the avatar edge and the remove target stays independent.
+
+### Motion & micro-interactions
+
+No automatic animation. Removal follows application state immediately; focus moves to the next sensible selectable person/trigger.
+
+### Accessibility
+
+Visible name provides identity; inner Avatar is decorative to avoid duplicates, status has hidden explanatory text. Remove control announces Remove plus the user name. No nested buttons. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Wrap identity/description and chip groups; preserve removal 44 px on coarse pointers. Do not make the full chip an ambiguous click target.
+
+### Content rules
+
+Use real display name and a concise distinguishing description, such as Admissions support. Status is descriptive; removal label identifies the exact person.
+
+### Usage rules
+
+Use for selected/assigned people. Use Avatar for purely visual identity and Chip for generic filter values. Application owns assignment/removal and resulting focus.
+
+### API
+
+UserChipProps: span attributes; name required; description?,src?,status?; size=sm|md; onRemove?; disabled?.
+
+### Code example
+
+```tsx
+<UserChip name="Aisha Khan" description="Admissions support" onRemove={() => unassignAgent()} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## ModuleIcon
+
+Family: Utilities.
+
+### Purpose
+
+Give a product module a recognizable, restrained graphic tile in navigation or an overview.
+
+### Anatomy
+
+Noninteractive rounded tile containing one EASM icon; optional label determines whether it is meaningful or decorative.
+
+### Variants
+
+tone=brand(default), neutral or signature. Signature is a restrained EASM brand accent, not routine status or action emphasis.
+
+### Sizes
+
+Tile 32/40/48 px for sm/md/lg; glyph 20/24/32 px centered. Noninteractive tile is visual size; surrounding navigation control owns a 44 px coarse target.
+
+### States
+
+Static tile; no automatic hover, pressed, selection or loading. Parent navigation handles state without changing the module glyph arbitrarily.
+
+### Color behavior
+
+Brand tile #EEF4FF with a #2563EB glyph; neutral #F6F7F9 with #101318; signature #FFF0E5 with #101318 and a restrained #FF6A00 core. For easm-one, signature sets --easm-icon-core:var(--easm-ui-signature), keeping dark rails and an orange core. Never put small white text on orange.
+
+### Icon behavior
+
+One approved IconName with clean 1.6 px geometry and consistent optical center. Use easm-one for the EASM One platform identity; its 6x 6 core stays solid in all eight treatments, including outline, and the rail-to-core gaps are intentional. Other modules keep stable functional metaphors. The separate 64-unit marketing brandmark is not a product glyph; avoid combining unrelated glyphs into a logo.
+
+### Typography
+
+No visible text inside the tile. Nearby module label uses product typography; optional accessible label names the module.
+
+### Spacing
+
+Centered glyph with consistent breathing room. Keep 8–12 px between tile and visible module title.
+
+### Borders & surfaces
+
+Corner radius 8/10/12 px by size; a flat tinted fill without outline or shadow. Larger artwork stays fully inside its tile.
+
+### Motion & micro-interactions
+
+Static by default. Do not attach decorative continuous AI/pulse motion to module navigation; active process motion uses explicit feedback components.
+
+### Accessibility
+
+With label it is a named graphic; without label it is decorative, appropriate beside visible module text. Tile is not a button and has no tabindex.
+
+### Responsive behavior
+
+Keep tile size from the defined presets. Parent layout can hide decorative tile when necessary, preserving the visible navigation label.
+
+### Content rules
+
+Use the stable module name, such as Knowledge management, when standalone. Parent navigation still needs its own meaningful name.
+
+### Usage rules
+
+Use to support module recognition, sparingly. For EASM One use ModuleIcon icon="easm-one" tone="signature"; omit label beside an existing visible name. Use IconButton for commands and StatusBadge for operational states; do not use signature tone as a selected-state workaround or identity as a generic loader.
+
+### API
+
+ModuleIconProps: span attributes; icon:IconName required; label?:string; size=sm|md|lg; tone=brand|neutral|signature.
+
+### Code example
+
+```tsx
+<span><ModuleIcon icon="easm-one" tone="signature" /> EASM One</span>
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## CopyControl
+
+Family: Utilities.
+
+### Purpose
+
+Copy an explicit text value to the clipboard with truthful busy, success and failure feedback.
+
+### Anatomy
+
+Button or IconButton, state-driven copy/check icon, named action, polite live message and visible manual-copy failure guidance.
+
+### Variants
+
+iconOnly=false(default) shows label; iconOnly=true retains required accessible action naming. size follows control scale. No automatic clipboard-read or unrelated export behavior.
+
+### Sizes
+
+sm: 32 px; md: 40 px (default); lg: 48 px. These are minimum heights, so translated or wrapped text may increase height. Coarse pointers receive a minimum 44 px target. iconOnly uses a square target; feedback wraps beside/below it rather than increasing the glyph size.
+
+### States
+
+Idle, copying, copied, error and disabled. Repeat copy is blocked during pending write. Confirmed success changes the action label to Copied. Changing text resets feedback and stale completions must not mark a new value copied.
+
+### Color behavior
+
+Secondary grey fill action with a #101318 icon and label. Completed feedback is truthful; error guidance uses #D92644. Failure never shows a checkmark.
+
+### Icon behavior
+
+copy at idle/error; check only after clipboard write resolves. Busy state follows Button; icons inherit the action foreground.
+
+### Typography
+
+Button 13/14/16 px; error message 13 px readable prose. State feedback must not turn into internal exception text.
+
+### Spacing
+
+8 px between control and feedback; wrap on narrow containers; reserve space to avoid moving neighboring task actions.
+
+### Borders & surfaces
+
+Button and IconButton 8 px radius, no outline and no extra container. Keep the focus halo visible while an async write is pending.
+
+### Motion & micro-interactions
+
+Color, border and opacity transitions use 140 ms with cubic-bezier(0.2, 0, 0, 1). Reduced motion removes transitions. Interaction and application work start immediately; animation never delays an operation. No delayed success pulse or forced reset timer; success represents the actual completed write.
+
+### Accessibility
+
+Named native control; pending uses focus-preserving busy state. Polite live text announces copied/failure without moving focus. Visible failure tells user to select/copy text manually. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+Hidden decorative grid measures reserve the wider of the original label and Copied, preventing target width changes. Feedback wraps beneath target; iconOnly target remains 44 px coarse. The original text should remain accessible for manual copy if the browser denies clipboard access.
+
+### Content rules
+
+label names the value: Copy conversation ID. onCopy callback runs only after the browser confirms write success. Failure copy should provide a practical alternative.
+
+### Usage rules
+
+Supply the exact text to copy, not formatted HTML. Application owns exposing sensitive values and manual fallback. Test clipboard access in the actual secure-context/browser environment.
+
+### API
+
+CopyControlProps: text:string required; label defaultCopy; size; iconOnly defaultfalse; disabled; onCopy?(text:string); className.
+
+### Code example
+
+```tsx
+<CopyControl text="CONV-1042" label="Copy conversation ID" />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+
+## OverflowMenu
+
+Family: Utilities.
+
+### Purpose
+
+Collect secondary object actions under a familiar, explicitly named overflow trigger.
+
+### Anatomy
+
+IconButton more-horizontal trigger and DropdownMenu items; wrapper adds no separate business semantics.
+
+### Variants
+
+Flat MenuItem command list, optional disabled trigger; size=sm|md|lg. It does not add submenu, selection or navigation abstractions.
+
+### Sizes
+
+Trigger square 32/40/48 px, coarse 44 px minimum; menu rows 40 desktop/44 coarse. Content width follows DropdownMenu.
+
+### States
+
+Trigger hover/focus/disabled, menu closed/open, item highlighted/disabled/destructive. Business handlers own pending/outcomes.
+
+### Color behavior
+
+Subtle trigger with a #2563EB glyph and #EEF4FF hover; the menu follows DropdownMenu (surface by context, destructive rows in red). No orange emphasis.
+
+### Icon behavior
+
+Fixed more-horizontal trigger (the approved shared @easm-ui/icons registry glyph); optional EASM item icons. Trigger label communicates scope because the three dots alone cannot name the object.
+
+### Typography
+
+No visible trigger label; menu commands 14 px/500. Accessible label is concise, object-specific text.
+
+### Spacing
+
+Standalone compact target with 8 px separation from other actions; menu inset and row spacing use DropdownMenu recipes.
+
+### Borders & surfaces
+
+8 px trigger radius and an 8 px menu (radius-float) without outline or shadow; keep portal and focus edges unclipped.
+
+### Motion & micro-interactions
+
+140 ms trigger colors,200 ms menu entry/exit; reduced motion removes both. Command starts immediately.
+
+### Accessibility
+
+Default label More actions can be replaced with More actions for Admissions agent. IconButton naming and Radix menu keyboard/focus return behavior apply. Keyboard focus is one 2 px #2F6BEB edge with a soft 4 px halo (rgb(47 107 235 / 20%)): the focus-ring token. Fields show the halo around their own border (field-focus-ring); clipped rounded shells and menu rows use an inset 2 px edge. Forced colors keep a visible system outline.
+
+### Responsive behavior
+
+44 px trigger/menu targets on coarse pointers; collision-aware popup keeps commands visible. Do not hide the one principal action solely to save space.
+
+### Content rules
+
+Only secondary related commands. Use explicit item verbs and keep destructive actions clearly named and confirmed when needed.
+
+### Usage rules
+
+Use on repeated rows/cards where object context is clear. Keep the primary action visible. Supply stable unique MenuItem IDs and permission-aware disabled states.
+
+### API
+
+OverflowMenuProps: items:MenuItem[] required; label defaults More actions; size=sm|md|lg; disabled; className.
+
+### Code example
+
+```tsx
+<OverflowMenu label="More actions for Admissions agent" items={[{ id: "edit", label: "Edit agent", onSelect: () => editAgent() }, { id: "archive", label: "Archive agent", destructive: true, onSelect: () => reviewArchive() }]} />
+```
+
+### Migration acceptance
+
+Library available; existing application consumers are not migrated in this phase. See the exact current definitions and candidate sites in [migration-map.json](../audit/migration-map.json). Verify the named component, keyboard behavior, visible states, validation and coarse-pointer targets at the actual destination before replacing its existing control.
+

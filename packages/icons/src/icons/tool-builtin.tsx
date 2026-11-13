@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ToolBuiltinIcon = /* @__PURE__ */ createIcon({"name":"tool-builtin","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M14 3a6 6 0 0 0-6 8.5L3.7 16a3 3 0 0 0 4.3 4.3l4.5-4.5A6 6 0 0 0 21 10l-4 2-3-3 2-4-2-2Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"rect","attrs":{"x":16.5,"y":17.7,"width":3,"height":2,"rx":0.6,"fill":"none","stroke":"contrast","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M17.1 17.7v-.9a.9.9 0 0 1 1.8 0v.9","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

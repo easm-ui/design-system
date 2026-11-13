@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const MosqueIcon = /* @__PURE__ */ createIcon({"name":"mosque","body":[{"tag":"path","attrs":{"d":"M7 20.5v-7.2h10v7.2","fill":"surface"}},{"tag":"path","attrs":{"d":"M7.4 13.3c0-3 2.1-4.9 4.6-5.8 2.5.9 4.6 2.8 4.6 5.8","fill":"surface"}},{"tag":"path","attrs":{"d":"M12 7.5V4.3"}},{"tag":"rect","attrs":{"x":2.8,"y":10.5,"width":2.4,"height":10,"rx":0.9,"fill":"surface"}},{"tag":"rect","attrs":{"x":18.8,"y":10.5,"width":2.4,"height":10,"rx":0.9,"fill":"surface"}},{"tag":"path","attrs":{"d":"M4 10.5V7.8M20 10.5V7.8M10.4 20.5v-2.4a1.6 1.6 0 0 1 3.2 0v2.4M2 20.5h20"}}]});

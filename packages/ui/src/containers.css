@@ -1,0 +1,73 @@
+.easm-ui-card, .easm-ui-panel { min-width: 0; background: var(--easm-ui-surface); border: 1px solid transparent; border-radius: var(--easm-ui-radius-card); padding: 16px; }
+@media (min-width: 600px) { .easm-ui-card, .easm-ui-panel { padding: 20px; } }
+.easm-ui-card[data-padding='none'] { padding: 0; }
+.easm-ui-card[data-padding='sm'], .easm-ui-panel[data-padding='sm'] { padding: 16px; }
+.easm-ui-card[data-padding='lg'], .easm-ui-panel[data-padding='lg'] { padding: 24px; }
+.easm-ui-card[data-variant='plain'] { border-color: transparent; }
+.easm-ui-card[data-variant='elevated'] { box-shadow: var(--easm-ui-shadow-card); }
+.easm-ui-container-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.easm-ui-container-header > div:first-child { flex: 1 1 160px; min-width: 0; }
+/* With an icon (Card and Panel icon prop) the tile, the title column and the actions share one row; the actions keep
+   to the end. Below 420px text actions take a row of their own (responsive.css). */
+.easm-ui-container-header[data-has-icon='true'] { justify-content: flex-start; flex-wrap: nowrap; gap: 12px; }
+.easm-ui-container-header[data-has-icon='true'] > div:nth-child(2) { flex: 1 1 auto; min-width: 0; }
+/* The icon tile belongs to the title and its description as one unit. The title (24 px line), the 4 px gap and the
+   description's first line (20 px) make a 48 px block; a 40 px tile sits centred on it, 4 px from its top. Without
+   a description the 36 px tile centres on the title alone. A description that wraps further runs on below, and the
+   tile stays with the first two lines instead of drifting into the middle of a paragraph. */
+.easm-ui-container-header[data-has-icon='true'] > .easm-ui-tone-icon { --easm-tone-icon-size: 40px; align-self: flex-start; margin-top: 4px; }
+.easm-ui-container-header[data-has-icon='true']:not(:has(.easm-ui-container-description)) > .easm-ui-tone-icon { --easm-tone-icon-size: 36px; margin-top: -6px; }
+.easm-ui-container-header[data-has-icon='true'] > .easm-ui-container-actions { flex: none; margin-inline-start: auto; }
+.easm-ui-container-actions { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.easm-ui-container-title { font-size: var(--easm-ui-text-lg); font-weight: 600; line-height: 24px; margin: 0; overflow-wrap: break-word; }
+.easm-ui-container-description { font-size: var(--easm-ui-text-sm); line-height: 20px; color: var(--easm-ui-text-secondary); margin: 4px 0 0; overflow-wrap: break-word; }
+.easm-ui-card > .easm-ui-container-description { margin: 0 0 16px; }
+.easm-ui-container-body { display: flex; flex-direction: column; gap: 16px; min-width: 0; overflow-wrap: break-word; }
+.easm-ui-container-body > :is(.easm-ui-button,.easm-ui-badge,.easm-ui-user-chip,.easm-ui-chip,.easm-ui-tag,.easm-ui-spinner,.easm-ui-segmented,.easm-ui-segmented-frame) { align-self: flex-start; }
+.easm-ui-container-footer { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+/* Accordion items are separate filled blocks with a small gap: no seams, no outlines. On a white
+   card the blocks take the grey track so they still read as blocks. */
+.easm-ui-accordion { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.easm-ui-accordion > .easm-ui-collapsible { border-radius: var(--easm-ui-radius-card); overflow: hidden; }
+:is(.easm-ui-card, .easm-ui-panel, .easm-ui-overlay-panel, .easm-ui-popover) .easm-ui-accordion > .easm-ui-collapsible { background: var(--easm-ui-surface-hover); --easm-icon-background: var(--easm-ui-surface-hover); --easm-icon-contrast: var(--easm-ui-surface-hover); }
+.easm-ui-collapsible { min-width: 0; background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-collapsible-heading { margin: 0; font: inherit; }
+.easm-ui-collapsible-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; gap: 16px; padding: 12px 16px; text-align: start; border: 0; border-radius: 0; background: transparent; color: var(--easm-ui-text); cursor: pointer; touch-action: manipulation; transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-collapsible-trigger:hover:not(:disabled) { background: var(--easm-ui-surface-hover); --easm-icon-background: var(--easm-ui-surface-hover); --easm-icon-contrast: var(--easm-ui-surface-hover); }
+.easm-ui-collapsible-trigger:active:not(:disabled) { background: var(--easm-ui-surface-pressed); --easm-icon-background: var(--easm-ui-surface-pressed); --easm-icon-contrast: var(--easm-ui-surface-pressed); }
+.easm-ui-collapsible[data-open='true'] > .easm-ui-collapsible-heading .easm-ui-collapsible-trigger:not(:disabled) { color: var(--easm-ui-primary); }
+.easm-ui-collapsible-trigger:disabled { color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+/* Keep the complete indicator inside the intentionally clipped rounded shell. */
+.easm-ui-accordion .easm-ui-collapsible-heading .easm-ui-collapsible-trigger:focus-visible,
+.easm-ui-accordion.easm-ui > .easm-ui-collapsible:focus-visible { outline-offset: -2px; box-shadow: var(--easm-ui-focus-ring-inset); }
+.easm-ui-collapsible-label { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.easm-ui-collapsible-copy { min-width: 0; overflow-wrap: break-word; }
+.easm-ui-collapsible-title { display: block; font-size: var(--easm-ui-text-md); line-height: 20px; font-weight: 600; }
+.easm-ui-collapsible-description { display: block; margin-top: 4px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-collapsible-leading { flex: none; }
+.easm-ui-collapsible-chevron { flex: none; color: var(--easm-ui-text-secondary); transition: transform var(--easm-ui-motion-slow) var(--easm-ui-ease), color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-collapsible[data-open='true'] > .easm-ui-collapsible-heading .easm-ui-collapsible-chevron { transform: rotate(180deg); color: var(--easm-ui-primary); }
+.easm-ui-collapsible-region { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--easm-ui-motion-slow) var(--easm-ui-ease), visibility var(--easm-ui-motion-slow); }
+.easm-ui-collapsible[data-open='true'] > .easm-ui-collapsible-region { grid-template-rows: 1fr; visibility: visible; }
+.easm-ui-collapsible-clip { min-height: 0; overflow: hidden; }
+.easm-ui-collapsible-content { display: flex; flex-direction: column; gap: 16px; min-width: 0; margin: 0 16px; padding: 2px 0 18px; color: var(--easm-ui-text-secondary); overflow-wrap: break-word; }
+.easm-ui-collapsible[data-has-icon='true'] > .easm-ui-collapsible-region > .easm-ui-collapsible-clip > .easm-ui-collapsible-content { padding-inline-start: 32px; }
+.easm-ui-collapsible-content > :is(.easm-ui-button,.easm-ui-badge,.easm-ui-user-chip,.easm-ui-chip,.easm-ui-tag,.easm-ui-spinner,.easm-ui-segmented,.easm-ui-segmented-frame) { align-self: flex-start; }
+.easm-ui-divider { height: 1px; width: 100%; background: var(--easm-ui-border-subtle); flex: none; }
+.easm-ui-divider[data-orientation='vertical'] { align-self: stretch; min-height: 24px; height: auto; width: 1px; }
+@media (prefers-reduced-motion: reduce) { .easm-ui-collapsible-trigger, .easm-ui-collapsible-chevron, .easm-ui-collapsible-region { transition: none; } }
+@media (forced-colors: active) { .easm-ui-accordion .easm-ui-collapsible-heading .easm-ui-collapsible-trigger:focus-visible, .easm-ui-accordion.easm-ui > .easm-ui-collapsible:focus-visible { outline-color: Highlight; box-shadow: none; } }
+[data-easm-motion='off'] :is(.easm-ui-collapsible-trigger, .easm-ui-collapsible-chevron, .easm-ui-collapsible-region) { transition: none; }
+
+/* Content placed in a card body or a disclosure takes the container's gap instead of its own margins. EASM
+   components keep the reset unlayered; for product elements it sits below Tailwind's utilities, so a product's
+   margin classes on its own elements still apply. */
+.easm-ui-container-body > :where(.easm-ui, [class*='easm-ui-']), .easm-ui-collapsible-content > :where(.easm-ui, [class*='easm-ui-']) { margin-block: 0; }
+@layer base {
+  .easm-ui-container-body > *, .easm-ui-collapsible-content > * { margin-block: 0; }
+}
+
+/* Surface context: menus and popovers opened from inside a white container take the grey panel (see OverlaySurface). */
+.easm-ui-card, .easm-ui-panel, .easm-ui-collapsible { --easm-ui-surface-context: card; }
+/* Accordion items inside a white container take the grey fill (above), so what opens from them is the white sheet. */
+:is(.easm-ui-card, .easm-ui-panel, .easm-ui-overlay-panel, .easm-ui-popover) .easm-ui-accordion > .easm-ui-collapsible { --easm-ui-surface-context: page; }

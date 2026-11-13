@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const TagAddIcon = /* @__PURE__ */ createIcon({"name":"tag-add","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M3 5v6l9 9a1.8 1.8 0 0 0 2.5 0l5.5-5.5a1.8 1.8 0 0 0 0-2.5l-9-9H5a2 2 0 0 0-2 2Z","fill":"surface"}},{"tag":"circle","attrs":{"cx":7.5,"cy":7.5,"r":1.5,"fill":"none"}}]},{"tag":"circle","attrs":{"cx":18,"cy":17.5,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 15.5v4m-2-2h4","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

@@ -1,0 +1,101 @@
+/* TagInput and ChoiceCards (choices.tsx). The tag box is a field like any other (its border, its focus ring); the
+   items in it are grey chips. Choice cards are told apart by fill: honey at rest, the pale blue of a selection
+   when chosen, never an outline or a coloured edge. Text never under 12 px. */
+
+/* ------------------------------------------------------------------ TagInput */
+.easm-ui-tag-input-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; }
+.easm-ui-tag-input-count { flex: none; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-variant-numeric: tabular-nums; }
+.easm-ui-tag-input-count[data-full] { color: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-tag-input-box {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; min-height: var(--easm-ui-control-height);
+  padding: 5px 6px; border: 1px solid var(--easm-ui-border); border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface);
+  cursor: text; transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), box-shadow var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-tag-input-box:hover { border-color: var(--easm-ui-border-hover); }
+.easm-ui-tag-input-box:focus-within { border-color: var(--easm-ui-primary-fill); box-shadow: var(--easm-ui-field-focus-ring); }
+.easm-ui-tag-input[data-status='error'] .easm-ui-tag-input-box { border-color: var(--easm-ui-danger); }
+.easm-ui-tag-input[data-status='error'] .easm-ui-tag-input-box:focus-within { box-shadow: var(--easm-ui-field-error-focus-ring); }
+.easm-ui-tag-input[data-disabled] .easm-ui-tag-input-box { background: var(--easm-ui-surface-disabled); border-color: var(--easm-ui-border-subtle); cursor: not-allowed; }
+.easm-ui-tag-input-list { display: contents; margin: 0; padding: 0; list-style: none; }
+.easm-ui-tag-input-item {
+  display: inline-flex; align-items: center; min-width: 0; max-width: 100%; min-height: 28px; padding-inline-start: 4px;
+  border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); line-height: 18px;
+}
+.easm-ui-tag-input[data-size='sm'] .easm-ui-tag-input-item { min-height: 24px; font-size: var(--easm-ui-text-xs); }
+.easm-ui-tag-input-item[data-mono] { font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--easm-ui-text-xs); }
+.easm-ui-tag-input-item[draggable='true'] { cursor: grab; }
+.easm-ui-tag-input-item[data-dragging] { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); cursor: grabbing; }
+.easm-ui-tag-input-grip { flex: none; margin-inline-start: 2px; color: var(--easm-ui-text-secondary); }
+.easm-ui-tag-input-text {
+  min-width: 0; padding: 2px 4px 2px 6px; border: 0; border-radius: var(--easm-ui-radius-pill); background: transparent; color: inherit; font: inherit;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: inherit;
+}
+.easm-ui-tag-input-text:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring-inset, 0 0 0 2px var(--easm-ui-primary-fill)); }
+.easm-ui-tag-input-item:has(.easm-ui-tag-input-text:focus-visible) { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); }
+.easm-ui-tag-input-remove {
+  display: inline-grid; flex: none; place-items: center; width: 28px; height: 28px; margin-block: -2px; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--easm-ui-text-secondary); cursor: pointer; touch-action: manipulation;
+}
+.easm-ui-tag-input[data-size='sm'] .easm-ui-tag-input-remove { width: 24px; height: 24px; }
+.easm-ui-tag-input-remove:hover:not(:disabled) { background: var(--easm-ui-track-pressed); color: var(--easm-ui-text); }
+.easm-ui-tag-input-remove:disabled, .easm-ui-tag-input-text:disabled { cursor: not-allowed; }
+.easm-ui-tag-input-entry {
+  flex: 1 1 120px; min-width: 96px; height: 28px; margin: 0; padding: 0 6px; border: 0; background: transparent; color: var(--easm-ui-text); font: inherit;
+}
+.easm-ui-tag-input-entry:focus { outline: none; }
+.easm-ui-tag-input-entry::placeholder { color: var(--easm-ui-placeholder); opacity: 1; }
+.easm-ui-tag-input-full { padding: 0 6px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); }
+.easm-ui-field-message:not([data-status]) { color: var(--easm-ui-text-secondary); }
+
+/* ------------------------------------------------------------------ ChoiceCards */
+.easm-ui-choice-cards { container-type: inline-size; display: grid; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; color: var(--easm-ui-text); font-size: var(--easm-ui-text-md); }
+.easm-ui-choice-cards > legend { float: left; width: 100%; padding: 0; margin-block-end: 0; }
+.easm-ui-choice-cards > legend + * { clear: both; }
+.easm-ui-choice-cards-grid { display: grid; gap: 8px; grid-template-columns: 1fr; min-width: 0; margin-block-start: 4px; }
+@container (min-width: 520px) { .easm-ui-choice-cards-grid[data-columns='2'], .easm-ui-choice-cards-grid[data-columns='3'] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 780px) { .easm-ui-choice-cards-grid[data-columns='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.easm-ui-choice-card {
+  position: relative; display: flex; align-items: flex-start; gap: 12px; min-width: 0; padding: 14px 44px 14px 14px;
+  border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); cursor: pointer;
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-choice-cards[data-size='sm'] .easm-ui-choice-card { gap: 10px; padding: 10px 40px 10px 12px; }
+.easm-ui-choice-card:hover:not([data-disabled]) { background: var(--easm-ui-track-hover); }
+.easm-ui-choice-card[data-checked] { background: var(--easm-ui-primary-surface); }
+.easm-ui-choice-card[data-checked]:hover { background: var(--easm-ui-primary-surface); }
+.easm-ui-choice-card[data-disabled] { background: var(--easm-ui-surface-disabled); color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-choice-card:has(.easm-ui-choice-card-input:focus-visible) { box-shadow: var(--easm-ui-field-focus-ring); }
+/* The radio stays in the page for keys, forms and screen readers, laid over the card so a touch anywhere picks it. */
+.easm-ui-choice-card-input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
+.easm-ui-choice-card-icon {
+  display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: var(--easm-ui-radius-control);
+  background: var(--easm-ui-surface); color: var(--easm-ui-text-secondary); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface);
+}
+.easm-ui-choice-cards[data-size='sm'] .easm-ui-choice-card-icon { width: 32px; height: 32px; }
+.easm-ui-choice-card[data-checked] .easm-ui-choice-card-icon { color: var(--easm-ui-primary-fill); }
+.easm-ui-choice-card[data-disabled] .easm-ui-choice-card-icon { background: transparent; color: var(--easm-ui-text-disabled); }
+.easm-ui-choice-card-copy { display: grid; gap: 2px; min-width: 0; }
+.easm-ui-choice-card-title { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-weight: 600; line-height: 20px; overflow-wrap: anywhere; }
+.easm-ui-choice-card-recommended {
+  display: inline-flex; align-items: center; min-height: 20px; padding: 0 8px; border-radius: var(--easm-ui-radius-pill);
+  background: var(--easm-ui-badge-brand); color: var(--easm-ui-primary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px;
+}
+.easm-ui-choice-card[data-checked] .easm-ui-choice-card-recommended { background: var(--easm-ui-surface); }
+.easm-ui-choice-card-line { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 18px; overflow-wrap: anywhere; }
+.easm-ui-choice-card[data-disabled] .easm-ui-choice-card-line { color: var(--easm-ui-text-disabled); }
+/* The mark: an empty ring at rest, the blue dot once chosen, in the card's top end corner. */
+.easm-ui-choice-card-mark {
+  position: absolute; inset-block-start: 14px; inset-inline-end: 14px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--easm-ui-surface); box-shadow: inset 0 0 0 1.5px var(--easm-ui-border-hover);
+}
+.easm-ui-choice-cards[data-size='sm'] .easm-ui-choice-card-mark { inset-block-start: 10px; inset-inline-end: 12px; width: 18px; height: 18px; }
+.easm-ui-choice-card[data-checked] .easm-ui-choice-card-mark { box-shadow: inset 0 0 0 5px var(--easm-ui-primary-fill); }
+.easm-ui-choice-card[data-disabled] .easm-ui-choice-card-mark { background: transparent; box-shadow: inset 0 0 0 1.5px var(--easm-ui-border-subtle); }
+.easm-ui-choice-cards[data-status='error'] .easm-ui-choice-card:not([data-checked]) .easm-ui-choice-card-mark { box-shadow: inset 0 0 0 1.5px var(--easm-ui-danger); }
+
+@media (forced-colors: active) {
+  .easm-ui-tag-input-item, .easm-ui-choice-card { border: 1px solid CanvasText; }
+  .easm-ui-choice-card[data-checked] { border: 2px solid Highlight; }
+  .easm-ui-choice-card-mark { forced-color-adjust: none; border: 1px solid CanvasText; }
+  .easm-ui-choice-card[data-checked] .easm-ui-choice-card-mark { background: Highlight; }
+}

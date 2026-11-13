@@ -1,0 +1,165 @@
+.easm-ui-tabs { min-width: 0; }
+.easm-ui-tab-list { display: flex; gap: 2px; min-width: 0; overflow-x: auto; padding: 4px; border: 0; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); scrollbar-width: none; scroll-behavior: smooth; }
+.easm-ui-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  flex: none;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: var(--easm-ui-radius-control);
+  background: transparent;
+  color: var(--easm-ui-text-secondary);
+  font-weight: 550;
+  line-height: 1.5;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-tab > .easm-ui-icon, .easm-ui-segment > .easm-ui-icon, .easm-ui-chip-content > .easm-ui-icon,
+.easm-ui-chip-select > .easm-ui-icon, .easm-ui-chip-remove > .easm-ui-icon, .easm-ui-tag > .easm-ui-icon,
+.easm-ui-filter-option-label > .easm-ui-icon { flex: none; }
+.easm-ui-selection-label { min-width: 0; overflow-wrap: break-word; }
+.easm-ui-tab:hover:not(:disabled):not([aria-selected='true']) { background: var(--easm-ui-track-hover); color: var(--easm-ui-text); }
+.easm-ui-tab:active:not(:disabled):not([aria-selected='true']) { background: var(--easm-ui-track-pressed); }
+.easm-ui-tab[aria-selected='true'] { color: var(--easm-ui-text); background: var(--easm-ui-surface); font-weight: 600; }
+.easm-ui-tab:disabled { color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-tab-panel { min-width: 0; padding: 20px 4px 4px; }
+.easm-ui-tabs[data-size='sm'] .easm-ui-tab { min-height: 32px; padding: 4px 10px; font-size: var(--easm-ui-text-sm); }
+.easm-ui-tabs[data-size='lg'] .easm-ui-tab { min-height: 48px; font-size: var(--easm-ui-text-lg); }
+.easm-ui-tabs[data-orientation='vertical'] { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; }
+.easm-ui-tabs[data-orientation='vertical'] .easm-ui-tab-list { flex: 0 1 40%; max-width: 45%; max-height: min(480px, 65dvh); flex-direction: column; border: 0; overflow-y: auto; }
+.easm-ui-tabs[data-orientation='vertical'] .easm-ui-tab { border-radius: var(--easm-ui-radius-control); justify-content: flex-start; text-align: start; border: 1px solid transparent; }
+.easm-ui-tabs[data-orientation='vertical'] .easm-ui-tab[aria-selected='true'] { background: var(--easm-ui-surface); border-color: transparent; }
+.easm-ui-tabs[data-orientation='vertical'] .easm-ui-tab-panel { flex: 1 1 0; }
+.easm-ui-segmented-frame { justify-self: start; align-self: start; display: inline-flex; flex-direction: column; min-width: 0; max-width: 100%; }
+/* One line, always: wider than its space, the segments keep their labels and the track pages with arrows. */
+.easm-ui-segmented { display: flex; min-width: 0; max-width: 100%; padding: 4px; gap: 2px; background: var(--easm-ui-track); border: 0; border-radius: var(--easm-ui-radius-card); flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
+.easm-ui-segmented::-webkit-scrollbar { display: none; }
+.easm-ui-segmented > .easm-ui-segment { flex: none; }
+.easm-ui-segment > .easm-ui-selection-label { white-space: nowrap; overflow-wrap: normal; }
+.easm-ui-segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 32px;
+  padding: 4px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--easm-ui-radius-control);
+  color: var(--easm-ui-text-secondary);
+  font-weight: 550;
+  line-height: 1.5;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-segment[aria-checked='true'] { background: var(--easm-ui-surface); color: var(--easm-ui-text); border-color: transparent; font-weight: 600; }
+.easm-ui-segment:hover:not(:disabled):not([aria-checked='true']) { background: var(--easm-ui-track-hover); color: var(--easm-ui-text); }
+.easm-ui-segment:active:not(:disabled):not([aria-checked='true']) { background: var(--easm-ui-track-pressed); color: var(--easm-ui-text); }
+.easm-ui-segment:disabled { color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-segmented[data-size='sm'] .easm-ui-segment { min-height: 24px; font-size: var(--easm-ui-text-sm); padding: 0 8px; }
+.easm-ui-segmented[data-size='lg'] .easm-ui-segment { min-height: 40px; font-size: var(--easm-ui-text-lg); }
+.easm-ui-chip, .easm-ui-tag { display: inline-flex; align-items: center; gap: 4px; min-width: 0; max-width: 100%; min-height: 32px; border: 0; box-shadow: none; border-radius: var(--easm-ui-radius-pill); color: var(--easm-ui-text); background: var(--easm-ui-track); font-size: var(--easm-ui-text-sm); font-weight: 500; line-height: 1.5; white-space: nowrap; }
+.easm-ui-chip-content, .easm-ui-chip-select { display: inline-flex; flex: 1 1 auto; min-width: 0; align-items: center; gap: 8px; padding: 4px 12px; min-height: 32px; }
+/* Chips and tags stay on one line like badges; squeezed, their label ends in an ellipsis
+   instead of breaking between letters. */
+.easm-ui-chip-content > span, .easm-ui-chip-select > span, .easm-ui-tag > .easm-ui-selection-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; }
+.easm-ui-chip-select, .easm-ui-chip-remove { border: 0; border-radius: inherit; background: transparent; color: inherit; cursor: pointer; touch-action: manipulation; }
+.easm-ui-chip-select:hover:not(:disabled), .easm-ui-chip-remove:hover:not(:disabled) { background: var(--easm-ui-track-pressed); }
+.easm-ui-chip-remove { display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; padding: 0; margin-inline-end: 2px; }
+.easm-ui-chip[data-selected='true'] { color: var(--easm-ui-primary); box-shadow: none; background: var(--easm-ui-primary-surface); }
+.easm-ui-chip[data-selected='true'] .easm-ui-chip-select:hover:not(:disabled), .easm-ui-chip[data-selected='true'] .easm-ui-chip-remove:hover:not(:disabled) { background: var(--easm-ui-primary-border); }
+.easm-ui-chip[data-disabled='true'] { color: var(--easm-ui-text-disabled); }
+.easm-ui-chip button:disabled { cursor: not-allowed; }
+.easm-ui-chip[data-size='sm'], .easm-ui-tag[data-size='sm'] { min-height: 24px; font-size: var(--easm-ui-text-xs); }
+.easm-ui-chip[data-size='sm'] .easm-ui-chip-content { min-height: 24px; padding: 0 8px; }
+.easm-ui-tag { border-radius: var(--easm-ui-radius-inner); padding: 4px 8px; gap: 8px; }
+.easm-ui-tag[data-size='sm'] { padding: 2px 8px; }
+.easm-ui-tag[data-tone='brand'] { color: var(--easm-ui-primary); box-shadow: none; background: var(--easm-ui-primary-surface); }
+.easm-ui-filter-options { display: flex; flex-direction: column; gap: 12px; border: 0; margin: 0 0 12px; padding: 0; min-width: 0; }
+.easm-ui-filter-control { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 100%; }
+.easm-ui-filter-option-label { display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.easm-ui-filter-option-label > span { min-width: 0; overflow-wrap: break-word; }
+.easm-ui-filter-empty { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-md); line-height: 1.5; }
+.easm-ui-filter-control > .easm-ui-button > .easm-ui-icon:last-child { transition: transform var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-filter-control > .easm-ui-button[aria-expanded='true'] > .easm-ui-icon:last-child { transform: rotate(180deg); }
+/* Active filters tint the trigger like a selected button, without a pressed state: the trigger opens a dialog. */
+.easm-ui-filter-control > .easm-ui-button[data-active='true']:not([data-variant='primary']):not([data-variant='destructive']) { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); border-color: transparent; --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+.easm-ui-selection-unavailable { flex-basis: 100%; margin: 8px 0 0; color: var(--easm-ui-danger); font-size: var(--easm-ui-text-sm); line-height: 1.5; }
+@media (pointer: coarse) {
+  .easm-ui-tab, .easm-ui-tabs[data-size='sm'] .easm-ui-tab, .easm-ui-segment, .easm-ui-segmented[data-size='sm'] .easm-ui-segment, .easm-ui-segmented[data-size='lg'] .easm-ui-segment, .easm-ui-chip-select, .easm-ui-chip-remove { min-height: 44px; }
+  .easm-ui-chip-remove { min-width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-tab, .easm-ui-segment, .easm-ui-filter-control > .easm-ui-button > .easm-ui-icon:last-child { transition: none; }
+}
+[data-easm-motion='off'] .easm-ui-tab, [data-easm-motion='off'] .easm-ui-segment, [data-easm-motion='off'] .easm-ui-filter-control > .easm-ui-button > .easm-ui-icon:last-child { transition: none; }
+@media (forced-colors: active) {
+  .easm-ui-tab[aria-selected='true'] { color: Highlight; }
+  .easm-ui-segment[aria-checked='true'] { border-color: Highlight; color: Highlight; }
+  .easm-ui-chip, .easm-ui-tag { border: 1px solid ButtonText; box-shadow: none; }
+  /* Active filters: the tint is not painted here, so the trigger takes the inset outline that marks selection, and
+     a double outline when it also has focus (as a selected control does). */
+  .easm-ui-filter-control > .easm-ui-button[data-active='true'] { outline: 2px solid Highlight; outline-offset: -4px; }
+  .easm-ui-filter-control > .easm-ui-button[data-active='true']:focus-visible:not([data-pointer-focus]) { outline: 6px double Highlight !important; }
+}
+
+@media (forced-colors:active) { .easm-ui-tabs[data-orientation=vertical] .easm-ui-tab[aria-selected=true] { border-color: Highlight; } }
+
+/* White: tabs, overflow affordance, filter popover */
+.easm-ui-tab[aria-selected='true'] > .easm-ui-icon { color: var(--easm-ui-primary-fill); }
+.easm-ui-tab-list::-webkit-scrollbar { display: none; }
+
+/* Overflowing tab lists: paging buttons appear only where more tabs are hidden, so mouse users (no horizontal
+   scroll) can see and reach every tab. The edges are hard lines, never a fade. */
+.easm-ui-tab-scroller { position: relative; display: flex; align-items: center; min-width: 0; max-width: 100%; }
+.easm-ui-tab-scroller > :is(.easm-ui-tab-list, .easm-ui-quick-filters-row, .easm-ui-scroll-row-track, .easm-ui-settings-nav-scroller > ul, .easm-ui-segmented) { flex: 1 1 auto; min-width: 0; overflow-x: auto; }
+/* Centred with the translate property, never transform: a pressed button scales (motion.css), and a transform here
+   was replaced by the scale, so the arrow dropped half its height under the finger and a press on its top half missed. */
+.easm-ui-tab-scroll { position: absolute; top: 50%; z-index: 2; translate: 0 -50%; }
+.easm-ui-tab-scroll[data-side='start'] { inset-inline-start: 0; }
+.easm-ui-tab-scroll[data-side='end'] { inset-inline-end: 0; }
+/* A pale blue disc with a blue arrow, in a ring of the surface: the theme's action colour, calm beside the chips and
+   cards around it, visible on a white card and on the white page, and the chips it covers never show at its edge.
+   Hover and press deepen the tint a step, so a touch screen's lingering hover stays in the same calm family. */
+.easm-ui-tab-scroll.easm-ui-button[data-variant='secondary'] { border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary-fill); box-shadow: 0 0 0 4px var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+.easm-ui-tab-scroll.easm-ui-button[data-variant='secondary']:is(:hover, :active):not([aria-disabled='true']) { background: var(--easm-ui-badge-brand); color: var(--easm-ui-primary-fill); --easm-icon-background: var(--easm-ui-badge-brand); --easm-icon-contrast: var(--easm-ui-badge-brand); }
+/* The strip between the row's edge and the disc's middle is covered too, so a half-hidden chip never peeks out
+   around the disc's curve. The arrows sit a layer above it. */
+.easm-ui-tab-scroller:is([data-overflow-start='true'], [data-overflow-end='true'])::before,
+.easm-ui-tab-scroller[data-overflow-end='true']::after { content: none; position: absolute; inset-block: 0; z-index: 1; width: 22px; background: var(--easm-ui-surface); pointer-events: none; }
+.easm-ui-tab-scroller[data-overflow-start='true']::before { content: ''; inset-inline-start: 0; }
+.easm-ui-tab-scroller[data-overflow-end='true']::after { content: ''; inset-inline-end: 0; }
+/* ScrollRow: one line of chips or thumbnails, scrolled by its arrows, the wheel or a swipe, never by a scrollbar. */
+.easm-ui-scroll-row { min-width: 0; max-width: 100%; }
+.easm-ui-scroll-row-track { display: flex; align-items: center; gap: 6px; padding: 2px; scrollbar-width: none; scroll-behavior: smooth; overscroll-behavior-x: contain; }
+.easm-ui-scroll-row-track::-webkit-scrollbar { display: none; }
+.easm-ui-scroll-row-track > * { flex: none; }
+@media (prefers-reduced-motion: reduce) { .easm-ui-tab-list, .easm-ui-scroll-row-track { scroll-behavior: auto; } }
+[data-easm-motion='off'] .easm-ui-tab-list { scroll-behavior: auto; }
+
+/* Filter checklist popover: starts at its trigger's edge, at least as wide as the trigger,
+   wider only when an option needs it. Doubled class outranks the generic popover rule. */
+.easm-ui-popover.easm-ui-filter-popover { width: max-content; min-width: var(--radix-popover-trigger-width); max-width: min(320px, calc(100vw - 24px)); padding: 6px; }
+.easm-ui-filter-popover .easm-ui-popover-title { margin: 6px 8px 4px; font-size: var(--easm-ui-text-xs); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--easm-ui-text-secondary); }
+.easm-ui-filter-popover .easm-ui-popover-body { gap: 4px; }
+.easm-ui-filter-popover .easm-ui-filter-options { gap: 2px; margin: 0; }
+.easm-ui-filter-popover .easm-ui-field { gap: 0; }
+.easm-ui-filter-popover .easm-ui-choice { width: 100%; min-height: 34px; padding: 0 8px; border-radius: var(--easm-ui-radius-inner); --easm-ui-choice-size: 16px; }
+.easm-ui-filter-popover .easm-ui-choice:hover { background: color-mix(in srgb, var(--easm-ui-text) 6%, transparent); }
+.easm-ui-filter-popover .easm-ui-button[data-variant='subtle'] { align-self: stretch; justify-content: flex-start; min-height: 34px; padding: 0 8px; border-radius: var(--easm-ui-radius-inner); }
+.easm-ui-filter-popover .easm-ui-filter-empty { padding: 4px 8px; }
+/* Touch: the compact checklist rows and Clear filters grow to the touch target, as the controls they are made of do. */
+@media (pointer: coarse) {
+  .easm-ui-filter-popover :is(.easm-ui-choice, .easm-ui-button[data-variant='subtle']) { min-height: 44px; }
+}

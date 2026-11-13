@@ -1,0 +1,91 @@
+/* DatePicker, DateRangePicker and TimePicker. Popovers take their panel colour from where they open. */
+.easm-ui-picker-trigger { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: start; cursor: pointer; }
+.easm-ui-picker-trigger > span { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.easm-ui-picker-trigger > .easm-ui-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-picker-trigger[data-empty] > span { color: var(--easm-ui-placeholder); }
+.easm-ui-picker-trigger:disabled { cursor: not-allowed; }
+.easm-ui-picker-popover { width: max(var(--radix-popover-trigger-width), 296px); padding: 10px; }
+
+.easm-ui-cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 0 6px; }
+.easm-ui-cal-title { padding: 0 8px; color: var(--easm-ui-text); font-size: 14px; font-weight: 600; }
+.easm-ui-cal-title-button { display: inline-flex; align-items: center; gap: 4px; height: 32px; border: 0; border-radius: var(--easm-ui-radius-inner); background: transparent; font: 600 14px var(--easm-ui-font); cursor: pointer; }
+.easm-ui-cal-title-button:hover { background: var(--easm-ui-tint-hover, color-mix(in srgb, var(--easm-ui-text) 7%, transparent)); }
+.easm-ui-cal-title-button > .easm-ui-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-cal-nav { display: flex; gap: 2px; }
+.easm-ui-cal table { width: 100%; border-collapse: separate; border-spacing: 0 2px; table-layout: fixed; }
+.easm-ui-cal th { height: 26px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; text-align: center; }
+.easm-ui-cal td { padding: 0; }
+.easm-ui-cal-day { width: 100%; height: 34px; border: 0; border-radius: var(--easm-ui-radius-inner); background: transparent; color: var(--easm-ui-text); font: 500 var(--easm-ui-text-md) var(--easm-ui-font); font-variant-numeric: tabular-nums; cursor: pointer; }
+.easm-ui-cal-day:hover:not(:disabled) { background: var(--easm-ui-tint-hover, color-mix(in srgb, var(--easm-ui-text) 7%, transparent)); }
+.easm-ui-cal-day[data-outside] { color: var(--easm-ui-text-secondary); }
+.easm-ui-cal-day[aria-current='date'] { color: var(--easm-ui-primary); font-weight: 700; }
+.easm-ui-cal-day[aria-pressed='true'], .easm-ui-cal-day[aria-pressed='true']:hover { background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-weight: 600; }
+.easm-ui-cal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 2px 0 4px; }
+.easm-ui-cal-cell { height: 46px; border: 0; border-radius: var(--easm-ui-radius-inner); background: transparent; color: var(--easm-ui-text); font: 500 14px var(--easm-ui-font); font-variant-numeric: tabular-nums; cursor: pointer; }
+.easm-ui-cal-cell:hover:not(:disabled) { background: var(--easm-ui-tint-hover, color-mix(in srgb, var(--easm-ui-text) 7%, transparent)); }
+.easm-ui-cal-cell[data-current] { color: var(--easm-ui-primary); font-weight: 700; }
+.easm-ui-cal-cell[aria-pressed='true'], .easm-ui-cal-cell[aria-pressed='true']:hover { background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-weight: 600; }
+.easm-ui-cal-day:disabled, .easm-ui-cal-cell:disabled { background: transparent; color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-cal-day:focus-visible, .easm-ui-cal-cell:focus-visible, .easm-ui-cal-title-button:focus-visible { box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-cal-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; }
+
+/* Range: a continuous light-blue band between bright end caps */
+.easm-ui-cal-day[data-range='mid'] { border-radius: 0; background: var(--easm-ui-primary-surface); color: var(--easm-ui-text); }
+.easm-ui-cal-day[data-range='start'], .easm-ui-cal-day[data-range='end'], .easm-ui-cal-day[data-range='single'] { background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-weight: 600; }
+.easm-ui-cal-day[data-range='start'] { border-radius: var(--easm-ui-radius-inner) 0 0 var(--easm-ui-radius-inner); }
+.easm-ui-cal-day[data-range='end'] { border-radius: 0 var(--easm-ui-radius-inner) var(--easm-ui-radius-inner) 0; }
+.easm-ui-range-popover { width: auto; max-width: calc(100vw - 24px); }
+.easm-ui-range { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-items: start; }
+.easm-ui-range-presets { display: flex; flex-direction: row; flex-wrap: wrap; gap: 2px; padding: 4px; border-radius: var(--easm-ui-radius-inner); background: var(--easm-ui-tint-subtle, color-mix(in srgb, var(--easm-ui-text) 4%, transparent)); }
+/* From 521px the presets stand in a column beside a fixed-width calendar. */
+@media (min-width: 521px) {
+  .easm-ui-range { grid-template-columns: 288px; }
+  .easm-ui-range[data-presets] { grid-template-columns: 140px 288px; }
+  .easm-ui-range-presets { flex-direction: column; flex-wrap: nowrap; }
+}
+.easm-ui-range-preset { height: 32px; padding: 0 10px; border: 0; border-radius: var(--easm-ui-radius-mark); background: transparent; color: var(--easm-ui-text); font: 500 var(--easm-ui-text-md) var(--easm-ui-font); text-align: start; cursor: pointer; }
+.easm-ui-range-preset:hover:not(:disabled) { background: var(--easm-ui-tint-hover, color-mix(in srgb, var(--easm-ui-text) 7%, transparent)); }
+.easm-ui-range-preset:disabled { color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-range-preset[aria-pressed='true'] { background: var(--easm-ui-surface); color: var(--easm-ui-primary); font-weight: 600; }
+.easm-ui-range-preset:focus-visible { box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-range-hint { margin: 6px 4px 0; color: var(--easm-ui-text-secondary); font-size: 12px; }
+.easm-ui-picker-field-inline { display: inline-flex; width: auto; flex: none; min-width: 0; }
+.easm-ui-range-button { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px 0 14px; border: 0; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); color: var(--easm-ui-text); font: 500 var(--easm-ui-text-md) var(--easm-ui-font); white-space: nowrap; cursor: pointer; }
+.easm-ui-range-button:hover, .easm-ui-range-button[data-state='open'] { background: var(--easm-ui-track); }
+.easm-ui-range-button > .easm-ui-icon { flex: none; color: var(--easm-ui-text-secondary); }
+
+/* Time: scrolling columns on soft grey tracks */
+.easm-ui-time-popover { width: max(var(--radix-popover-trigger-width), 248px); }
+.easm-ui-time { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.easm-ui-time[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.easm-ui-time-head { padding: 2px 0 6px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; text-align: center; }
+.easm-ui-time-list { position: relative; max-height: 208px; overflow-y: auto; padding: 2px; border-radius: var(--easm-ui-radius-inner); background: var(--easm-ui-tint-subtle, color-mix(in srgb, var(--easm-ui-text) 4%, transparent)); scrollbar-width: thin; scroll-behavior: smooth; }
+.easm-ui-time-list:focus-visible { box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-time-option { display: grid; place-items: center; height: 32px; border-radius: var(--easm-ui-radius-mark); color: var(--easm-ui-text); font: 500 var(--easm-ui-text-md) var(--easm-ui-font); font-variant-numeric: tabular-nums; cursor: pointer; }
+.easm-ui-time-option + .easm-ui-time-option { margin-top: 2px; }
+.easm-ui-time-option:hover { background: var(--easm-ui-tint-hover, color-mix(in srgb, var(--easm-ui-text) 7%, transparent)); }
+.easm-ui-time-option[aria-selected='true'], .easm-ui-time-option[aria-selected='true']:hover { background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-weight: 600; }
+.easm-ui-time-actions { display: flex; gap: 4px; }
+@media (prefers-reduced-motion: reduce) { .easm-ui-time-list { scroll-behavior: auto; } }
+@media (forced-colors: active) {
+  .easm-ui-cal-day[aria-pressed='true'], .easm-ui-cal-cell[aria-pressed='true'], .easm-ui-time-option[aria-selected='true'], .easm-ui-cal-day[data-range] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+}
+
+/* The value a picker submits: out of sight but still validated (see FormValue in pickers.tsx). */
+.easm-ui-picker-field { position: relative; }
+.easm-ui-picker-value { position: absolute; inset-inline-start: 0; bottom: 0; width: 1px; height: 1px; padding: 0; margin: 0; border: 0; opacity: 0; pointer-events: none; }
+
+/* Focus on a filled day, month or year: the plain ring matches the blue fill, so a surface gap separates
+   them. The focused cell is lifted so its ring is drawn over the neighbouring cells. */
+.easm-ui-cal-day:focus-visible, .easm-ui-cal-cell:focus-visible { position: relative; }
+.easm-ui-cal-day:is([aria-pressed='true'], [data-range='start'], [data-range='end'], [data-range='single']):focus-visible,
+.easm-ui-cal-cell[aria-pressed='true']:focus-visible { box-shadow: var(--easm-ui-focus-ring-on-fill, 0 0 0 2px var(--easm-ui-surface), 0 0 0 4px var(--easm-ui-primary-fill)); }
+/* The keyboard highlight in a focused time column (its active option). */
+.easm-ui-time-list:focus-visible .easm-ui-time-option[data-active] { box-shadow: var(--easm-ui-focus-ring-inset); }
+.easm-ui-time-list:focus-visible .easm-ui-time-option[data-active][aria-selected='true'] { box-shadow: var(--easm-ui-focus-ring-inset), inset 0 0 0 4px var(--easm-ui-surface); }
+/* Previous and next point along the reading direction. */
+[dir='rtl'] .easm-ui-cal-nav svg { transform: scaleX(-1); }
+.easm-ui-cal-nav svg:dir(rtl) { transform: scaleX(-1); }
+/* Forced colours: focus is the central system outline (styles.css); the time highlight, which is not focus
+   but the focused list's active option, needs its own outline because box-shadow is not painted. */
+@media (forced-colors: active) { .easm-ui-time-list:focus-visible .easm-ui-time-option[data-active] { outline: 2px solid CanvasText; outline-offset: -2px; } }

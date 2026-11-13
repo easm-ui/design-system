@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ViaPrefilledIcon = /* @__PURE__ */ createIcon({"name":"via-prefilled","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"path","attrs":{"d":"m9.5 14.5 5-5M8 15.5l-1 1a3 3 0 0 0 4.3 4.3l4.5-4.5a3 3 0 0 0 0-4.3M16 8.5l1-1a3 3 0 0 0-4.3-4.3L8.2 7.7a3 3 0 0 0 0 4.3"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M16.1 19.3l.3-1.3 2.3-2.3 1 1-2.3 2.3Z","stroke-width":1.15}}]});

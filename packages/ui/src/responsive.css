@@ -1,0 +1,323 @@
+/* Responsive contract.
+   1. Components follow the width of the box they sit in (container queries), not the screen, so the
+      same card behaves the same in a sidebar, a drawer, a grid cell or a full page.
+   2. The screen decides only what belongs to the screen: overlays, page padding and safe areas.
+      Size classes: compact < 600px, medium 600–1023, expanded 1024–1439, large 1440–1919, wide ≥ 1920.
+   3. Input type decides target size: coarse pointers get 44px targets, 16px text in fields (no iOS
+      zoom) and the actions that a mouse would reveal on hover.
+   4. Body text stays 13–14px on every screen, because operating-system scaling and browser zoom
+      already handle pixel density; display numbers and charts grow with their box instead. */
+
+/* Containers. A component that is its own container needs a width from its layout (a grid cell,
+   a stack, a flex item that grows); it does not size itself from its content. */
+.easm-ui-card, .easm-ui-panel, .easm-ui-stat-card, .easm-ui-series-chart, .easm-ui-chart, .easm-ui-data-table,
+.easm-ui-composer, .easm-ui-message-thread, .easm-ui-collapsible-content { container-type: inline-size; }
+
+/* Every scrolling row is the containing block for what it holds. Otherwise absolutely positioned
+   content inside it (screen-reader-only labels, badges) is placed against an outer ancestor, escapes
+   the scroller's clipping and makes the whole page scroll sideways. */
+:is(.easm-ui-kanban-scroll, .easm-ui-data-table-scroll, .easm-ui-heatmap-scroll, .easm-ui-quick-filters-row, .easm-ui-tab-list, .easm-ui-composer-tools, .easm-ui-settings-nav ul, .easm-ui-breadcrumbs, .easm-ui-command-results) { position: relative; }
+
+/* Blocks that sit straight on the white page are white; inside a white card or panel they take the
+   faint grey fill. A grey fill on the white page would vanish. */
+:is(.easm-ui-user-chip[data-removable='true'], .easm-ui-filter-bar, .easm-ui-pattern-list a, .easm-ui-empty-state, .easm-ui-alert[data-tone='neutral']) { background: var(--easm-ui-surface); }
+:is(.easm-ui-card, .easm-ui-panel, .easm-ui-data-table, .easm-ui-overlay-panel, .easm-ui-popover, .easm-ui-settings-section, .easm-ui-approval-pattern, .easm-ui-ai-action, .easm-ui-notification-pattern, .easm-ui-series-chart, .easm-ui-chart, .easm-ui-collapsible, .easm-ui-kanban-column)
+  :is(.easm-ui-user-chip[data-removable='true'], .easm-ui-filter-bar, .easm-ui-pattern-list a, .easm-ui-empty-state, .easm-ui-alert[data-tone='neutral']) { background: var(--easm-ui-surface-hover); }
+.easm-ui-pattern-list a:hover { background: var(--easm-ui-primary-surface); }
+
+/* Display numbers scale with their card: 24px in a narrow tile, up to 40px in a wide one. */
+.easm-ui-stat-value { font-size: clamp(22px, 9cqi, 28px); }
+.easm-ui-stat-card[data-size='sm'] .easm-ui-stat-value { font-size: clamp(22px, 11cqi, 28px); }
+.easm-ui-stat-card[data-size='lg'] .easm-ui-stat-value { font-size: clamp(24px, 10cqi, 32px); }
+/* A full-width stat card on a phone would scale its figure to the desktop maximum; phones cap it lower. */
+@media (min-width: 600px) {
+  .easm-ui-stat-value { font-size: clamp(24px, 13cqi, 34px); }
+  .easm-ui-stat-card[data-size='lg'] .easm-ui-stat-value { font-size: clamp(28px, 15cqi, 44px); }
+}
+
+/* A narrow stat card with an ⓘ stacks its heading: the tile and the ⓘ share the top row, pinned to its two ends,
+   and the label takes the full width below, so a long word never runs under the ⓘ or out of the card. Without
+   an ⓘ the label stays beside a smaller tile (wrapping in its own column), and the figure's row is only as tall
+   as the figure: a phone's 2×2 grid of stats lost a third of each card to empty space. */
+@container (max-width: 180px) {
+  .easm-ui-stat-heading[data-toned='true']:has(> .easm-ui-info-hint) { flex-wrap: wrap; row-gap: 8px; }
+  .easm-ui-stat-heading[data-toned='true']:has(> .easm-ui-info-hint) > :is(h2, h3, h4) { order: 1; flex-basis: 100%; }
+  .easm-ui-stat-heading[data-toned='true'] > .easm-ui-info-hint { margin-inline-start: auto; }
+  .easm-ui-stat-heading[data-toned='true'] { gap: 8px; }
+  .easm-ui-stat-heading[data-toned='true'] > .easm-ui-tone-icon { --easm-tone-icon-size: 28px; }
+  .easm-ui-stat-heading[data-toned='true']:not(:has(> .easm-ui-info-hint)) > :is(h2, h3, h4) { flex: 1 1 0; min-width: 0; }
+  .easm-ui-stat-value { min-height: 1.25em; margin-block-end: 4px; }
+  .easm-ui-stat-heading[data-toned='true'] + .easm-ui-stat-value { margin-top: 10px; }
+  /* The sparkline and the trend sit closer under the figure: four phone tiles were 240px tall each (2026-10-28). */
+  .easm-ui-stat-spark { margin-top: 6px; }
+  .easm-ui-stat-trend { margin-top: 8px; }
+}
+
+/* Card, panel and table headings: actions drop under the title when the box is narrow. */
+/* A single icon button (a ••• menu) stays beside the title at every width. */
+@container (max-width: 420px) {
+  .easm-ui-container-header { gap: 12px; }
+  .easm-ui-container-header > div:not(.easm-ui-container-actions) { flex: 1 1 0; }
+  .easm-ui-container-actions:not(:has(> .easm-ui-button[aria-label]:only-child)) { flex-basis: 100%; justify-content: flex-start; }
+  /* With an icon tile the header wraps too, so text actions take their own row instead of squeezing the title to nothing. */
+  .easm-ui-container-header[data-has-icon='true'] { flex-wrap: wrap; }
+  .easm-ui-container-header[data-has-icon='true'] > div:nth-child(2) { flex: 1 1 0; }
+  .easm-ui-container-header[data-has-icon='true'] > .easm-ui-container-actions:not(:has(> .easm-ui-button[aria-label]:only-child)) { margin-inline-start: 0; }
+  .easm-ui-data-table-header { flex-direction: column; align-items: stretch; }
+  .easm-ui-data-table-actions { justify-content: flex-start; }
+  .easm-ui-stat-heading { gap: 8px; }
+}
+
+/* Charts */
+@container (max-width: 440px) {
+  .easm-ui-chart-header:not(:has(> .easm-ui-chart-actions > .easm-ui-button[aria-label]:only-child)) { grid-template-columns: minmax(0, 1fr); }
+  .easm-ui-chart-header:not(:has(> .easm-ui-chart-actions > .easm-ui-button[aria-label]:only-child)) .easm-ui-chart-actions { justify-content: flex-start; }
+  .easm-ui-chart-legend { gap: 2px 4px; }
+  .easm-ui-chart-legend-item { padding-inline: 6px 8px; }
+  .easm-ui-series-tooltip { min-width: 0; max-width: 64cqi; }
+  .easm-ui-bar-list:not([data-layout='stacked']) { grid-template-columns: minmax(0, 1fr) max-content; gap: 4px 12px; }
+  .easm-ui-bar-list[data-ranked='true']:not([data-layout='stacked']) { grid-template-columns: 22px minmax(0, 1fr) max-content; }
+  .easm-ui-bar-list:not([data-layout='stacked']) > li { row-gap: 6px; padding-block: 8px; }
+  .easm-ui-bar-list:not([data-layout='stacked']) .easm-ui-bar-list-label { max-width: none; }
+  .easm-ui-bar-list:not([data-layout='stacked']) .easm-ui-bar-list-track { grid-row: 2; grid-column: 1 / -1; }
+  .easm-ui-bar-list[data-ranked='true']:not([data-layout='stacked']) .easm-ui-bar-list-track { grid-column: 2 / -1; }
+}
+/* The same narrow BarList by its own measured width (data-narrow), so it reflows outside a Card or Panel too. */
+.easm-ui-bar-list[data-narrow='true']:not([data-layout='stacked']) { grid-template-columns: minmax(0, 1fr) max-content; gap: 4px 12px; }
+.easm-ui-bar-list[data-narrow='true'][data-ranked='true']:not([data-layout='stacked']) { grid-template-columns: 22px minmax(0, 1fr) max-content; }
+.easm-ui-bar-list[data-narrow='true']:not([data-layout='stacked']) > li { row-gap: 6px; padding-block: 8px; }
+.easm-ui-bar-list[data-narrow='true']:not([data-layout='stacked']) .easm-ui-bar-list-label { max-width: none; }
+.easm-ui-bar-list[data-narrow='true']:not([data-layout='stacked']) .easm-ui-bar-list-track { grid-row: 2; grid-column: 1 / -1; }
+.easm-ui-bar-list[data-narrow='true'][data-ranked='true']:not([data-layout='stacked']) .easm-ui-bar-list-track { grid-column: 2 / -1; }
+
+/* DataTable in card rows */
+@container (max-width: 600px) {
+  .easm-ui-data-table[data-narrow='cards'] table { display: block; min-width: 0 !important; }
+  .easm-ui-data-table[data-narrow='cards'] thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .easm-ui-data-table[data-narrow='cards'] tbody { display: flex; flex-direction: column; gap: 8px; padding: 4px 12px 12px; }
+  /* A card reads like a message in a list, not a form (2026-10-28: a conversation card was 480px tall on a phone,
+     every value under its own label): the title with its aside (a time) on one line, a subtitle under it, the tags
+     and pills in one row without labels, then any other fields two to a row, each label over its value. A wide
+     column takes the whole row; an empty value is left out; a row's lone icon action (a delete, a menu) sits in the
+     card's top corner, and a column of row actions (end-aligned buttons) puts its label and buttons on one line.
+     The card is a wrapping flex row ordered title · aside | subtitle · badges | fields; the two zero-height
+     pseudo-elements end a line. Lines are spaced by each value's bottom margin, not row-gap, so an empty break
+     line adds nothing.
+     (One :has() only per selector: a :has() inside a :has() drops the whole rule.) */
+  .easm-ui-data-table[data-narrow='cards'] tbody tr { position: relative; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 12px; padding: 12px 14px 4px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface-hover); }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr::before,
+  .easm-ui-data-table[data-narrow='cards'] tbody tr::after { content: ''; flex: 0 0 100%; height: 0; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr::before { order: 2; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr::after { order: 5; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:hover { background: var(--easm-ui-surface-hover); }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr[data-selected] { background: var(--easm-ui-primary-surface); }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:has(> .easm-ui-data-state-cell) { display: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td { order: 6; flex: 1 1 calc(50% - 6px); display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 0; max-width: none; margin-block-end: 8px; padding: 0; text-align: start; white-space: normal; overflow-wrap: break-word; }
+  /* A value never pushes the card wider than the screen: a truncated line (an ellipsis) shrinks to the card, and a
+     word breaks only when it alone is wider than its field (break-word). With two fields to a row, `anywhere` let a
+     row of short words squeeze until one split between letters ("NotificationPolicy", Admin → Audit log). */
+  .easm-ui-data-table[data-narrow='cards'] tbody td > * { min-width: 0; max-width: 100%; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td::before { content: attr(data-label); color: var(--easm-ui-text-secondary); font-size: 12px; font-weight: 600; line-height: 16px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-width='wide'] { flex-basis: 100%; }
+  /* A metered value spans its field, so its bar measures against the card's width, from the start like the text. */
+  .easm-ui-data-table[data-narrow='cards'] tbody td > .easm-ui-data-meter { align-self: stretch; justify-self: stretch; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-align='end'] > .easm-ui-data-meter::after { inset-inline-start: 0; inset-inline-end: auto; transform-origin: left center; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-align='end'] > .easm-ui-data-meter:dir(rtl)::after { transform-origin: right center; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td:is(:empty, :has(> :is(span, div):only-child:empty)) { display: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-primary] { order: 0; flex: 1 1 0; display: block; align-self: center; font-weight: 600; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:has(> .easm-ui-data-check) > td[data-primary] { padding-inline-end: 34px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-card='aside'] { order: 1; flex: 0 0 auto; display: block; align-self: center; max-width: 45%; color: var(--easm-ui-text-secondary); font-size: 13px; line-height: 18px; text-align: end; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:has(> .easm-ui-data-check) > td[data-card='aside'] { margin-inline-end: 34px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:has(> td[data-card='aside']) > td[data-primary] { padding-inline-end: 0; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-card='subtitle'] { order: 3; flex: 1 1 100%; display: block; line-height: 20px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td:is([data-card='badge'], :not([data-card], [data-primary]):has(> :is(.easm-ui-tag, .easm-ui-badge, .easm-ui-chip, .easm-ui-score-pill):only-child)) { order: 4; flex: 0 0 auto; display: block; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td:is([data-card], :has(> :is(.easm-ui-tag, .easm-ui-badge, .easm-ui-chip, .easm-ui-score-pill):only-child))::before { content: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-card='field']::before { content: attr(data-label); }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-card='hidden'] { display: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-primary]::before { content: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td.easm-ui-data-check { position: absolute; top: 8px; inset-inline-end: 8px; display: block; width: auto; min-width: 0; margin: 0; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td.easm-ui-data-check::before { content: none; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-align='end']:not([data-primary]):has(.easm-ui-button, .easm-ui-icon-button) { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:not(:has(> .easm-ui-data-check)) > td:not([data-primary]):has(> .easm-ui-icon-button:only-child) { position: absolute; top: 6px; inset-inline-end: 6px; display: block; margin: 0; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr:not(:has(> .easm-ui-data-check)) > td:not([data-primary]):has(> .easm-ui-icon-button:only-child)::before { content: none; }
+}
+/* A very narrow card keeps one field a line, its label beside the value. */
+@container (max-width: 340px) {
+  .easm-ui-data-table[data-narrow='cards'] tbody td:not([data-primary], [data-card]):not(:has(.easm-ui-button, .easm-ui-icon-button, .easm-ui-tag, .easm-ui-badge, .easm-ui-chip, .easm-ui-score-pill)) { flex-basis: 100%; flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td[data-card='field'] { flex-basis: 100%; flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td:not([data-primary]) { text-align: end; }
+  .easm-ui-data-table[data-narrow='cards'] tbody td:not([data-primary])::before { flex: none; max-width: 50%; text-align: start; }
+}
+
+/* Composer, thread and messages */
+@container (max-width: 520px) {
+  .easm-ui-composer-hint { display: none; }
+  .easm-ui-composer-tools { flex-wrap: nowrap; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .easm-ui-composer-tools::-webkit-scrollbar { display: none; }
+  .easm-ui-composer-tools > * { flex: none; }
+  .easm-ui-message { max-width: 90%; }
+}
+@container (max-width: 360px) {
+  .easm-ui-composer-top { flex-wrap: wrap; }
+  .easm-ui-composer-draft .easm-ui-button-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* Description lists inside narrow boxes put the value under its label. */
+@container (max-width: 280px) {
+  .easm-ui-description-list[data-layout='rows'] > div { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .easm-ui-description-list[data-layout='rows'] dd { text-align: start; }
+}
+
+/* Phones and split views under 600px: a dialog becomes a bottom sheet (in thumb reach, full width, actions stacked)
+   and a drawer takes the whole screen. A presentation of its own rather than an override of one value, so it stays
+   phone-scoped; every other phone value is the base rule of its component, with min-width rules for wider screens. */
+@media (max-width: 599px) {
+  .easm-ui-dialog, .easm-ui-dialog[data-size] { top: auto; bottom: 0; left: 0; width: 100%; max-width: 100%; max-height: calc(100dvh - 24px); transform: none; border-radius: var(--easm-ui-radius-overlay) var(--easm-ui-radius-overlay) 0 0; padding-bottom: max(20px, env(safe-area-inset-bottom)); animation: easm-ui-sheet-enter var(--easm-ui-motion-slow) var(--easm-ui-ease); }
+  .easm-ui-dialog[data-state=closed] { animation: easm-ui-sheet-exit var(--easm-ui-motion-slow) var(--easm-ui-ease); }
+  .easm-ui-dialog .easm-ui-overlay-footer { flex-direction: column-reverse; align-items: stretch; }
+  .easm-ui-dialog .easm-ui-overlay-footer > * { width: 100%; }
+  .easm-ui-drawer, .easm-ui-drawer[data-size] { width: 100%; max-width: 100%; border-radius: 0; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+}
+@keyframes easm-ui-sheet-enter { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes easm-ui-sheet-exit { from { transform: none; } to { transform: translateY(100%); } }
+
+/* Touch phones: text fields at 16px so iOS does not zoom the page on focus. */
+@media (max-width: 760px) and (pointer: coarse) { .easm-ui-composer-field { font-size: 16px; } }
+/* Field controls (TextField, Select, Combobox and the rest): keyed on the input type only, because a phone in
+   landscape is wider than 760px and still zooms. Supporting text keeps the chosen density. */
+/* iOS zooms into a text field under 16px when it is focused. Only fields that take typing grow: a dropdown's trigger
+   is a button, and at 16px it read oversized beside every other control ("Sort · Newest acti…"). */
+@media (pointer: coarse) and (hover: none) { .easm-ui-field :is(input, textarea, select).easm-ui-input { font-size: 16px; } }
+
+/* Touch: whatever a mouse reveals on hover is simply shown. */
+@media (hover: none) {
+  .easm-ui-message-actions { opacity: 1; }
+  .easm-ui-bar-list > li:hover, .easm-ui-data-table tbody tr:not([data-disabled]):hover { background: inherit; }
+}
+
+/* Wide screens: the extra room goes to layout and to charts (SeriesChart grows taller with its
+   width); reading text stays the same size and long copy keeps a comfortable measure. */
+@media (min-width: 1920px) {
+  .easm-ui-container-description, .easm-ui-chart-description, .easm-ui-collapsible-description { max-width: 80ch; }
+}
+
+@media (prefers-reduced-motion: reduce) { .easm-ui-dialog, .easm-ui-dialog[data-state=closed] { animation: none; } }
+@media (forced-colors: active) {
+  .easm-ui-data-table td, .easm-ui-data-table th, .easm-ui-chart-data td, .easm-ui-chart-data th { border-bottom: 1px solid CanvasText; }
+  .easm-ui-data-table[data-narrow='cards'] tbody tr { border: 1px solid CanvasText; }
+}
+
+/* Icons beside text that can wrap. The label wraps in its own column; the icon keeps its square and
+   stays on the label's first line, so it never drops onto a line of its own or slides to the middle
+   of a two-line label. min-height: 1lh centres a glyph of any size on the first line. */
+:is(.easm-ui-badge, .easm-ui-advanced-settings-toggle, .easm-ui-prompt-editor-var, .easm-ui-funnel-step,
+    .easm-ui-composer-notice, .easm-ui-contact-header > p, .easm-ui-prompt-editor-error, .easm-ui-message-delivery,
+    .easm-ui-chart-title, .easm-ui-metric-label, .easm-ui-chunk-source, .easm-ui-field-card-type, .easm-ui-knowledge-fresh,
+    .easm-ui-knowledge-audience, .easm-ui-credit-model-name, .easm-ui-input-source-fixed, .easm-ui-json-truncated,
+    .easm-ui-connection-through,
+    .easm-ui-attachment-open, .easm-ui-source-direction,
+    .easm-ui-bridge-update, .easm-ui-capture-source, .easm-ui-cohort-group > h4, .easm-ui-cohort-count, .easm-ui-collection-title,
+    .easm-ui-extension-kind, .easm-ui-notify-channel, .easm-ui-programme-title, .easm-ui-programme-toggle, .easm-ui-programme-chosen,
+    .easm-ui-resolver-column > h4, .easm-ui-resolver-tool, .easm-ui-resolver-rule, .easm-ui-tool-call-name > span:first-child,
+    .easm-ui-schedule-holidays-title) { align-items: flex-start; }
+:is(.easm-ui-badge, .easm-ui-advanced-settings-toggle, .easm-ui-prompt-editor-var, .easm-ui-funnel-step,
+    .easm-ui-composer-notice, .easm-ui-contact-header > p, .easm-ui-prompt-editor-error, .easm-ui-message-delivery,
+    .easm-ui-metric-label, .easm-ui-chunk-source, .easm-ui-field-card-type, .easm-ui-knowledge-fresh,
+    .easm-ui-knowledge-audience, .easm-ui-credit-model-name, .easm-ui-input-source-fixed, .easm-ui-json-truncated,
+    .easm-ui-connection-through,
+    .easm-ui-attachment-open, .easm-ui-source-direction,
+    .easm-ui-bridge-update, .easm-ui-capture-source, .easm-ui-cohort-group > h4, .easm-ui-cohort-count, .easm-ui-collection-title,
+    .easm-ui-extension-kind, .easm-ui-notify-channel, .easm-ui-programme-title, .easm-ui-programme-toggle, .easm-ui-programme-chosen,
+    .easm-ui-resolver-column > h4, .easm-ui-resolver-tool, .easm-ui-resolver-rule, .easm-ui-tool-call-name > span:first-child,
+    .easm-ui-schedule-holidays-title) > .easm-ui-icon { flex: none; min-height: 1lh; }
+.easm-ui-chart-title { overflow-wrap: break-word; }
+/* Rows with a minimum height centre one line with padding instead, so a second line grows them evenly. */
+.easm-ui-badge { padding-block: 6px; }
+.easm-ui-badge[data-size='sm'] { padding-block: 2px; }
+.easm-ui-advanced-settings-toggle { padding-block: 6px; }
+.easm-ui-prompt-editor-var { padding-block: 5px; }
+@media (pointer: coarse) {
+  .easm-ui-advanced-settings-toggle { padding-block: 12px; }
+  .easm-ui-prompt-editor-var { padding-block: 10px; }
+}
+
+/* Pickers on touch: days, times, quick ranges, the month title and the range button are 44px targets. */
+@media (pointer: coarse) {
+  .easm-ui-cal-day, .easm-ui-cal-title-button, .easm-ui-range-preset, .easm-ui-time-option, .easm-ui-range-button { height: var(--easm-ui-size-touch, 44px); }
+}
+
+/* Reporting layer on touch: the ⓘ keeps a 32px circle with a 44px target around it; links in bar lists and
+   table cells are 44px tall; the reserved data-table toggle matches the toggle's touch height. */
+@media (pointer: coarse) {
+  .easm-ui-info-hint { width: 32px; height: 32px; margin-block: calc((1lh - 32px) / 2); }
+  .easm-ui-info-hint::before { inset: calc((32px - var(--easm-ui-size-touch)) / 2); }
+  .easm-ui-bar-list-label a { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; line-height: var(--easm-ui-size-touch); }
+  .easm-ui-cell-stack-primary a { display: inline-flex; align-items: center; min-height: var(--easm-ui-size-touch); }
+  .easm-ui-chart-data-reserve { height: var(--easm-ui-size-touch); }
+}
+
+/* A container focused by a click inside it (see quietPointerFocus) shows no ring; Tab focus still does. */
+[data-pointer-focus]:focus-visible { outline: none !important; box-shadow: none !important; }
+
+/* Thread header in a narrow pane (a phone): the top row is back, avatar and the name with its badges; the
+   subtitle may take two lines instead of cutting the time or number off; the actions get a full-width row of
+   their own under it, wrapping from its start, and nothing in them may push past the edge. */
+.easm-ui-thread-header { container-type: inline-size; }
+@container (max-width: 600px) {
+  .easm-ui-thread-header { align-items: flex-start; }
+  .easm-ui-thread-header > :is(.easm-ui-thread-header-back, .easm-ui-avatar, .easm-ui-avatar-channel) { align-self: flex-start; }
+  .easm-ui-thread-header-copy { flex: 1 1 0; align-self: center; }
+  .easm-ui-thread-header-copy > p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; overflow-wrap: anywhere; }
+  .easm-ui-thread-header-actions { flex: 1 1 100%; justify-content: flex-start; align-items: flex-start; min-width: 0; margin-inline-start: 0; }
+  .easm-ui-thread-header-actions > * { min-width: 0; max-width: 100%; }
+  /* A block that is more than a button (a call button with its notes) takes the rest of the row beside the buttons. */
+  .easm-ui-thread-header-actions > :not(.easm-ui-button, .easm-ui-badge, .easm-ui-tag) { flex: 1 1 200px; }
+}
+
+/* MetricGroup columns are a maximum: four tiles become two then one as their card narrows, three or two
+   become one, so tiles never squeeze their labels or leave one alone on a row. */
+.easm-ui-metric-group[data-columns] { grid-template-columns: repeat(var(--easm-metric-columns, 1), minmax(0, 1fr)); }
+@container (max-width: 599px) {
+  .easm-ui-metric-group:is([data-columns='4'], [data-columns='5']) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .easm-ui-metric-group[data-columns='6'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container (max-width: 419px) { .easm-ui-metric-group[data-columns='3'] { grid-template-columns: minmax(0, 1fr); } }
+@container (max-width: 299px) { .easm-ui-metric-group[data-columns] { grid-template-columns: minmax(0, 1fr); } }
+/* The same steps by the group's own measured width (data-narrow: md under 600px, sm under 420, xs under 300),
+   so they apply on any page, not only inside a Card or Panel. */
+.easm-ui-metric-group[data-narrow]:is([data-columns='4'], [data-columns='5']) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.easm-ui-metric-group[data-narrow][data-columns='6'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.easm-ui-metric-group:is([data-narrow='sm'], [data-narrow='xs'])[data-columns='3'] { grid-template-columns: minmax(0, 1fr); }
+.easm-ui-metric-group[data-narrow='xs'][data-columns] { grid-template-columns: minmax(0, 1fr); }
+/* Three columns that no longer fit pair up when the tiles are an even number (six tiles on a phone were six
+   full-width rows): two to a row leaves none alone either. An odd number still stacks. Narrow groups also take
+   their figures down a step, so a word such as "Yesterday" reads as a value, not a heading. */
+@container (min-width: 300px) and (max-width: 419px) {
+  .easm-ui-metric-group[data-columns='3']:has(> :last-child:nth-child(even)) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.easm-ui-metric-group[data-narrow='sm'][data-columns='3']:has(> :last-child:nth-child(even)) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.easm-ui-metric-group:is([data-narrow='sm'], [data-narrow='xs']) .easm-ui-metric-value { font-size: 18px; }
+
+/* Tiles in a MetricGroup share their rows: every label, figure and caption starts on the same line as its
+   neighbours', however long any one of them runs. */
+@supports (grid-template-rows: subgrid) {
+  .easm-ui-metric-group > .easm-ui-metric-tile { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 4px; align-content: start; }
+  .easm-ui-metric-group > .easm-ui-metric-tile > * { align-self: start; }
+}
+
+/* Installed app (PWA). With viewport-fit=cover the page runs under the notch and the home indicator; these
+   tokens are the room to keep clear there, and are 0 in a browser tab. Every bottom-fixed element offsets by
+   --easm-ui-safe-bottom plus --easm-ui-tabbar-space (MobileTabBar), every top-fixed one by --easm-ui-safe-top. */
+:root {
+  --easm-ui-safe-top: env(safe-area-inset-top, 0px);
+  --easm-ui-safe-right: env(safe-area-inset-right, 0px);
+  --easm-ui-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --easm-ui-safe-left: env(safe-area-inset-left, 0px);
+}
+.easm-ui-drawer { padding-top: max(28px, var(--easm-ui-safe-top)); }
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  /* An app does not rubber-band or pull to refresh the whole screen; lists still scroll. */
+  html { overscroll-behavior-y: none; }
+  /* Long-press on navigation and buttons opens the control, not the browser's link preview or text selection. */
+  :is(a, button, [role='button'], [role='tab'], [role='menuitem']) { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+}

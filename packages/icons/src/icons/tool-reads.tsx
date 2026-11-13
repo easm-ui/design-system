@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ToolReadsIcon = /* @__PURE__ */ createIcon({"name":"tool-reads","body":[{"tag":"g","attrs":{"transform":"translate(9.64 8.64) scale(0.72) translate(-12 -12)","stroke-width":2.222},"children":[{"tag":"ellipse","attrs":{"cx":12,"cy":5.5,"rx":8,"ry":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"}}]},{"tag":"path","attrs":{"d":"M10.2 17.3c1.6-2.6 3.5-3.9 5.8-3.9s4.2 1.3 5.8 3.9c-1.6 2.6-3.5 3.9-5.8 3.9s-4.2-1.3-5.8-3.9Z","fill":"background"}},{"tag":"circle","attrs":{"cx":16,"cy":17.3,"r":1.5,"fill":"ink","stroke":"none"}}]});

@@ -1,0 +1,11 @@
+/* EmptyIllustration (illustrations.tsx). A line in the scene's colour over its tint, on a white ground; an error in
+   coral; a dashboard's first run in its own accent. */
+.easm-ui-illustration { --_ill-line: var(--easm-ui-primary-fill); --_ill-tint: var(--easm-ui-primary-surface); flex: none; max-width: 100%; height: auto; overflow: visible; }
+.easm-ui-illustration[data-tone='error'] { --_ill-line: var(--easm-ui-chart-coral-ink); --_ill-tint: var(--easm-ui-chart-coral-tint); }
+.easm-ui-illustration[data-tone='support'] { --_ill-line: var(--easm-ui-product-support-ink); --_ill-tint: var(--easm-ui-product-support-tint); }
+.easm-ui-illustration[data-tone='knowledge'] { --_ill-line: var(--easm-ui-product-knowledge-ink); --_ill-tint: var(--easm-ui-product-knowledge-tint); }
+.easm-ui-illustration[data-tone='marketing'] { --_ill-line: var(--easm-ui-product-marketing-ink); --_ill-tint: var(--easm-ui-product-marketing-tint); }
+.easm-ui-illustration[data-tone='automation'] { --_ill-line: var(--easm-ui-product-automation-ink); --_ill-tint: var(--easm-ui-product-automation-tint); }
+.easm-ui-illustration[data-tone='forms'] { --_ill-line: var(--easm-ui-product-forms-ink); --_ill-tint: var(--easm-ui-product-forms-tint); }
+.easm-ui-empty-state > .easm-ui-illustration { margin-block-end: -4px; }
+@media (forced-colors: active) { .easm-ui-illustration { --_ill-line: CanvasText; --_ill-tint: Canvas; } }

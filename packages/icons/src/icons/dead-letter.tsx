@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const DeadLetterIcon = /* @__PURE__ */ createIcon({"name":"dead-letter","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"rect","attrs":{"x":3,"y":5,"width":18,"height":14,"rx":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"m3.8 6.5 6.5 5a2.7 2.7 0 0 0 3.4 0l6.5-5"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"m16.4 16.4 3.2 3.2m0-3.2-3.2 3.2","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

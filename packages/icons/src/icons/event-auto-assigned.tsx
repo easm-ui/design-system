@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const EventAutoAssignedIcon = /* @__PURE__ */ createIcon({"name":"event-auto-assigned","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"circle","attrs":{"cx":"12","cy":"7","r":"3.1","fill":"surface"}},{"tag":"path","attrs":{"d":"M5 19c0-3.6 2.4-5.2 7-5.2s7 1.6 7 5.2c0 1.2-.8 2-2 2H7c-1.2 0-2-.8-2-2Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M19.9 18a1.9 1.9 0 1 1-.6-1.4M19.6 15.5v1.3h-1.3","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

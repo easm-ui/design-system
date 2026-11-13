@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const NotifyDigestIcon = /* @__PURE__ */ createIcon({"name":"notify-digest","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"rect","attrs":{"x":3,"y":5,"width":18,"height":14,"rx":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"m3.8 6.5 6.5 5a2.7 2.7 0 0 0 3.4 0l6.5-5"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M16.1 16.5h3.2M16.1 17.9h3.2M16.1 19.3h1.9","stroke-width":1.15}}]});

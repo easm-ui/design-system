@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const TestUserIcon = /* @__PURE__ */ createIcon({"name":"test-user","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"circle","attrs":{"cx":"12","cy":"7","r":"3.1","fill":"surface"}},{"tag":"path","attrs":{"d":"M5 19c0-3.6 2.4-5.2 7-5.2s7 1.6 7 5.2c0 1.2-.8 2-2 2H7c-1.2 0-2-.8-2-2Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M16.9 15.8h1.6M17.2 15.8v1.3l-1.1 2a.5.5 0 0 0 .4.7h2.4a.5.5 0 0 0 .4-.7l-1.1-2v-1.3","stroke-width":1.15}}]});

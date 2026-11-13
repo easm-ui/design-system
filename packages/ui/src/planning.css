@@ -1,0 +1,53 @@
+/* CohortBuilder, TargetBar and RecommendationCard (planning.tsx). Rules read as sentences on grey rows; plan against
+   actual is the blue mark with the target as an ink line; a recommendation is a card whose severity is a chip, never
+   a coloured edge. */
+
+/* ------------------------------------------------------------------ CohortBuilder */
+.easm-ui-cohort { display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-cohort-group { display: grid; justify-items: start; gap: 8px; padding: 12px; border-radius: var(--easm-ui-radius-card); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+.easm-ui-cohort-group h4 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 20px; }
+.easm-ui-cohort-group h4 > .easm-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-cohort-group ol { display: grid; gap: 6px; width: 100%; margin: 0; padding: 0; list-style: none; }
+.easm-ui-cohort-rule { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; padding: 6px 8px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); }
+.easm-ui-cohort-rule > .easm-ui-field { width: auto; min-width: 0; }
+.easm-ui-cohort-rule .easm-ui-dropdown-select-trigger, .easm-ui-cohort-rule .easm-ui-field:not(.easm-ui-cohort-number) { min-width: 132px; max-width: 100%; }
+.easm-ui-cohort-number { width: 132px !important; }
+.easm-ui-cohort-join, .easm-ui-cohort-word { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-cohort-join { min-width: 28px; font-weight: 600; }
+.easm-ui-cohort-remove { margin-inline-start: auto; }
+.easm-ui-cohort-empty { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+.easm-ui-cohort-count { display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-primary-surface); font-size: var(--easm-ui-text-md); line-height: 22px; --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+.easm-ui-cohort-count > .easm-icon { color: var(--easm-ui-primary-fill); }
+.easm-ui-cohort-count b { font-weight: 650; font-variant-numeric: tabular-nums; }
+.easm-ui-cohort-count[data-counting] { color: var(--easm-ui-text-secondary); }
+
+/* ------------------------------------------------------------------ TargetBar */
+.easm-ui-target { display: grid; gap: 6px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-target-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; }
+.easm-ui-target-label { font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 20px; }
+.easm-ui-target-words { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-variant-numeric: tabular-nums; }
+.easm-ui-target[data-reached] .easm-ui-target-words { color: var(--easm-ui-chart-teal-ink); font-weight: 600; }
+.easm-ui-target-track { position: relative; height: 12px; border-radius: 6px; background: var(--easm-ui-track); }
+.easm-ui-target-fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: 6px; background: var(--easm-ui-chart-blue); }
+.easm-ui-target[data-untargeted] .easm-ui-target-fill { background: var(--easm-ui-chart-honey); }
+.easm-ui-target-mark { position: absolute; inset-block: -4px; width: 2px; margin-inline-start: -1px; border-radius: 1px; background: var(--easm-ui-text); }
+.easm-ui-target-spend { display: flex; align-items: center; gap: 10px; }
+.easm-ui-target-spend-track { position: relative; flex: 1 1 auto; height: 4px; border-radius: 2px; background: var(--easm-ui-track); }
+.easm-ui-target-spend-track > i { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: 2px; background: var(--easm-ui-chart-plum); }
+.easm-ui-target-spend-track > b { position: absolute; inset-block: -3px; width: 2px; margin-inline-start: -1px; background: var(--easm-ui-text-secondary); }
+.easm-ui-target-spend-words { flex: none; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------ RecommendationCard */
+.easm-ui-recommendation { display: grid; gap: 8px; min-width: 0; padding: 14px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+:is(.easm-ui-card, .easm-ui-panel) .easm-ui-recommendation { background: var(--easm-ui-track); }
+.easm-ui-recommendation-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.easm-ui-recommendation-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-recommendation-age { margin-inline-start: auto; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-recommendation h4 { margin: 0; font-size: var(--easm-ui-text-md); font-weight: 600; line-height: 22px; overflow-wrap: anywhere; }
+.easm-ui-recommendation-evidence { display: grid; gap: 4px; margin: 0; padding-inline-start: 18px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-recommendation-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 2px; }
+@media (forced-colors: active) {
+  .easm-ui-cohort-group, .easm-ui-recommendation { border: 1px solid CanvasText; }
+  .easm-ui-target-fill, .easm-ui-target-spend-track > i { forced-color-adjust: none; background: Highlight; }
+  .easm-ui-target-mark { forced-color-adjust: none; background: CanvasText; }
+}

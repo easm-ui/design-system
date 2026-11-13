@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const LibraryAddIcon = /* @__PURE__ */ createIcon({"name":"library-add","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"rect","attrs":{"x":3,"y":4,"width":4,"height":16,"rx":1,"fill":"surface"}},{"tag":"rect","attrs":{"x":9,"y":4,"width":4,"height":16,"rx":1,"fill":"surface"}},{"tag":"path","attrs":{"d":"m15.8 4 3.5-.7 2.8 15.7-3.5.7-2.8-15.7Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":17.5,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 15.5v4m-2-2h4","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

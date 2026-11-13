@@ -1,0 +1,162 @@
+{
+  "layer": "Interaction Patterns",
+  "specificationParts": [
+    "purpose",
+    "anatomy",
+    "variants",
+    "sizes",
+    "states",
+    "colorBehavior",
+    "iconBehavior",
+    "typography",
+    "spacing",
+    "bordersAndSurfaces",
+    "motion",
+    "accessibility",
+    "responsiveBehavior",
+    "contentRules",
+    "usageRules"
+  ],
+  "components": [
+    {
+      "name": "SearchPattern",
+      "specification": {
+        "purpose": "Pair a labelled query with meaningful result, loading, error and no-match states.",
+        "anatomy": "Core SearchField; result region; count announcement; linked result list with optional icons and supporting text; retry or no-match surface.",
+        "variants": "Search / Results; No Results; Loading; Error with optional Retry. Query and results are controlled by the product.",
+        "sizes": "Core medium SearchField; minimum 64px result rows; 20px icons. Search pattern expands to parent width.",
+        "states": "Default query, focused input, ready matches, loading, error and no results; hovered/focused result links. Previous data is not shown during loading/error.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text.",
+        "iconBehavior": "20px Search in the field and optional functional result icons; 16px Chevron right. Spinner indicates an actual supplied loading state.",
+        "typography": "14px/20px semibold result title; 12px/18px description; 12px/20px count. Results keep full text and wrap.",
+        "spacing": "16px result padding, 12px icon gap, 12px count/list separation. Core input gaps and clear control remain unchanged.",
+        "bordersAndSurfaces": "Results are separate 12 px filled rows (#F6F7F9, #EEF4FF on hover) with a 4 px gap, never a bordered list with row rules. Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Native labelled input, aria-controls to results, aria-busy while loading, status count, live error, native links with full labels. Search results do not masquerade as an autocomplete listbox.",
+        "responsiveBehavior": "Rows wrap within parent; full query text remains editable; controls fit reduced widths without outside popup positioning.",
+        "contentRules": "Unique nonempty result IDs, meaningful labels and actual hrefs. Error text names the next action without exposing internals. Distinguish no matching records from an empty workspace in surrounding copy.",
+        "usageRules": "Caller owns fetching, debounce, cancellation and ranking. Pass only current-query results to prevent stale-response races. Use Combobox when selection fills an input rather than navigating."
+      }
+    },
+    {
+      "name": "FilterPattern",
+      "specification": {
+        "purpose": "Make selected independent filters visible and removable with a clear reset action.",
+        "anatomy": "Core FilterControl popup; selected removable Chip list; clear-all button; optional result count.",
+        "variants": "Filters / Default; Selected; Disabled; No Active Filters. Options, selected values and record count are caller controlled.",
+        "sizes": "Core medium FilterControl and Chips; 10px action gaps; wrapping layout. Chip removal keeps the core touch target.",
+        "states": "Popup open/closed, focused/hovered choices, selected filters, disabled choices and disabled whole group. Clear/remove actions emit updated values.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text.",
+        "iconBehavior": "Core 20px Filter control and 16px Chip close icons. Selection is visible in checkbox and selected-chip treatment, not color alone.",
+        "typography": "14px control/Chip text and 12px result count. Sentence case labels with full names preserved.",
+        "spacing": "12px between action and selected-chip rows; 10px between chips/controls. Avoid adding fixed width gaps for absent chips.",
+        "bordersAndSurfaces": "Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Core labelled popup/checkboxes; each remove action names its filter. Disabled group blocks choice, remove and clear. Matching count is status text.",
+        "responsiveBehavior": "Control and chip rows wrap. Long chip content follows core wrapping/truncation rules; do not position controls outside parent.",
+        "contentRules": "Options need unique nonempty values and labels. Selected IDs should exist in options. Counts are authoritative finite nonnegative integers; missing count should be omitted.",
+        "usageRules": "Use for independent criteria. Caller performs AND/OR semantics and request updates. Use a Form Apply step for expensive filters instead of implying immediate live requests."
+      }
+    },
+    {
+      "name": "FormPattern",
+      "specification": {
+        "purpose": "Compose a validated form with focusable summary, field errors and explicit save/cancel actions.",
+        "anatomy": "Native named form; optional alert error summary with field links; disabled busy fieldset; caller fields; success Alert; submit/cancel buttons.",
+        "variants": "Form / Default; Error; Busy; Success. Field layout and validation are caller supplied.",
+        "sizes": "Core medium fields and actions; 20px section gap, 16px between fields; parent controls readable width, typically up to 600px in demos.",
+        "states": "Editable, validation errors, summary focus after a failed submit, busy disabled controls, supplied success. Busy submit is guarded; no fake success timer.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text.",
+        "iconBehavior": "Use functional icons only where the field/action needs meaning. Error/success Alert use established semantic symbols and text.",
+        "typography": "Core 14px field labels and body; 14px/22px summary, semibold summary heading. Specific actionable field messages.",
+        "spacing": "20px main gap, 16px fieldset gap and summary padding, 10px action gaps. Errors participate in document flow.",
+        "bordersAndSurfaces": "Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Native form and submit; error summary role=alert/tabIndex=-1; links target actual field IDs. Fields need their own error/aria-invalid association. Busy native fieldset disables inputs; core submit loading stays labelled.",
+        "responsiveBehavior": "Fields stack and actions wrap. Summary messages wrap; do not render desktop columns that force a narrow viewport wider.",
+        "contentRules": "Every fieldId must point to the actual input. Messages state what to correct with examples where helpful. Preserve values on validation failure. Success must describe a real completed action.",
+        "usageRules": "Caller prevents native navigation, validates, sets busy promptly and persists changes. The library disables native validation so one coherent caller validation summary is used. For navigation after success, the product owns the destination and announcement."
+      }
+    },
+    {
+      "name": "ApprovalPattern",
+      "specification": {
+        "purpose": "Review a bounded request with an explicit approval or reasoned confirmed rejection.",
+        "anatomy": "Title/description; labelled StatusBadge; review comment; approve button; rejection trigger; core ConfirmationDialog carrying the reason. Callback failures use a live error Alert.",
+        "variants": "Approval / Pending; Approved; Rejected; Busy; Disabled. Rejection requires a nonblank comment.",
+        "sizes": "24px container padding, 16px on small screens; core medium textarea, buttons and confirmation dialog.",
+        "states": "Pending editable comment; approve request; rejection confirmation; supplied busy or pending returned Promise; callback error with retry; final approved/rejected status. Repeated decisions are guarded while the real Promise is pending. Final states hide editing controls.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text.",
+        "iconBehavior": "20px Review approve and Review reject; labelled status icons. Destructive rejection confirmation inherits the core semantic action treatment.",
+        "typography": "16px/24px semibold title; 14px/22px description; core field/confirmation typography. Reason wraps in the confirmation.",
+        "spacing": "16px between sections, 10px actions; comment length capped at 500 characters. Core confirmation footer retains its established insets.",
+        "bordersAndSurfaces": "Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Readable status independent of color; labelled comment; native disabled rejection until a reason exists; focus-trapped named confirmation with Escape and restored trigger focus. Confirm guards busy/disabled/final states.",
+        "responsiveBehavior": "Actions wrap within the panel; core confirmation stays viewport-safe. Long reasons wrap without overlapping dialog corners.",
+        "contentRules": "Explain the actual request scope. State whether a comment is recorded. Rejection reason must be specific and nonblank; maximum 500 characters. Do not show private applicant details in reusable examples.",
+        "usageRules": "Caller owns permissions, audit record and persistence. onDecision may return void or the real operation Promise. Returned Promises provide genuine pending/error feedback; the caller must update status only after actual completion. Void handlers must set busy for asynchronous work. The library never treats a resolved Promise as an authoritative approved/rejected status."
+      }
+    },
+    {
+      "name": "AIActionPattern",
+      "specification": {
+        "purpose": "Run an asynchronous draft operation with cancellation, clear failure and deliberate review before application.",
+        "anatomy": "Signature/context heading; generate action; pending/cancel controls; error Alert; plain-text result; review instruction; optional apply button.",
+        "variants": "AI Action / Idle; Pending; Cancelled; Error; Draft Ready; Disabled. Consumer supplies onRun(signal) and optionally onApply.",
+        "sizes": "24px panel padding, 16px narrow; core medium actions; result 16px inner padding with full text wrapping.",
+        "states": "Immediate pending on actual Promise start; success only on nonblank completion; explicit error; cancel aborts and invalidates late result. Concurrent repeated run requests are guarded. No decorative fake generation timer.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text. The generated draft sits on #EEF4FF so it reads as machine output awaiting review.",
+        "iconBehavior": "EASM One signature context plus 20px AI agent action and Check apply. Motion belongs only to genuine pending feedback; no looping decorative AI figure.",
+        "typography": "16px/24px semibold title; 14px/22px context; 14px/24px plain-text draft with preserved line breaks; 12px/20px status.",
+        "spacing": "16px panel gaps, 10px action spacing, 16px result inset; space and the draft's blue fill separate the generated draft from the triggering controls.",
+        "bordersAndSurfaces": "The draft is a filled 8 px block separated from the controls by space, not by a rule. Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Named actions, status announcements for pending/cancelled/ready, error Alert and a readable text result. Generation button prevents repeats while pending; cancellation stays available. Apply is an explicit keyboard-accessible button.",
+        "responsiveBehavior": "Draft wraps even long identifiers. Actions wrap and panel shrinks to parent. Never use fixed-size animation or result containers that hide text.",
+        "contentRules": "Return plain text from onRun; React escapes it. Error text should help recovery without secrets. Identify scope/sources in surrounding product content. A draft is not verified simply because generation completed.",
+        "usageRules": "Caller supplies an actual cancellable process and validates/reviews output. Abort is a UI/process request, not rollback of server side effects; enforce server cancellation separately. Key/remount or abort when workspace/context changes. onApply owns persistence and its busy/result feedback."
+      }
+    },
+    {
+      "name": "NotificationPattern",
+      "specification": {
+        "purpose": "Review updates in priority order, filter unread items and acknowledge each explicitly. NotificationCenter puts it behind the bell in a popover.",
+        "anatomy": "Labelled section; header with the title, an \"n new\" pill and optional Mark all read; All / Unread toggles; groups Needs attention, New and Earlier (headings only when more than one shows); native lists; tinted icon tile, title, description, time and priority word; a check button to mark each unread item read; empty or caught-up state.",
+        "variants": "appearance card (white card) or plain (no surface, for a Popover, Drawer or panel). priority urgent, high, normal or low per item. Read state belongs to the caller.",
+        "sizes": "20px card padding, none when plain; 12px rows, 28px icon tiles, 32px check button expanded to 44px on coarse pointers. In NotificationCenter the panel is 400px wide, or the screen width less 24px on phones.",
+        "states": "All/Unread selection, unread (blue tint, semibold title), read (no fill, medium title), urgent and high unread lifted to Needs attention, no visible items. No artificial arrival timers.",
+        "colorBehavior": "Unread rows #EEF4FF; read rows have no fill inside a panel and #F6F7F9 in the card. Icon tiles: urgent coral, high amber, normal blue, low grey track. Priority words use the coral and amber inks. The new-count pill is #2F6BEB with white text. Text #101318, supporting copy #5E6470.",
+        "iconBehavior": "Each item shows its icon, or the priority's default (error-circle, warning, notification, info), in a 28px tinted tile. Unread is also stated in text for screen readers.",
+        "typography": "16px/24px title; 12px/18px group headings; 14px/20px item title; 13px/18px description; 12px/16px time and priority word. Text wraps in its own column beside the tile.",
+        "spacing": "12px header, filter and group gaps; 4px between rows; 12px row padding and icon/text gap.",
+        "bordersAndSurfaces": "Rows are filled 8 px blocks with a 4 px gap, never divided by rules; the filter is a 12 px grey track with 8 px white selected pill. Separation is by fill, never by outlines, shadows or one-sided rules.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "All and Unread are pressed toggles (aria-pressed). Each check button is named \"Mark <title> as read\". Groups are labelled; lists are native; unread is stated in text.",
+        "responsiveBehavior": "Rows adapt to their panel; the text column wraps while the tile and check button keep their size and stay at the top. On phones NotificationCenter's panel spans the screen.",
+        "contentRules": "Unique nonempty IDs and titles; supplied human-readable time includes relevant date/time zone in real products. Announce important live updates at product level without repeating the full list.",
+        "usageRules": "Caller owns fetching, permissions, read persistence and navigation. This is an inbox pattern; ephemeral confirmations use Toast instead. Do not show Mark read for already read items."
+      }
+    },
+    {
+      "name": "EmptyState",
+      "specification": {
+        "purpose": "Explain an empty, unmatched, failed or restricted context and supply an appropriate next step.",
+        "anatomy": "Purposeful 32px functional icon in 56px rounded surface; heading; explanatory text; optional explicit action.",
+        "variants": "Empty State / Empty; No Results; Error; Restricted. No result is distinct from no records or access denial.",
+        "sizes": "40px/24px padding; narrow 28px/16px; 56px icon surface with 16px radius; body width limited to 48ch.",
+        "states": "Static contextual message. Action uses core interaction/loading states; no automatic decorative animation.",
+        "colorBehavior": "Actions use the #2F6BEB fill and secondary grey track (#F1F3F6); selection uses #2563EB on #EEF4FF. Text is #101318 with #5E6470 supporting copy on white cards over the white page (#FFFFFF). Error and success use #D92644 and #0C8138 on their light surfaces. EASM orange #FF6A00 belongs to the product signature, with dark text.",
+        "iconBehavior": "Inbox for new collection, Search for unmatched query, Error circle for failure, Shield lock for restricted access; 32px clear branded-functional artwork.",
+        "typography": "16px/24px semibold title; 14px/22px explanation; core medium action. Concise sentence case.",
+        "spacing": "12px icon/title/body/action gaps, generous meaningful whitespace. The block is a grey fill with no outline.",
+        "bordersAndSurfaces": "A filled #F6F7F9 block with 12 px radius and a 56 px tinted icon tile with 16 px corners; no dashed or solid outline. Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Readable heading/text communicate all meaning; decorative icon is hidden. Action must be named and operable; add live announcement in the consuming changing region rather than duplicating alerts.",
+        "responsiveBehavior": "Content and actions wrap inside parent; reduced padding at 480px preserves the icon and text scale. Actions remain centered and every child is constrained to available width, including long unbroken identifiers.",
+        "contentRules": "Name why content is missing and one useful next step. Do not use success copy for errors or Add actions where access is denied. Avoid technical stack errors.",
+        "usageRules": "Use at the scope of the affected collection. Do not replace a whole workspace for a minor field issue. Omit unavailable actions and supply recovery only when it can work."
+      }
+    }
+  ]
+}

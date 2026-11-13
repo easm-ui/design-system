@@ -1,0 +1,70 @@
+/* Sizes read the size tokens (--easm-ui-size-*), so one token edit resizes every control. */
+.easm-ui-button { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--easm-ui-size-md); max-width: 100%; padding: 8px 16px; border: 1px solid transparent; border-radius: var(--easm-ui-radius-control); font-size: 14px; font-weight: 600; line-height: 20px; cursor: pointer; touch-action: manipulation; user-select: none; transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-button[data-size='sm'] { min-height: var(--easm-ui-size-sm); padding: 5px 12px; gap: 8px; font-size: 13px; }
+.easm-ui-button[data-size='lg'] { min-height: var(--easm-ui-size-lg); padding: 11px 20px; font-size: 16px; line-height: 24px; }
+.easm-ui-button-label { min-width: 0; overflow-wrap: break-word; }
+/* A button is never narrower than its longest word, whatever its row allows its children (`> * { min-width: 0 }`
+   in a toolbar or a sort row): squeezed, it used to break its label between letters ("Descen/ding"). */
+.easm-ui.easm-ui-button { min-width: min-content; }
+.easm-ui-button > .easm-ui-icon { flex: none; }
+.easm-ui-button[data-variant='primary'] { color: var(--easm-ui-on-primary-fill); background: var(--easm-ui-primary-fill); --easm-icon-background: var(--easm-ui-primary-fill); --easm-icon-contrast: var(--easm-ui-primary-fill); }
+/* Hover colours only where a pointer can hover: on a touch screen a tap would otherwise leave the fill stuck.
+   Pressed (:active) states stay outside, so a finger still sees the press. */
+@media (hover: hover) {
+  .easm-ui-button[data-variant='primary']:hover:not([aria-disabled='true']) { background: var(--easm-ui-primary-fill-hover); --easm-icon-background: var(--easm-ui-primary-fill-hover); --easm-icon-contrast: var(--easm-ui-primary-fill-hover); }
+  .easm-ui-button[data-variant='secondary']:hover:not([aria-disabled='true']) { background: var(--easm-ui-track-hover); border-color: transparent; --easm-icon-background: var(--easm-ui-track-hover); --easm-icon-contrast: var(--easm-ui-track-hover); }
+  .easm-ui-button[data-variant='subtle']:hover:not([aria-disabled='true']) { background: var(--easm-ui-primary-surface); --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+  .easm-ui-button[data-variant='destructive']:hover:not([aria-disabled='true']) { background: var(--easm-ui-danger-hover); --easm-icon-background: var(--easm-ui-danger-hover); --easm-icon-contrast: var(--easm-ui-danger-hover); }
+}
+.easm-ui-button[data-variant='primary']:active:not([aria-disabled='true']) { background: var(--easm-ui-primary-fill-pressed); --easm-icon-background: var(--easm-ui-primary-fill-pressed); --easm-icon-contrast: var(--easm-ui-primary-fill-pressed); }
+.easm-ui-button[data-variant='secondary'] { color: var(--easm-ui-text); background: var(--easm-ui-track); border-color: transparent; --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-button[data-variant='secondary']:active:not([aria-disabled='true']) { background: var(--easm-ui-track-pressed); --easm-icon-background: var(--easm-ui-track-pressed); --easm-icon-contrast: var(--easm-ui-track-pressed); border-color: transparent; }
+.easm-ui-button[data-variant='subtle'] { color: var(--easm-ui-primary); background: transparent; }
+/* Pressed: the label darkens with the fill, so it keeps 4.5:1 on primary-border (primary alone is 3.65:1 there). */
+.easm-ui-button[data-variant='subtle']:active:not([aria-disabled='true']) { color: var(--easm-ui-primary-pressed); background: var(--easm-ui-primary-border); --easm-icon-background: var(--easm-ui-primary-border); --easm-icon-contrast: var(--easm-ui-primary-border); }
+.easm-ui-button[data-variant='destructive'] { color: var(--easm-ui-on-danger); background: var(--easm-ui-danger); --easm-icon-background: var(--easm-ui-danger); --easm-icon-contrast: var(--easm-ui-danger); }
+.easm-ui-button[data-variant='destructive']:active:not([aria-disabled='true']) { background: var(--easm-ui-danger-hover); --easm-icon-background: var(--easm-ui-danger-hover); --easm-icon-contrast: var(--easm-ui-danger-hover); }
+/* Selected and disabled states keep the focus ring: an aria-disabled button can still be focused. */
+.easm-ui-button[data-selected='true'][data-variant='primary'] { background: var(--easm-ui-primary-fill-pressed); --easm-icon-background: var(--easm-ui-primary-fill-pressed); --easm-icon-contrast: var(--easm-ui-primary-fill-pressed); }
+.easm-ui-button[data-selected='true']:not([data-variant='primary']):not([data-variant='destructive']) { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); border-color: transparent; --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+.easm-ui-button:disabled, .easm-ui-button[aria-disabled='true']:not([data-loading='true']) { background: var(--easm-ui-surface-disabled); color: var(--easm-ui-text-disabled); border-color: transparent; cursor: not-allowed; --easm-icon-background: var(--easm-ui-surface-disabled); --easm-icon-contrast: var(--easm-ui-surface-disabled); }
+/* A disabled text action stays a text action: no fill appears where none was. */
+.easm-ui-button[data-variant='subtle']:disabled, .easm-ui-button[data-variant='subtle'][aria-disabled='true']:not([data-loading='true']) { background: transparent; --easm-icon-background: transparent; --easm-icon-contrast: transparent; }
+.easm-ui-button[data-loading='true'] { cursor: progress; }
+/* Loading keeps the button's size and label for assistive technology; the spinner covers the hidden content. */
+.easm-ui-button[data-loading='true'] > .easm-ui-icon, .easm-ui-button[data-loading='true'] > .easm-ui-button-label { opacity: 0; }
+.easm-ui-button-busy-indicator { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.easm-ui-button-spinner { flex: none; }
+.easm-ui-button-block { display: flex; width: 100%; }
+.easm-ui-icon-button { flex: none; width: var(--easm-ui-size-md); padding: 0; aspect-ratio: 1; }
+.easm-ui-icon-button[data-size='sm'] { width: var(--easm-ui-size-sm); padding: 0; }
+.easm-ui-icon-button[data-size='lg'] { width: var(--easm-ui-size-lg); padding: 0; }
+.easm-ui-icon-button .easm-ui-button-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+/* Feedback: a small status mark on the top end corner, ringed by the surface so it reads against any fill. */
+.easm-ui-icon-button[data-feedback] .easm-ui-button-label { inset: 0; width: auto; height: auto; overflow: visible; clip-path: none; pointer-events: none; }
+.easm-ui-icon-button-feedback { position: absolute; inset-block-start: -4px; inset-inline-end: -4px; display: flex; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface); box-shadow: 0 0 0 2px var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-icon-button-feedback[data-tone='success'] { color: var(--easm-ui-success); }
+.easm-ui-icon-button-feedback[data-tone='error'] { color: var(--easm-ui-danger); }
+.easm-ui-icon-button-feedback[data-tone='warning'] { color: var(--easm-ui-warning); }
+.easm-ui-button-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.easm-ui-button-group[data-orientation='vertical'] { flex-direction: column; align-items: stretch; }
+/* Attached buttons are separated by a 1 px seam of the surface behind them, never by a line. */
+.easm-ui-button-group[data-attached='true'] { flex-wrap: nowrap; gap: 1px; }
+.easm-ui-button-group[data-attached='true'] > .easm-ui-button { border-radius: 0; }
+.easm-ui-button-group[data-attached='true'][data-orientation='horizontal'] > :first-child { border-start-start-radius: var(--easm-ui-radius-control); border-end-start-radius: var(--easm-ui-radius-control); }
+.easm-ui-button-group[data-attached='true'][data-orientation='horizontal'] > :last-child { border-start-end-radius: var(--easm-ui-radius-control); border-end-end-radius: var(--easm-ui-radius-control); }
+.easm-ui-button-group[data-attached='true'][data-orientation='vertical'] > :first-child { border-radius: var(--easm-ui-radius-control) var(--easm-ui-radius-control) 0 0; }
+.easm-ui-button-group[data-attached='true'][data-orientation='vertical'] > :last-child { border-radius: 0 0 var(--easm-ui-radius-control) var(--easm-ui-radius-control); }
+.easm-ui-button-group[data-attached='true'] > .easm-ui-button:only-child { border-radius: var(--easm-ui-radius-control); }
+.easm-ui-button-group[data-attached='true'] > .easm-ui-button:hover { z-index: 1; }
+.easm-ui-button-group[data-attached='true'] > .easm-ui-button:focus-visible { z-index: 1; }
+.easm-ui-split-button { display: inline-flex; gap: 2px; max-width: 100%; }
+.easm-ui-split-button[data-block] { display: flex; width: 100%; }
+.easm-ui-split-button[data-block] > .easm-ui-button:first-child { flex: 1 1 auto; }
+/* The two parts are separated by a 2 px gap of the surface behind them, not by a line. */
+.easm-ui-split-button > .easm-ui-button:first-child { border-radius: 0; border-start-start-radius: var(--easm-ui-radius-control); border-end-start-radius: var(--easm-ui-radius-control); }
+.easm-ui-split-button > .easm-ui-button:last-child { border-radius: 0; border-start-end-radius: var(--easm-ui-radius-control); border-end-end-radius: var(--easm-ui-radius-control); }
+.easm-ui-split-button > .easm-ui-button:focus-visible { z-index: 1; }
+@media (pointer: coarse) { .easm-ui-button, .easm-ui-button[data-size='sm'], .easm-ui-button[data-size='md'] { min-height: var(--easm-ui-size-touch); } .easm-ui-icon-button, .easm-ui-icon-button[data-size='sm'] { min-width: var(--easm-ui-size-touch); } }
+@media (prefers-reduced-motion: reduce) { .easm-ui-button { transition: none; } }
+@media (forced-colors: active) { .easm-ui-icon-button-feedback { forced-color-adjust: auto; background: Canvas; box-shadow: none; } }

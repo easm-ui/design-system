@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ViaQrIcon = /* @__PURE__ */ createIcon({"name":"via-qr","body":[{"tag":"rect","attrs":{"x":3.5,"y":3.5,"width":7,"height":7,"rx":1.6,"fill":"surface"}},{"tag":"rect","attrs":{"x":13.5,"y":3.5,"width":7,"height":7,"rx":1.6,"fill":"surface"}},{"tag":"rect","attrs":{"x":3.5,"y":13.5,"width":7,"height":7,"rx":1.6,"fill":"surface"}},{"tag":"circle","attrs":{"cx":7,"cy":7,"r":0.9,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":17,"cy":7,"r":0.9,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":7,"cy":17,"r":0.9,"fill":"ink","stroke":"none"}},{"tag":"path","attrs":{"d":"M14 14h2.5v2.5M20 14v.01M14 20h.01M17.5 20H20v-2.5"}}]});

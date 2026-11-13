@@ -1,0 +1,94 @@
+.easm-ui-empty-state,.easm-ui-search-pattern,.easm-ui-filter-pattern,.easm-ui-form-pattern,.easm-ui-approval-pattern,.easm-ui-ai-action{min-width:0;overflow-wrap: break-word}.easm-ui-pattern-heading>div{min-width:0}.easm-ui-approval-pattern .easm-ui-pattern-title:focus,.easm-ui-form-errors:focus{outline:2px solid var(--easm-ui-primary);outline-offset:3px}.easm-ui-pattern-list a>svg,.easm-ui-ai-action .easm-ui-module-icon{flex:none}.easm-ui-empty-state{display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px 16px;text-align:center;background:var(--easm-ui-surface-hover);border:0;border-radius:var(--easm-ui-radius-card)}.easm-ui-empty-symbol{display:grid;place-items:center;width:56px;height:56px;background:var(--easm-ui-primary-surface);border-radius:16px;color:var(--easm-ui-primary)}.easm-ui-empty-state[data-kind=error] .easm-ui-empty-symbol{color:var(--easm-ui-danger);background:var(--easm-ui-danger-surface)}.easm-ui-empty-state>.easm-ui-empty-title{font-size:16px;font-weight:600;line-height:24px;margin:0}.easm-ui-empty-state>p{max-width:48ch;font-size:14px;line-height:22px;color:var(--easm-ui-text-secondary);margin:0}.easm-ui-pattern-actions{min-width:0;max-width:100%;display:flex;align-items:center;flex-wrap:wrap;gap:10px}.easm-ui-pattern-support{font-size:12px;line-height:20px;color:var(--easm-ui-text-secondary);margin:12px 0}.easm-ui-pattern-list{display:grid;gap:4px;padding:0;margin:12px 0 0;list-style:none}.easm-ui-pattern-list a{min-height:64px;padding:16px;display:flex;align-items:center;gap:12px;border-radius:var(--easm-ui-radius-card);background:var(--easm-ui-surface-hover);color:var(--easm-ui-text);text-decoration:none;transition:background-color var(--easm-ui-motion-fast) var(--easm-ui-ease)}.easm-ui-pattern-list a:hover{background:var(--easm-ui-primary-surface)}.easm-ui-pattern-list a:focus-visible{box-shadow:var(--easm-ui-focus-ring)}.easm-ui-pattern-list a>span{flex:1;min-width:0}.easm-ui-pattern-list strong{font-weight:600;font-size:14px;line-height:20px}.easm-ui-pattern-list small{display:block;font-size:12px;line-height:18px;color:var(--easm-ui-text-secondary);margin-top:4px}.easm-ui-pattern-pending{min-width:0;flex-wrap:wrap;display:flex;align-items:center;gap:10px;min-height:100px;font-size:14px}.easm-ui-filter-pattern{display:grid;gap:12px}.easm-ui-form-pattern{display:grid;gap:20px}.easm-ui-form-pattern>fieldset{min-width:0;display:grid;gap:16px;border:0;padding:0;margin:0}.easm-ui-form-errors{border:1px solid transparent;border-radius:var(--easm-ui-radius-control);background:var(--easm-ui-danger-surface);color:var(--easm-ui-danger);padding:16px;font-size:14px;line-height:22px}.easm-ui-form-errors ul{margin:8px 0 0;padding:0;padding-inline-start:20px;list-style:disc}.easm-ui-form-errors a{color:inherit;text-underline-offset:3px}.easm-ui-pattern-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}.easm-ui-pattern-heading .easm-ui-pattern-title{min-width:0;max-width:100%;flex:1 1 180px;font-size:16px;font-weight:600;line-height:24px;margin:0}.easm-ui-approval-pattern,.easm-ui-ai-action{background:var(--easm-ui-surface);border:1px solid transparent;border-radius:var(--easm-ui-radius-card);padding:16px;display:grid;gap:16px}.easm-ui-approval-pattern>p,.easm-ui-ai-action p{font-size:14px;line-height:22px;margin:0;color:var(--easm-ui-text-secondary)}.easm-ui-ai-action .easm-ui-pattern-heading{justify-content:flex-start;align-items:flex-start;flex-wrap:nowrap}.easm-ui-ai-action .easm-ui-pattern-heading p{margin-top:4px}.easm-ui-ai-result{display:grid;gap:14px;padding-top:4px}.easm-ui-ai-result-copy{white-space:pre-wrap;overflow-wrap: break-word;font-size:14px;line-height:24px;color:var(--easm-ui-text);background:var(--easm-ui-primary-surface);padding:16px;border-radius:var(--easm-ui-radius-control)}@media(min-width:481px){.easm-ui-empty-state{padding:40px 24px}.easm-ui-approval-pattern,.easm-ui-ai-action{padding:24px}}
+
+/* Respond to available panel width, including narrow cards on large screens. */
+/* Action slots hold the product's own elements; in the base layer so product utilities still win. */
+@layer base { .easm-ui-pattern-actions>*{min-width:0;max-width:100%} }
+.easm-ui-empty-state .easm-ui-pattern-actions{justify-content:center}
+.easm-ui-empty-state>*{min-width:0;max-width:100%}
+.easm-ui-ai-action .easm-ui-pattern-heading>div{flex:1;min-width:0}
+.easm-ui-ai-result>.easm-ui-button{justify-self:start}
+
+
+/* Notifications: a header with the unread count, an All / Unread switch, then groups ordered by priority
+   (Needs attention, New, Earlier). Unread rows take the blue tint; priority shows in the icon tile and a word. */
+.easm-ui-notification-pattern { container-type: inline-size; display: grid; gap: 12px; min-width: 0; padding: 20px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); color: var(--easm-ui-text); font-family: var(--easm-ui-font); overflow-wrap: break-word; }
+.easm-ui-notification-pattern[data-appearance='plain'] { padding: 0; border-radius: 0; background: transparent; }
+.easm-ui-notification-head { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 32px; }
+.easm-ui-notification-head .easm-ui-notification-title { margin: 0; min-width: 0; font-size: 16px; line-height: 24px; font-weight: 600; }
+.easm-ui-notification-new { flex: none; padding: 1px 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-size: 12px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.easm-ui-notification-read-all.easm-ui-button { flex: none; margin-inline: auto -6px; }
+.easm-ui-notification-filter { display: inline-flex; justify-self: start; gap: 2px; padding: 4px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); }
+.easm-ui-notification-filter > .easm-ui-button:hover:not([data-selected='true']) { background: var(--easm-ui-track-hover); }
+.easm-ui-notification-filter > .easm-ui-button { border-radius: var(--easm-ui-radius-control); color: var(--easm-ui-text-secondary); }
+.easm-ui-notification-filter > .easm-ui-button[data-selected='true']:not([data-variant='primary']) { background: var(--easm-ui-surface); color: var(--easm-ui-text); --easm-icon-background: var(--easm-ui-surface); }
+.easm-ui-notification-group { display: grid; gap: 4px; min-width: 0; }
+.easm-ui-notification-group .easm-ui-notification-group-title { margin: 4px 0 0; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--easm-ui-text-secondary); }
+.easm-ui-notification-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-notification-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 12px; min-width: 0; padding: 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface-hover); }
+.easm-ui-notification-pattern[data-appearance='plain'] .easm-ui-notification-item[data-unread='false'] { background: transparent; }
+.easm-ui-notification-item[data-unread='true'] { background: var(--easm-ui-primary-surface); }
+.easm-ui-notification-item[data-unread='false']:not(:has(.easm-ui-notification-read)) { grid-template-columns: auto minmax(0, 1fr); }
+.easm-ui-notification-text { min-width: 0; }
+.easm-ui-notification-item strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+.easm-ui-notification-item[data-unread='false'] strong { font-weight: 500; }
+.easm-ui-notification-item p { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--easm-ui-text-secondary); }
+.easm-ui-notification-item small { display: block; margin-top: 4px; font-size: 12px; line-height: 16px; color: var(--easm-ui-text-secondary); }
+/* Two lines of a description, then Read more (NotificationText measures whether there is more). */
+.easm-ui-notification-item p:not([data-expanded]) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.easm-ui-notification-more { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 24px; margin: 0; padding: 0; border: 0; border-radius: var(--easm-ui-radius-mark); background: none; color: var(--easm-ui-primary); font: inherit; font-size: 12px; font-weight: 600; line-height: 16px; cursor: pointer; }
+.easm-ui-notification-more:hover { text-decoration: underline; }
+.easm-ui-notification-more:focus-visible { outline: 2px solid transparent; box-shadow: var(--easm-ui-focus-ring); }
+/* An item that opens: its title's button covers the whole item, and Read more and Mark read sit above it. */
+.easm-ui-notification-item[data-openable] { position: relative; transition: background-color var(--easm-ui-motion-fast); }
+.easm-ui-notification-open { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer; }
+.easm-ui-notification-open::after { content: ''; position: absolute; inset: 0; border-radius: var(--easm-ui-radius-control); }
+.easm-ui-notification-open:focus-visible { outline: none; }
+.easm-ui-notification-open:focus-visible::after { box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-notification-item[data-openable]:hover { background: var(--easm-ui-track); }
+.easm-ui-notification-item[data-openable][data-unread='true']:hover { background: color-mix(in srgb, var(--easm-ui-primary-surface) 55%, var(--easm-ui-primary-border)); }
+.easm-ui-notification-item[data-openable] .easm-ui-notification-read { position: relative; z-index: 1; }
+.easm-ui-notification-item[data-priority='urgent'] .easm-ui-notification-priority { color: var(--easm-ui-chart-coral-ink); font-weight: 600; }
+.easm-ui-notification-item[data-priority='high'] .easm-ui-notification-priority { color: var(--easm-ui-chart-amber-ink); font-weight: 600; }
+.easm-ui-notification-read.easm-ui-button { margin: -2px -4px 0 0; color: var(--easm-ui-primary); }
+.easm-ui-notification-item[data-unread='true'] .easm-ui-notification-read:hover { background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); }
+.easm-ui-popover.easm-ui-notification-popover { width: var(--radix-popover-content-available-width, calc(100vw - 24px)); max-height: min(var(--radix-popover-content-available-height), 78dvh); padding: 16px 12px 12px; }
+@media (min-width: 600px) { .easm-ui-popover.easm-ui-notification-popover { width: min(400px, calc(100vw - 24px)); max-height: var(--radix-popover-content-available-height); } }
+/* The panel floats over the page without a shadow (EASM UI has none), so a hairline edge keeps it from melting
+   into a white card behind it; on a phone it takes the screen's width with even margins, where a 400px panel
+   anchored to the bell left a strip of the page showing down its left side (2026-10-14). */
+.easm-ui-popover.easm-ui-notification-popover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--easm-ui-border) 35%, transparent); }
+.easm-ui-notification-popover .easm-ui-notification-head, .easm-ui-notification-popover .easm-ui-notification-group .easm-ui-notification-group-title { padding-inline: 4px; }
+@media (forced-colors: active) { .easm-ui-notification-item { border: 1px solid CanvasText; } .easm-ui-notification-item[data-unread='true'] { border-color: Highlight; } }
+
+/* A compact empty state for a panel, card or popover. */
+.easm-ui-empty-state[data-compact] { gap: 8px; padding: 24px 16px; }
+.easm-ui-empty-state[data-compact] .easm-ui-empty-symbol { width: 40px; height: 40px; border-radius: 12px; }
+
+/* In a narrow box the mark-read action moves beneath the message, so the text keeps the width. */
+@container (max-width: 320px) {
+  .easm-ui-notification-head { flex-wrap: wrap; }
+  .easm-ui-notification-item { grid-template-columns: auto minmax(0, 1fr); }
+  .easm-ui-notification-read.easm-ui-button { grid-column: 2; justify-self: start; margin-block: 0; margin-inline: -6px 0; }
+}
+
+/* Unread is a dot, not a box (2026-10-28: every unread notification on a blue tile read as the old theme and
+   turned the panel into a stack of blue cards). Rows sit on the panel itself and show a fill only under the
+   pointer; an unread row carries a small primary dot before it and a stronger title. Mark read is a quiet
+   check that steps forward under the pointer or keyboard focus, and stays visible on touch screens. */
+.easm-ui-notification-item { position: relative; padding-inline-start: 22px; background: transparent; }
+.easm-ui-notification-pattern[data-appearance='plain'] .easm-ui-notification-item[data-unread='false'] { background: transparent; }
+.easm-ui-notification-item[data-unread='true'] { background: transparent; }
+.easm-ui-notification-item[data-unread='true']::before { content: ''; position: absolute; inset-inline-start: 8px; top: 20px; width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-primary-fill); }
+.easm-ui-notification-item[data-openable]:hover, .easm-ui-notification-item[data-openable][data-unread='true']:hover { background: var(--easm-ui-surface-hover); }
+.easm-ui-notification-list { gap: 2px; }
+.easm-ui-notification-new { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); }
+.easm-ui-notification-read.easm-ui-button { color: var(--easm-ui-text-secondary); }
+.easm-ui-notification-read.easm-ui-button:hover { color: var(--easm-ui-primary); }
+.easm-ui-notification-item[data-unread='true'] .easm-ui-notification-read:hover { background: var(--easm-ui-track); --easm-icon-background: var(--easm-ui-track); }
+@media (hover: hover) and (pointer: fine) {
+  .easm-ui-notification-item .easm-ui-notification-read { opacity: 0; transition: opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+  .easm-ui-notification-item:is(:hover, :focus-within) .easm-ui-notification-read { opacity: 1; }
+}
+/* The page behind is dimmed while the panel is open, so the panel stands out by its fill alone. */
+.easm-ui-popover.easm-ui-notification-popover { box-shadow: none; }
+@media (forced-colors: active) { .easm-ui-notification-item[data-unread='true']::before { background: Highlight; } }

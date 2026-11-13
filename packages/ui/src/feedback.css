@@ -1,0 +1,105 @@
+.easm-ui-badge{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;border-radius:var(--easm-ui-radius-pill);min-height:32px;padding:4px 8px;font-size:var(--easm-ui-text-sm);line-height:18px;font-weight:550;max-width:100%;white-space:nowrap;flex:none;background:var(--easm-ui-badge-neutral);color:var(--easm-ui-text);border:1px solid transparent;border-color:transparent}
+.easm-ui-badge[data-size=sm]{min-height:24px;padding:2px 8px;font-size:var(--easm-ui-text-xs)}
+.easm-ui-badge[data-tone=brand]{color:var(--easm-ui-text);background:var(--easm-ui-badge-brand)}
+.easm-ui-badge[data-tone=success]{color:var(--easm-ui-text);background:var(--easm-ui-badge-success)}
+.easm-ui-badge[data-tone=warning]{color:var(--easm-ui-text);background:var(--easm-ui-badge-warning)}
+.easm-ui-badge[data-tone=danger]{color:var(--easm-ui-text);background:var(--easm-ui-badge-danger)}
+.easm-ui-tooltip{--easm-ui-layer-offset:0;z-index:calc(var(--easm-ui-z-tooltip,1200) + var(--easm-ui-layer-offset));padding:8px 12px;max-width:min(280px,calc(100vw - 24px));border:1px solid transparent;border-radius:var(--easm-ui-radius-float);background:var(--easm-ui-text);color:var(--easm-ui-surface);font-size:var(--easm-ui-text-xs);line-height:1.45;font-weight:500;box-shadow:var(--easm-ui-shadow-card);overflow-wrap: break-word;transform-origin:var(--radix-tooltip-content-transform-origin);animation:easm-ui-tooltip-enter var(--easm-ui-motion-fast) var(--easm-ui-ease)}
+.easm-ui-tooltip[data-state=closed]{animation:easm-ui-tooltip-exit var(--easm-ui-motion-fast) var(--easm-ui-ease);pointer-events:none}
+.easm-ui-toast,.easm-ui-alert{display:flex;align-items:flex-start;gap:12px;min-width:0;border:1px solid var(--easm-ui-border-subtle);border-radius:var(--easm-ui-radius-card);padding:16px;background:var(--easm-ui-surface);color:var(--easm-ui-text);border-color:transparent}
+.easm-ui-toast{width:340px;max-width:100%;box-shadow:none;gap:10px;padding:10px 8px 10px 14px;background:var(--easm-ui-ink-panel);color:var(--easm-ui-on-ink);--easm-icon-background:var(--easm-ui-ink-panel);--easm-icon-contrast:var(--easm-ui-ink-panel);--easm-icon-fill:none}
+.easm-ui-feedback-content{min-width:0;flex:1}
+.easm-ui-feedback-icon{flex:none;margin-top:1px;color:var(--easm-ui-text-secondary)}
+.easm-ui-feedback-title{font-size:var(--easm-ui-text-md);font-weight:600;line-height:1.4;overflow-wrap: break-word}
+.easm-ui-feedback-description{font-size:var(--easm-ui-text-sm);line-height:1.55;color:var(--easm-ui-text-secondary);margin-top:4px;overflow-wrap: break-word}
+.easm-ui-feedback-action{margin-top:12px}
+.easm-ui-feedback-dismiss{display:grid;place-items:center;flex:none;align-self:flex-start;border:0;background:transparent;color:var(--easm-ui-text-secondary);border-radius:var(--easm-ui-radius-inner);width:32px;height:32px;margin:-3px -5px -3px 0;cursor:pointer;transition:background var(--easm-ui-motion-fast) var(--easm-ui-ease),color var(--easm-ui-motion-fast) var(--easm-ui-ease)}
+.easm-ui-feedback-dismiss:hover{background:var(--easm-ui-surface-hover);color:var(--easm-ui-text)}
+.easm-ui-feedback-dismiss:active{background:var(--easm-ui-surface-pressed)}
+.easm-ui-toast[data-tone=brand] .easm-ui-feedback-icon,.easm-ui-alert[data-tone=brand] .easm-ui-feedback-icon{color:var(--easm-ui-primary)}
+.easm-ui-toast[data-tone=success] .easm-ui-feedback-icon,.easm-ui-alert[data-tone=success] .easm-ui-feedback-icon{color:var(--easm-ui-success)}
+.easm-ui-toast[data-tone=warning] .easm-ui-feedback-icon,.easm-ui-alert[data-tone=warning] .easm-ui-feedback-icon{color:var(--easm-ui-warning)}
+.easm-ui-toast[data-tone=danger] .easm-ui-feedback-icon,.easm-ui-alert[data-tone=danger] .easm-ui-feedback-icon{color:var(--easm-ui-danger)}
+.easm-ui-alert[data-tone=brand]{background:var(--easm-ui-primary-surface);border-color:transparent}
+.easm-ui-alert[data-tone=success]{background:var(--easm-ui-success-surface)}
+.easm-ui-alert[data-tone=warning]{background:var(--easm-ui-warning-surface)}
+.easm-ui-alert[data-tone=danger]{background:var(--easm-ui-danger-surface)}
+.easm-ui-progress{width:100%;min-width:0}
+.easm-ui-progress-label-row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:var(--easm-ui-text-md);line-height:1.45;color:var(--easm-ui-text);margin-bottom:8px}
+.easm-ui-progress-label-row>span{color:var(--easm-ui-text-secondary);font-variant-numeric:tabular-nums}
+.easm-ui-progress-track{display:block;width:100%;height:8px;border:0;border-radius:var(--easm-ui-radius-pill);overflow:hidden;background:var(--easm-ui-border-subtle);accent-color:var(--easm-ui-primary);appearance:none}
+.easm-ui-progress-track::-webkit-progress-bar{background:var(--easm-ui-border-subtle);border-radius:var(--easm-ui-radius-pill)}
+.easm-ui-progress-track::-webkit-progress-value{background:var(--easm-ui-primary);border-radius:var(--easm-ui-radius-pill);transition:width var(--easm-ui-motion-medium) var(--easm-ui-ease)}
+.easm-ui-progress-track::-moz-progress-bar{background:var(--easm-ui-primary);border-radius:var(--easm-ui-radius-pill)}
+.easm-ui-progress[data-state=success] .easm-ui-progress-track{accent-color:var(--easm-ui-success)}
+.easm-ui-progress[data-state=success] .easm-ui-progress-track::-webkit-progress-value{background:var(--easm-ui-success)}
+.easm-ui-progress[data-state=success] .easm-ui-progress-track::-moz-progress-bar{background:var(--easm-ui-success)}
+.easm-ui-progress[data-state=error] .easm-ui-progress-track{accent-color:var(--easm-ui-danger)}
+.easm-ui-progress[data-state=error] .easm-ui-progress-track::-webkit-progress-value{background:var(--easm-ui-danger)}
+.easm-ui-progress[data-state=error] .easm-ui-progress-track::-moz-progress-bar{background:var(--easm-ui-danger)}
+.easm-ui-progress-track:indeterminate{background-image:linear-gradient(to right,var(--easm-ui-primary) 0 35%,var(--easm-ui-border-subtle) 35% 100%);background-size:200% 100%;animation:easm-ui-progress-indeterminate 1600ms ease-in-out infinite}
+.easm-ui-progress-track:indeterminate::-webkit-progress-bar{background:transparent}
+.easm-ui-progress-track:indeterminate::-moz-progress-bar{background:transparent}
+.easm-ui-progress-description{margin:8px 0 0;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:1.5}
+.easm-ui-progress[data-state=error] .easm-ui-progress-description{color:var(--easm-ui-danger)}
+.easm-ui-spinner{display:inline-flex;align-items:center;justify-content:center;color:var(--easm-ui-primary);vertical-align:middle}
+.easm-ui-skeleton{width:100%;height:16px;border-radius:var(--easm-ui-radius-mark);background:var(--easm-ui-border-subtle)}
+.easm-ui-skeleton[data-shape=rect]{height:96px;border-radius:var(--easm-ui-radius-card)}
+.easm-ui-skeleton[data-shape=circle]{width:40px;height:auto;aspect-ratio:1;border-radius:var(--easm-ui-radius-pill)}
+.easm-ui-skeleton-multiline{height:auto;display:flex;flex-direction:column;gap:8px;background:none;border-radius:0}
+.easm-ui-skeleton-line{display:block;width:100%;height:16px;background:var(--easm-ui-border-subtle);border-radius:var(--easm-ui-radius-mark)}
+.easm-ui-skeleton-line:last-child{width:62%}
+.easm-ui-skeleton-content{height:auto;background:transparent}
+.easm-ui-skeleton[data-animated=true]{animation:easm-ui-skeleton-pulse 1600ms ease-in-out infinite}
+@keyframes easm-ui-tooltip-enter{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
+@keyframes easm-ui-tooltip-exit{from{opacity:1}to{opacity:0}}
+@keyframes easm-ui-progress-indeterminate{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+@keyframes easm-ui-skeleton-pulse{0%,100%{opacity:1}50%{opacity:.62}}
+@media(prefers-reduced-motion:reduce){.easm-ui-tooltip,.easm-ui-progress-track:indeterminate,.easm-ui-skeleton[data-animated=true]{animation:none!important}.easm-ui-feedback-dismiss{transition:none!important}.easm-ui-progress-track::-webkit-progress-value{transition:none!important}.easm-ui-spinner .easm-icon-artwork{animation:none!important}}
+/* data-easm-motion="off" on <html> freezes motion for screenshots, tests and print, as reduced motion does. */
+[data-easm-motion='off'] :is(.easm-ui-tooltip,.easm-ui-progress-track:indeterminate,.easm-ui-skeleton[data-animated=true],.easm-ui-spinner .easm-icon-artwork){animation:none!important}
+[data-easm-motion='off'] .easm-ui-feedback-dismiss{transition:none!important}
+[data-easm-motion='off'] .easm-ui-progress-track::-webkit-progress-value{transition:none!important}
+@media(forced-colors:active){.easm-ui-badge,.easm-ui-toast,.easm-ui-alert,.easm-ui-tooltip{border-color:CanvasText;background:Canvas;color:CanvasText;box-shadow:none}.easm-ui-feedback-icon,.easm-ui-feedback-description,.easm-ui-feedback-dismiss{color:CanvasText}.easm-ui-progress-track{forced-color-adjust:auto;accent-color:Highlight;background:Canvas;border:1px solid CanvasText}.easm-ui-progress-track::-webkit-progress-bar{background:Canvas}.easm-ui-progress[data-state] .easm-ui-progress-track::-webkit-progress-value{background:Highlight}.easm-ui-progress[data-state] .easm-ui-progress-track::-moz-progress-bar{background:Highlight}.easm-ui-progress-track:indeterminate{background-image:linear-gradient(to right,Highlight 0 35%,Canvas 35% 100%)}.easm-ui-skeleton,.easm-ui-skeleton-line{background:GrayText}}
+
+@media(pointer:coarse){.easm-ui-feedback-dismiss{width:44px;height:44px}}
+
+/* White: badges and toasts */
+.easm-ui-badge .easm-ui-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-badge[data-tone=brand] .easm-ui-icon { color: var(--easm-ui-primary-fill); }
+.easm-ui-badge[data-tone=success] .easm-ui-icon { color: var(--easm-ui-icon-success); }
+.easm-ui-badge[data-tone=warning] .easm-ui-icon { color: var(--easm-ui-icon-warning); }
+.easm-ui-badge[data-tone=danger] .easm-ui-icon { color: var(--easm-ui-icon-danger); }
+.easm-ui-badge .easm-icon { --easm-icon-fill: none; }
+/* A badge never wraps and is never squeezed. It used to break between any two letters
+   (overflow-wrap: anywhere) and shrink like any flex item, so beside a long title in a row it
+   became one letter wide and stacked "Publis/hed" down the row (CIMS → Sources, 2026-10-14).
+   Now it keeps its own width (flex:none, one line); the text beside it truncates instead. Only a
+   label longer than the badge's whole container ends in an ellipsis, with the full text as a tip. */
+.easm-ui-badge-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.easm-ui-toast .easm-ui-feedback-title { font-size: 13.5px; font-weight: 500; line-height: 20px; }
+.easm-ui-toast .easm-ui-feedback-description { color: var(--easm-ui-on-ink-muted); margin-top: 2px; }
+.easm-ui-toast .easm-ui-feedback-icon { color: var(--easm-ui-on-ink-muted); margin-top: 2px; }
+.easm-ui-toast[data-tone=brand] .easm-ui-feedback-icon { color: var(--easm-ui-on-ink-brand); }
+.easm-ui-toast[data-tone=success] .easm-ui-feedback-icon { color: var(--easm-ui-on-ink-success); }
+.easm-ui-toast[data-tone=warning] .easm-ui-feedback-icon { color: var(--easm-ui-on-ink-warning); }
+.easm-ui-toast[data-tone=danger] .easm-ui-feedback-icon { color: var(--easm-ui-on-ink-danger); }
+.easm-ui-toast .easm-ui-feedback-dismiss { width: 28px; height: 28px; margin: -4px 0; color: var(--easm-ui-on-ink-muted); }
+.easm-ui-toast .easm-ui-feedback-dismiss:hover { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink-strong); }
+/* Touch: the compact toast dismiss grows to the touch target; the negative margin keeps the row height. */
+@media (pointer: coarse) { .easm-ui-toast .easm-ui-feedback-dismiss { width: 44px; height: 44px; margin: -12px -8px -12px 0; } }
+
+/* White: progress and alert actions */
+.easm-ui-progress-track::-webkit-progress-value { background: var(--easm-ui-primary-fill); }
+.easm-ui-progress-track::-moz-progress-bar { background: var(--easm-ui-primary-fill); }
+.easm-ui-alert .easm-ui-button[data-variant='secondary'] { background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-alert .easm-ui-button[data-variant='secondary']:hover:not([aria-disabled='true']) { background: var(--easm-ui-surface-hover); }
+/* A neutral alert is white on the page (faint grey in a white container), so its secondary action keeps the usual
+   track fill rather than a white one that would vanish into it. */
+.easm-ui-alert[data-tone='neutral'] .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']) { background: var(--easm-ui-track); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-alert[data-tone='neutral'] .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):hover { background: var(--easm-ui-track-hover); --easm-icon-background: var(--easm-ui-track-hover); --easm-icon-contrast: var(--easm-ui-track-hover); }
+.easm-ui-alert[data-tone='neutral'] .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):active { background: var(--easm-ui-track-pressed); --easm-icon-background: var(--easm-ui-track-pressed); --easm-icon-contrast: var(--easm-ui-track-pressed); }
+/* An alert's own close button (Alert onDismiss): in its top corner, a quiet tint of the alert's own colour on hover. */
+.easm-ui-alert .easm-ui-feedback-dismiss { margin: -6px -8px -6px 0; }
+.easm-ui-alert .easm-ui-feedback-dismiss:hover { background: color-mix(in srgb, var(--easm-ui-text) 8%, transparent); }
+@media (pointer: coarse) { .easm-ui-alert .easm-ui-feedback-dismiss { margin: -12px -12px -12px 0; } }

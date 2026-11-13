@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const SourceConfidenceIcon = /* @__PURE__ */ createIcon({"name":"source-confidence","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M6 3h8l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z","fill":"surface"}},{"tag":"path","attrs":{"d":"M14 3v4a1 1 0 0 0 1 1h4"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M16.5 19.5v-1.5m1.5 1.5v-3m1.5 3v-2.25","stroke-width":1.2,"stroke":"contrast","fill":"none"}}]});

@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const PermissionIcon = /* @__PURE__ */ createIcon({"name":"permission","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M12 3 4.5 6v6c0 4.2 3.2 7 7.5 9 4.3-2 7.5-4.8 7.5-9V6L12 3Z","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"circle","attrs":{"cx":17.3,"cy":17.3,"r":1.1,"fill":"none","stroke":"contrast","stroke-width":1.3}},{"tag":"path","attrs":{"d":"m18.08 18.08 1.42 1.42m-.8-.8.6-.6","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

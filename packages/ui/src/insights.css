@@ -1,0 +1,136 @@
+/* Reporting layer. Components set --easm-chart-tone, --easm-chart-tone-tint and --easm-chart-tone-ink
+   from the chart palette; everything here reads those three. */
+
+/* Info hint */
+.easm-ui-info-hint { position: relative; display: inline-grid; flex: none; place-items: center; width: 20px; height: 20px; margin-inline-start: 4px; margin-block: calc((1lh - 20px) / 2); padding: 0; border: 0; border-radius: var(--easm-ui-radius-pill); background: transparent; color: var(--easm-ui-text-secondary); font: inherit; vertical-align: -4px; cursor: help; --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+/* The glyph stays 20px; the target is larger than the circle: 24px for a mouse (WCAG 2.5.8) and 44px on touch
+   (the coarse-pointer rule in responsive.css). */
+.easm-ui-info-hint::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; }
+.easm-ui-info-hint:hover { background: var(--easm-ui-track); color: var(--easm-ui-text); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-info-hint:focus-visible { outline: 2px solid transparent; box-shadow: var(--easm-ui-focus-ring); }
+
+/* Tinted icon square, shared by StatCard, Card, Panel and card Collapsible. Icon tiles (this, ModuleIcon,
+   the settings nav icon) keep a corner about a quarter of their size, so the shape holds at every size:
+   one rule derives the corner from the tile (28 → 8, 32 → 9, 36 → 10, 44 → 12). */
+.easm-ui-tone-icon { --easm-tone-icon-size: 36px; display: inline-grid; flex: none; place-items: center; width: var(--easm-tone-icon-size); height: var(--easm-tone-icon-size); border-radius: calc(var(--easm-tone-icon-size) * .28); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-tone-icon[data-size='sm'] { --easm-tone-icon-size: 28px; }
+.easm-ui-tone-icon[data-size='lg'] { --easm-tone-icon-size: 44px; }
+.easm-ui-tone-icon[data-toned='true'] { background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); --easm-icon-background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); --easm-icon-contrast: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); }
+.easm-ui-container-header[data-has-icon='true'] { justify-content: flex-start; flex-wrap: nowrap; gap: 12px; }
+.easm-ui-container-header[data-has-icon='true'] > div:nth-child(2) { flex: 1 1 auto; min-width: 0; }
+.easm-ui-container-header[data-has-icon='true'] > .easm-ui-container-actions { flex: none; margin-inline-start: auto; }
+.easm-ui-stat-heading[data-toned='true'] { justify-content: flex-start; align-items: center; gap: 10px; }
+.easm-ui-stat-heading[data-toned='true'] > .easm-ui-tone-icon { --easm-tone-icon-size: 32px; }
+.easm-ui-stat-heading[data-toned='true'] :is(h2, h3, h4) { font-size: var(--easm-ui-text-sm); line-height: 18px; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.easm-ui-stat-heading[data-toned='true'] + .easm-ui-stat-value { margin-top: 12px; }
+/* The label wraps in its own column; the ⓘ stays pinned to the heading's end and never trails the last word. */
+.easm-ui-stat-heading :is(h2, h3, h4) { display: block; flex: 1 1 auto; min-width: 0; }
+.easm-ui-stat-heading > .easm-ui-info-hint { margin-inline-start: 0; }
+.easm-ui-stat-heading:not([data-toned='true']) > .easm-ui-info-hint { align-self: flex-start; }
+
+/* Collapsible as a standalone card */
+.easm-ui-collapsible[data-appearance='card'] { border-radius: var(--easm-ui-radius-card); overflow: hidden; }
+.easm-ui-collapsible[data-appearance='card'] > .easm-ui-collapsible-heading .easm-ui-collapsible-trigger { min-height: 56px; padding: 12px 16px; }
+.easm-ui-collapsible[data-appearance='card'] .easm-ui-collapsible-label { align-items: center; }
+.easm-ui-collapsible[data-appearance='card'][data-open='true'] > .easm-ui-collapsible-heading .easm-ui-collapsible-trigger:not(:disabled) { color: var(--easm-ui-text); }
+.easm-ui-collapsible[data-appearance='card'] > .easm-ui-collapsible-heading .easm-ui-collapsible-trigger:focus-visible { outline: 2px solid transparent; outline-offset: -2px; box-shadow: var(--easm-ui-focus-ring-inset); }
+.easm-ui-collapsible[data-appearance='card'][data-has-icon='true'] > .easm-ui-collapsible-region > .easm-ui-collapsible-clip > .easm-ui-collapsible-content { padding-inline-start: 0; }
+
+/* ProgressRing */
+.easm-ui-progress-ring { position: relative; display: inline-grid; flex: none; place-items: center; font-family: var(--easm-ui-font); }
+.easm-ui-progress-ring svg { position: absolute; inset: 0; }
+.easm-ui-progress-ring-track { fill: none; stroke: var(--easm-ui-track); }
+.easm-ui-progress-ring-value { fill: none; stroke: var(--easm-chart-tone, var(--easm-ui-chart-blue)); stroke-linecap: round; transition: stroke-dasharray var(--easm-ui-motion-slow) var(--easm-ui-ease); }
+.easm-ui-progress-ring-value[data-zero='true'] { stroke-linecap: butt; }
+.easm-ui-progress-ring-center { position: relative; font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 1.1; text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-progress-ring[data-size='sm'] .easm-ui-progress-ring-center { font-size: 10px; }
+.easm-ui-progress-ring[data-size='lg'] .easm-ui-progress-ring-center { font-size: var(--easm-ui-text-lg); }
+
+/* Meter */
+.easm-ui-meter { display: grid; gap: 8px; min-width: 0; font-family: var(--easm-ui-font); }
+.easm-ui-meter-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-meter-label { color: var(--easm-ui-text-secondary); }
+.easm-ui-meter-value { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); font-weight: 600; font-variant-numeric: tabular-nums; }
+.easm-ui-meter-track { height: 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); overflow: hidden; }
+.easm-ui-meter[data-size='sm'] .easm-ui-meter-track { height: 6px; }
+.easm-ui-meter-track > span { display: block; height: 100%; border-radius: inherit; background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); transition: width var(--easm-ui-motion-slow) var(--easm-ui-ease); }
+.easm-ui-meter[data-inline='true'] { grid-template-columns: minmax(48px, 1fr) auto; align-items: center; gap: 10px; }
+.easm-ui-meter[data-inline='true'] > .easm-ui-meter-row { display: contents; }
+.easm-ui-meter[data-inline='true'] > .easm-ui-meter-track { grid-column: 1; grid-row: 1; }
+.easm-ui-meter[data-inline='true'] .easm-ui-meter-value { grid-column: 2; grid-row: 1; min-width: 36px; text-align: end; font-size: var(--easm-ui-text-sm); }
+.easm-ui-meter-description { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; }
+
+/* MetricTile and MetricGroup */
+.easm-ui-metric-group { display: grid; gap: 12px; min-width: 0; }
+.easm-ui-metric-tile { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 14px 16px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface-hover); font-family: var(--easm-ui-font); }
+.easm-ui-metric-tile[data-tone='neutral'] { background: var(--easm-ui-background); }
+.easm-ui-metric-tile[data-tone='plain'] { background: transparent; padding-inline: 0; }
+.easm-ui-metric-tile[data-tone='tinted'] { background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); --easm-icon-background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); --easm-icon-contrast: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); }
+.easm-ui-metric-tile[data-size='sm'] { padding: 10px 12px; }
+.easm-ui-metric-tile[data-size='lg'] { padding: 18px 20px; }
+.easm-ui-metric-label { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 500; line-height: 18px; }
+.easm-ui-metric-tile[data-tone='tinted'] .easm-ui-metric-label { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+.easm-ui-metric-label > span { overflow-wrap: break-word; }
+.easm-ui-metric-value { font-size: 22px; font-weight: 600; line-height: 1.25; letter-spacing: -.3px; font-variant-numeric: tabular-nums; overflow-wrap: break-word; }
+.easm-ui-metric-tile[data-size='sm'] .easm-ui-metric-value { font-size: 18px; }
+.easm-ui-metric-tile[data-size='lg'] .easm-ui-metric-value { font-size: 28px; }
+.easm-ui-metric-tile[data-tone='tinted'] .easm-ui-metric-value { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+.easm-ui-metric-caption { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; overflow-wrap: break-word; }
+.easm-ui-metric-tile[data-tone='tinted'] .easm-ui-metric-caption { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+
+/* InlineStats */
+.easm-ui-inline-stats { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; margin: 0; font-family: var(--easm-ui-font); }
+.easm-ui-inline-stats > div { display: inline-flex; flex-direction: row-reverse; align-items: baseline; gap: 6px; }
+.easm-ui-inline-stats dt { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-inline-stats dd { margin: 0; font-size: 18px; font-weight: 600; line-height: 24px; font-variant-numeric: tabular-nums; }
+.easm-ui-inline-stats[data-size='sm'] dd { font-size: 15px; }
+.easm-ui-inline-stats > [data-toned='true'] dd { color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+
+/* SectionHeading */
+.easm-ui-section-heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; margin: 0 0 12px; font-family: var(--easm-ui-font); }
+.easm-ui-section-heading > div:first-child { min-width: 0; }
+.easm-ui-section-heading :is(h2, h3, h4) { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.easm-ui-section-heading-meta { font-weight: 500; }
+.easm-ui-section-heading p { margin: 2px 0 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-section-heading-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* DescriptionList */
+.easm-ui-description-list { margin: 0; font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-md); line-height: 20px; }
+.easm-ui-description-list[data-size='sm'] { font-size: var(--easm-ui-text-sm); }
+/* Rows are separated by space alone; a long list can opt into soft banding with data-banded. */
+.easm-ui-description-list[data-layout='rows'] { display: flex; flex-direction: column; gap: 2px; }
+.easm-ui-description-list[data-layout='rows'] > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 36px; padding: 6px 0; }
+.easm-ui-description-list[data-layout='rows'] dd { text-align: end; }
+.easm-ui-description-list[data-banded][data-layout='rows'] > div { padding-inline: 10px; border-radius: var(--easm-ui-radius-control); }
+.easm-ui-description-list[data-banded][data-layout='rows'] > div:nth-child(even) { background: var(--easm-ui-surface-hover); }
+.easm-ui-description-list dt { color: var(--easm-ui-text-secondary); }
+.easm-ui-description-list dd { min-width: 0; margin: 0; color: var(--easm-ui-text); overflow-wrap: break-word; }
+.easm-ui-description-list[data-layout='columns'] { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 16px 24px; }
+.easm-ui-description-list[data-layout='columns'] > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.easm-ui-description-list[data-layout='columns'] dt { font-size: 12px; font-weight: 600; letter-spacing: .06em; line-height: 16px; text-transform: uppercase; }
+
+/* CellStack */
+.easm-ui-cell-stack { display: inline-flex; flex-direction: column; gap: 2px; min-width: 0; }
+.easm-ui-cell-stack-primary { color: var(--easm-ui-text); font-variant-numeric: tabular-nums; }
+.easm-ui-cell-stack-primary a { color: var(--easm-ui-primary); font-weight: 600; text-decoration: none; }
+.easm-ui-cell-stack-primary a:hover { text-decoration: underline; }
+.easm-ui-cell-stack-primary a:focus-visible { outline: 2px solid transparent; border-radius: var(--easm-ui-radius-mark); box-shadow: var(--easm-ui-focus-ring); }
+/* The second line is always regular weight: as a phone card's title the cell is bold, and the slug or detail under the
+   name read as a second title. */
+.easm-ui-cell-stack-secondary { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; line-height: 16px; }
+
+@media (prefers-reduced-motion: reduce) { .easm-ui-progress-ring-value, .easm-ui-meter-track > span { transition: none; } }
+@media (forced-colors: active) {
+  .easm-ui-meter-track { border: 1px solid CanvasText; }
+  .easm-ui-meter-track > span { background: Highlight; }
+  .easm-ui-metric-tile, .easm-ui-tone-icon { border: 1px solid CanvasText; }
+}
+
+/* A card inside a white overlay (drawer, dialog, popover) takes the page fill, so each block stays
+   distinct by fill instead of disappearing white on white; menus inside it read the page context. */
+:is(.easm-ui-overlay-panel, .easm-ui-popover) :is(.easm-ui-collapsible[data-appearance='card'], .easm-ui-card, .easm-ui-panel) { background: var(--easm-ui-background); --easm-icon-background: var(--easm-ui-background); --easm-icon-contrast: var(--easm-ui-background); --easm-ui-surface-context: page; }
+
+/* A row's hint sits under its value; its action ends the row. */
+.easm-ui-description-hint { display: block; margin-top: 2px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-description-list[data-layout='rows'] > div[data-action] dd:not(.easm-ui-description-action) { flex: 1 1 auto; }
+.easm-ui-description-list dd.easm-ui-description-action { flex: none; text-align: end; }

@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const AnswerKeyIcon = /* @__PURE__ */ createIcon({"name":"answer-key","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"circle","attrs":{"cx":7.2,"cy":7.2,"r":3.6,"fill":"surface"}},{"tag":"path","attrs":{"d":"m9.745 9.745 10.655 10.655m-3.25-3.25 1.7-1.7m-4.75-1.35 1.7-1.7"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"m15.9 17.8 1.3 1.3 2.4-2.6","stroke-width":1.15}}]});

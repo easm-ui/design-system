@@ -1,0 +1,122 @@
+{
+  "layer": "Navigation System",
+  "specificationParts": [
+    "purpose",
+    "anatomy",
+    "variants",
+    "sizes",
+    "states",
+    "colorBehavior",
+    "iconBehavior",
+    "typography",
+    "spacing",
+    "bordersAndSurfaces",
+    "motion",
+    "accessibility",
+    "responsiveBehavior",
+    "contentRules",
+    "usageRules"
+  ],
+  "components": [
+    {
+      "name": "Sidebar",
+      "specification": {
+        "purpose": "Provide persistent product destinations and one clear current route within a workspace.",
+        "anatomy": "Named nav landmark; optional product signature; collapse/expand button; list of native destination links; optional readable counts; footer.",
+        "variants": "Sidebar / Expanded; Sidebar / Compact; With Counts; Disabled Destination. Route state and compact state are caller controlled.",
+        "sizes": "Expanded 232px wide, compact 72px, constrained to available parent width; 44px destination targets. Do not supply arbitrary row heights.",
+        "states": "Default, hover, focus, current page, disabled destination, expanded and compact. Compact destinations expose full accessible names and tooltips.",
+        "colorBehavior": "The sidebar sits on the white page (#FFFFFF) with #101318 labels; hover is #E8EBF0. The current page is a #2F6BEB fill with white text and a lightened icon. Counts are #101318 on #E8EBF0; group labels are #5E6470. EASM orange #FF6A00 belongs to the Junction mark only, with dark text.",
+        "iconBehavior": "20px functional icons with 12px label gaps; EASM One signature container in the brand area. A selected link inherits blue; disable does not alter artwork geometry.",
+        "typography": "14px/20px destination labels; 15px semibold product name; 11px counts; 12px footer. One line with ellipsis for visual fit while preserving full DOM text.",
+        "spacing": "16px/12px container padding; 4px between destinations; 10px/12px link padding; 44px interactive minimum.",
+        "bordersAndSurfaces": "No frame, outline or side rule; items are 8 px rounded fills and the current item is a solid blue fill rather than an edge marker. Groups are separated by space and a small label. Workspace and account cards use the grey track. Focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Native links support browser open-in-new-tab behavior. Exactly one matching destination uses aria-current=page. Disabled destinations are noninteractive spans with aria-disabled. Collapse uses an explicit named button; compact links remain named.",
+        "responsiveBehavior": "The component fits its parent. The product shell decides compact mode or mobile overlay; do not automatically hide destinations based on an internal viewport assumption.",
+        "contentRules": "IDs, labels and hrefs must be nonempty and IDs unique. Use short destination nouns and stable real routes. Counts must be positive finite integers; render 999+ for large values. No emoji as functional navigation.",
+        "usageRules": "Use for product navigation, not within a settings form. The caller resolves current routes and authorized destinations. Collapse is controlled by onCollapsedChange; onNavigate may intercept routing while native href remains available."
+      }
+    },
+    {
+      "name": "TopHeader",
+      "specification": {
+        "purpose": "Orient the current workspace with a contextual title, ancestry and explicit actions.",
+        "anatomy": "Header landmark; optional named menu button with controlled ARIA; context region for breadcrumbs/title; action group.",
+        "variants": "Top Header / Title; With Breadcrumbs; With Actions; With Product Menu. Consumer content composes the regions.",
+        "sizes": "64px minimum height, 16px/20px padding; core sm/md buttons. On small widths padding is 16px and actions wrap.",
+        "states": "Header itself is static. Child controls implement hover, focus, pressed, disabled and loading; optional menu state is caller controlled.",
+        "colorBehavior": "Transparent over the white page, #101318 title and #5E6470 context. Actions keep their Button fills; status pills are white on the page and grey (#F1F3F6) inside cards.",
+        "iconBehavior": "20px Menu in the optional toggle; actions use core functional icons. Avatar and UserChip preserve their existing inset corner relationships.",
+        "typography": "16px/24px semibold title, 13px breadcrumb labels; actual child component label styles remain authoritative.",
+        "spacing": "16px region gap; 8px between actions. Keep a minimum 44px click/touch area for menu toggle.",
+        "bordersAndSurfaces": "No bar, border or bottom rule: the header shares the page fill and is separated from content by space. Separation is by fill, never by outlines, shadows or one-sided rules: white cards and panels sit on the white page (#FFFFFF), and controls inside a white card take the grey track (#F1F3F6). 12 px containers and 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Semantic header; named menu toggle must point via menuControls to a real region and menuExpanded must reflect actual visibility. Actions are individual controls rather than a clickable header.",
+        "responsiveBehavior": "Context reserves a readable 240px preferred width and moves beside or above actions according to available container space. Actions wrap to a full second row below 480px. Long context text wraps, while long breadcrumbs scroll within their own region. The consuming shell owns positioning, scroll and mobile navigation.",
+        "contentRules": "One concise contextual title. Place global search or workspace controls in the action region when required. Do not duplicate the portal global header inside a production product shell.",
+        "usageRules": "Use once in an application content area. Pass onMenuToggle only with a real controlled navigation region; do not show a menu icon that performs no action."
+      }
+    },
+    {
+      "name": "Breadcrumbs",
+      "specification": {
+        "purpose": "Show hierarchical ancestry and support return to an explicit parent route.",
+        "anatomy": "Named nav landmark; ordered list; parent links; decorative chevrons; current terminal text.",
+        "variants": "Breadcrumbs / Default; Long Path. Parent item without a route is readable text, never a fake link.",
+        "sizes": "13px/20px labels; 16px chevrons; 8px gaps and 2px inner focus clearance. Parent links have 28px minimum height, expanded to 44px on coarse pointers.",
+        "states": "Parent links default/hover/focus; last item always current page. No loading animation or selection state.",
+        "colorBehavior": "Links are #5E6470 and turn #2563EB with an underline on hover; the current page is #101318 semibold. Separators are #5E6470 chevrons.",
+        "iconBehavior": "16px Chevron right separates items and is hidden from assistive technology; labels carry all route meaning.",
+        "typography": "13px/20px parent links; semibold terminal text. Long labels remain complete and horizontally scroll rather than hidden.",
+        "spacing": "8px between nodes and icon-to-label; the focus halo has 2px clearance. Keep paths concise to avoid a dense header.",
+        "bordersAndSurfaces": "No container or border; the trail scrolls inside its own region when long. Focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Named nav, native ordered list and links; final text aria-current=page. Decorative separators do not enter the accessible name. Label the landmark when multiple breadcrumb groups exist.",
+        "responsiveBehavior": "Internal horizontal scrolling preserves the complete hierarchy and avoids page overflow. Scroll padding keeps keyboard focus visible. Coarse-pointer parent links have a 44px touch target. Ancestors remain available; do not arbitrarily remove them.",
+        "contentRules": "Use meaningful nonempty labels and at least one item. Last item represents the current page; omit its href. Use actual parent hierarchy, not a record of recently visited pages.",
+        "usageRules": "Use for hierarchical locations. Flat tabs or sequence steps use their dedicated components rather than breadcrumb semantics."
+      }
+    },
+    {
+      "name": "CommandBar",
+      "specification": {
+        "purpose": "Find and execute an available named action without leaving current context.",
+        "anatomy": "Core secondary trigger; modal Dialog; labelled SearchField; filtered region; native command buttons with optional icons/support; result announcement.",
+        "variants": "Command Bar / Default; Filtered; No Results; Disabled Command. Business permissions determine the supplied command collection.",
+        "sizes": "Core medium Dialog and fields; 44px command minimum; results have a 320px maximum height and shrink to remaining modal space. Individual rows expand for descriptions.",
+        "states": "Closed, open, query, filtered/no-results; hovered/focused command; disabled command. Selecting closes and invokes the supplied callback.",
+        "colorBehavior": "The search trigger is white on the white page (#F1F3F6 inside cards) with a #5E6470 label and a honey \u2318K key cap. Results highlight on #F3F5F8; disabled results are #9AA1AD.",
+        "iconBehavior": "20px Search trigger and optional functional command icons. Icons inherit text; no animated glyph is needed for instantaneous selection.",
+        "typography": "14px/20px semibold command labels, 12px/18px supporting text, core dialog title/description. Full labels wrap.",
+        "spacing": "12px row padding and icon gap, 4px result gap, 6px focus-safe scrolling inset. Core modal spacing remains 24px.",
+        "bordersAndSurfaces": "8 px trigger radius with no outline; the dialog is a white 16 px panel over the warm scrim, without shadow. Below 600 px the trigger shows only its icon (its name stays) and the dialog becomes a bottom sheet. Focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Uses the core focus-trapped modal with Escape and trigger focus restoration. Arrow keys move through enabled native buttons; Home/End select endpoints; Enter invokes focused action. Input Enter chooses the first enabled match. No ARIA combobox claim is made for this native-button pattern.",
+        "responsiveBehavior": "Dialog follows core viewport-safe width/height. The search field stays in view while one command-result region owns scrolling. In short viewports up to 420px high, redundant keyboard instructions remain available to screen readers and leave visible space for search and commands. No absolute popup can escape a field corner.",
+        "contentRules": "Unique nonempty IDs and meaningful labels. Search is case-insensitive label/description matching. Disabled commands stay readable and cannot execute. Callers supply localized aliases in descriptions where useful.",
+        "usageRules": "Use for commands, not a replacement for full record search. No global shortcut is installed; the product may add an announced shortcut after checking collisions. Async business operations start in the caller and must expose their own truthful feedback."
+      }
+    },
+    {
+      "name": "WorkspaceSwitcher",
+      "specification": {
+        "purpose": "Select among authorized workspaces through a controlled consistent picker.",
+        "anatomy": "Named core DropdownSelect, current label, chevron, opaque portalled options, selection indicator.",
+        "variants": "Workspace Switcher / Default; Disabled; Unselected; Unavailable Option. Uses the established custom dropdown rather than a new field surface.",
+        "sizes": "280px preferred width constrained to 100%; core medium 40px control, 44px on touch. Core popup width follows trigger.",
+        "states": "Default, hover, focus, open, selected, disabled control and disabled options. A stale value follows core unavailable-value behavior.",
+        "colorBehavior": "Uses the Select colours: white field with the #858D9B grey border, #2F6BEB focus edge and halo, and a grey popup with a white selected pill.",
+        "iconBehavior": "Core 20px Chevron down and option Check; workspace labels supply identity. Orange stays limited to an adjacent EASM brand mark.",
+        "typography": "14px label/control with core line height and ellipsis; options show full labels as the dropdown allows.",
+        "spacing": "Core field label gap, 12px/14px horizontal padding and consistent popup insets. The wrapper adds no border of its own.",
+        "bordersAndSurfaces": "The field keeps its functional border (inputs are the one place the theme keeps an outline); the popup has no outline or shadow and is never narrower than the trigger.",
+        "motion": "140ms hover and press; 200ms selection and popovers; 280ms core dialogs. Reduced motion removes transitions. State changes follow real callbacks and process completion, without artificial delays.",
+        "accessibility": "Core Select keyboard, labelled trigger, focus-visible treatment, Escape and popup management. Options with no permission are omitted or disabled by the caller.",
+        "responsiveBehavior": "Width shrinks with parent, never below content constraints causing page overflow. Popup collision handling is supplied by core Radix Select.",
+        "contentRules": "Unique nonempty values and labels. Use concise workspace names; never offer cross-tenant destinations solely because they are present in demo content.",
+        "usageRules": "Caller owns authorization, navigation, cache reset and tenant boundaries. Selection only reports a requested value; do not imply the library performs a server workspace switch."
+      }
+    }
+  ]
+}

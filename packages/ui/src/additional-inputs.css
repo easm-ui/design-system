@@ -1,0 +1,2 @@
+.easm-ui-number-input { appearance: textfield; -moz-appearance: textfield; }
+.easm-ui-number-input::-webkit-inner-spin-button, .easm-ui-number-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

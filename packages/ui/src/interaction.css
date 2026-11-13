@@ -1,0 +1,189 @@
+/* Interaction: how a control answers the hand.
+   motion.css says how content arrives; this file says how a control feels when it is touched. Four rules:
+   1. A press answers at once and a release springs. The control sinks in --easm-ui-motion-press (90 ms) and
+      comes back on --easm-ui-ease-spring over --easm-ui-motion-release, so a tap feels physical, not animated.
+   2. A press moves a control by about the same few pixels whatever its size: small controls scale further,
+      wide ones less (--easm-ui-press-scale), so a full-width button never lurches.
+   3. Things arrive on a soft spring from where they came from (a menu from its button, a dialog in place) and
+      leave quicker than they came, on --easm-ui-ease-in, so closing never holds up the next step.
+   4. Only transform, scale, opacity, clip-path and shadows move, never layout. Reduced motion and
+      [data-easm-motion='off'] keep every state change and drop the movement. */
+
+@keyframes easm-ui-arrive-pop {
+  from { transform: translate(var(--easm-ui-arrive-x, 0), var(--easm-ui-arrive-y, 0)) scale(.9); }
+}
+@keyframes easm-ui-item-in { from { opacity: 0; transform: translateY(var(--easm-ui-item-from, -4px)); } }
+@keyframes easm-ui-arrive-fade { from { opacity: 0; } }
+@keyframes easm-ui-leave-pop { to { opacity: 0; transform: scale(.97); } }
+@keyframes easm-ui-dialog-arrive { from { transform: translate(-50%, -50%) scale(.96); } }
+@keyframes easm-ui-dialog-leave { to { opacity: 0; transform: translate(-50%, -50%) scale(.97); } }
+@keyframes easm-ui-focus-arrive { from { box-shadow: 0 0 0 6px transparent, 0 0 0 14px transparent; } }
+
+/* ── Press ────────────────────────────────────────────────────────────────────────────────────────────────
+   The `scale` property (not transform), so a press composes with any transform a control already has. */
+.easm-ui-button { --easm-ui-press-scale: .97; }
+.easm-ui-button[data-size='sm'] { --easm-ui-press-scale: .96; }
+.easm-ui-button[data-size='lg'] { --easm-ui-press-scale: .975; }
+.easm-ui-button-block, .easm-ui-split-button[data-block] > .easm-ui-button:first-child { --easm-ui-press-scale: .985; }
+.easm-ui-icon-button { --easm-ui-press-scale: .94; }
+.easm-ui-icon-button[data-size='sm'] { --easm-ui-press-scale: .92; }
+.easm-ui-icon-button[data-size='lg'] { --easm-ui-press-scale: .95; }
+.easm-ui-button, .easm-ui-icon-button {
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), border-color var(--easm-ui-motion-fast) var(--easm-ui-ease),
+    color var(--easm-ui-motion-fast) var(--easm-ui-ease), box-shadow var(--easm-ui-motion-fast) var(--easm-ui-ease),
+    scale var(--easm-ui-motion-release) var(--easm-ui-ease-spring);
+}
+.easm-ui-button:active:not([aria-disabled='true']):not(:disabled),
+.easm-ui-icon-button:active:not([aria-disabled='true']):not(:disabled) {
+  transform: none;
+  scale: var(--easm-ui-press-scale);
+  transition-duration: 0s, 0s, 0s, var(--easm-ui-motion-fast), var(--easm-ui-motion-press);
+  transition-timing-function: var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease-out);
+}
+/* Segments, tabs, chips and sidebar links give a little less: each is part of a larger control. They share one
+   transition list (colour, fill, transform, scale), including the more specific one motion.css gives them while
+   the selection slides, so a press always has its spring. */
+.easm-ui-segment, .easm-ui-tab, .easm-ui-chip { --easm-ui-press-scale: .97; }
+.easm-ui-sidebar-link, .easm-ui-sidebar-selector { --easm-ui-press-scale: .985; }
+.easm-ui-segment, .easm-ui-tab, .easm-ui-chip, .easm-ui-sidebar-link, .easm-ui-sidebar-selector,
+.easm-ui-sidebar[data-indicator='move'] .easm-ui-sidebar-link,
+:is(.easm-ui-tab-list, .easm-ui-segmented)[data-indicator='move'] :is(.easm-ui-tab, .easm-ui-segment) {
+  scale: 1;
+  transition-property: color, background-color, transform, scale;
+  transition-duration: var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-release);
+  transition-timing-function: var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease-spring);
+}
+/* The text changes colour as the sliding fill arrives under it, not before. */
+.easm-ui-sidebar[data-indicator='move'] .easm-ui-sidebar-link,
+:is(.easm-ui-tab-list, .easm-ui-segmented)[data-indicator='move'] :is(.easm-ui-tab, .easm-ui-segment) {
+  transition-duration: var(--easm-ui-motion-arrive), var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-release);
+}
+:is(.easm-ui-segment, .easm-ui-tab, .easm-ui-chip):active:not([aria-disabled='true']):not(:disabled),
+.easm-ui-sidebar .easm-ui-sidebar-link:not([aria-disabled='true']):active, .easm-ui-sidebar .easm-ui-sidebar-selector:active {
+  transform: none;
+  scale: var(--easm-ui-press-scale);
+  transition-duration: var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-press);
+  transition-timing-function: var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease-out);
+}
+
+/* ── Choices ──────────────────────────────────────────────────────────────────────────────────────────────
+   A checkbox writes its check from left to right; a radio's dot grows from the centre; a switch's thumb
+   stretches while held, like a fingertip on glass, and springs across. All three give under a press. */
+.easm-ui-checkbox, .easm-ui-radio {
+  scale: 1;
+  transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease),
+    box-shadow var(--easm-ui-motion-release) var(--easm-ui-ease-spring), scale var(--easm-ui-motion-release) var(--easm-ui-ease-spring);
+}
+:is(.easm-ui-checkbox, .easm-ui-radio):active:not(:disabled):not([readonly]) {
+  scale: .88;
+  transition-duration: var(--easm-ui-motion-fast), var(--easm-ui-motion-fast), var(--easm-ui-motion-release), var(--easm-ui-motion-press);
+  transition-timing-function: var(--easm-ui-ease), var(--easm-ui-ease), var(--easm-ui-ease-spring), var(--easm-ui-ease-out);
+}
+.easm-ui-checkbox-mark {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0s linear var(--easm-ui-motion-exit), opacity var(--easm-ui-motion-exit) var(--easm-ui-ease-in);
+}
+.easm-ui-checkbox:checked + .easm-ui-checkbox-mark, .easm-ui-checkbox:indeterminate + .easm-ui-checkbox-mark,
+.easm-ui-checkbox[data-indeterminate] + .easm-ui-checkbox-mark {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--easm-ui-motion-slow) var(--easm-ui-ease-out) 40ms, opacity 0s;
+}
+/* The unchecked radio is filled by its own surface-coloured inset, so checking shrinks the inset to the ring
+   and the dot appears to grow from the centre. Every radio shadow list has the same layers, so it interpolates. */
+.easm-ui-radio { box-shadow: inset 0 0 0 calc(var(--easm-ui-choice-size) / 2) var(--easm-ui-surface); }
+.easm-ui .easm-ui-radio:not(:checked):focus-visible { box-shadow: inset 0 0 0 calc(var(--easm-ui-choice-size) / 2) var(--easm-ui-surface), var(--easm-ui-focus-ring); }
+.easm-ui-switch::before {
+  transition: transform var(--easm-ui-motion-release) var(--easm-ui-ease-spring), width var(--easm-ui-motion-medium) var(--easm-ui-ease-spring),
+    background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-switch:active:not(:disabled):not([readonly])::before { width: calc(var(--easm-ui-switch-thumb) + 5px); }
+.easm-ui-switch:checked:active:not(:disabled):not([readonly])::before { transform: translateX(calc(var(--easm-ui-switch-width) - var(--easm-ui-switch-thumb) - 13px)); }
+.easm-ui-switch:dir(rtl):checked:active:not(:disabled):not([readonly])::before { transform: translateX(calc(-1 * (var(--easm-ui-switch-width) - var(--easm-ui-switch-thumb) - 13px))); }
+/* Off, the thumb is anchored on its starting edge (inset-inline-start) and stretches inward in either direction;
+   on, it is translated across, so the stretch is taken back out of the translation. */
+
+/* ── Focus ────────────────────────────────────────────────────────────────────────────────────────────────
+   Keyboard focus draws its ring in from a little further out, so the eye finds where focus went. */
+:is(.easm-ui-button, .easm-ui-icon-button, .easm-ui-checkbox, .easm-ui-switch, .easm-ui-segment, .easm-ui-tab):focus-visible {
+  animation: easm-ui-focus-arrive var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft);
+}
+
+/* ── Things that open ─────────────────────────────────────────────────────────────────────────────────────
+   A menu, popover, select or combobox list grows from the control that opened it (Radix's transform origin)
+   and drifts a few pixels away from it; it leaves in place, faster. */
+.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup {
+  animation: easm-ui-arrive-pop var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), easm-ui-arrive-fade var(--easm-ui-motion-fast) var(--easm-ui-ease-out);
+}
+.easm-ui-dropdown-select-popup { transform-origin: var(--radix-select-content-transform-origin); }
+.easm-ui-combobox-popup { transform-origin: var(--radix-popover-content-transform-origin); }
+:is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup)[data-side='bottom'] { --easm-ui-arrive-y: -8px; }
+:is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup)[data-side='top'] { --easm-ui-arrive-y: 8px; }
+:is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup)[data-side='right'] { --easm-ui-arrive-x: -8px; }
+:is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup)[data-side='left'] { --easm-ui-arrive-x: 8px; }
+:is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup)[data-state='closed'] {
+  animation: easm-ui-leave-pop var(--easm-ui-motion-exit) var(--easm-ui-ease-in) forwards;
+}
+/* Their rows follow the panel in, one after another, and the highlight eases between rows instead of snapping.
+   The command bar's results and a combobox's options cascade the same way each time the list is redrawn. */
+:is(.easm-ui-dropdown-menu, .easm-ui-dropdown-select-popup) :is(.easm-ui-menu-item, .easm-ui-dropdown-select-option),
+.easm-ui-combobox-list > li, .easm-ui-command-results > button {
+  animation: easm-ui-item-in var(--easm-ui-motion-slow) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(min(var(--easm-ui-item-index, 0), 8) * 18ms + 30ms);
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(2) { --easm-ui-item-index: 1; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(3) { --easm-ui-item-index: 2; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(4) { --easm-ui-item-index: 3; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(5) { --easm-ui-item-index: 4; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(6) { --easm-ui-item-index: 5; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(7) { --easm-ui-item-index: 6; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(8) { --easm-ui-item-index: 7; }
+:is(.easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button):nth-child(n+9) { --easm-ui-item-index: 8; }
+/* A tooltip lifts a little into place from its anchor. */
+.easm-ui-tooltip { animation: easm-ui-arrive-pop var(--easm-ui-motion-medium) var(--easm-ui-ease-spring-soft), easm-ui-arrive-fade var(--easm-ui-motion-fast) var(--easm-ui-ease-out); transform-origin: var(--radix-tooltip-content-transform-origin); }
+.easm-ui-tooltip[data-side='bottom'] { --easm-ui-arrive-y: -4px; }
+.easm-ui-tooltip[data-side='top'] { --easm-ui-arrive-y: 4px; }
+.easm-ui-tooltip[data-state='closed'] { animation: easm-ui-leave-pop var(--easm-ui-motion-exit) var(--easm-ui-ease-in) forwards; }
+
+/* A dialog settles in place on the soft spring; a drawer slides without overshoot, since it is flush with an
+   edge and a bounce would open a gap there. */
+.easm-ui-dialog { animation: easm-ui-dialog-arrive var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), easm-ui-arrive-fade var(--easm-ui-motion-medium) var(--easm-ui-ease-out); }
+.easm-ui-dialog[data-state='closed'] { animation: easm-ui-dialog-leave var(--easm-ui-motion-exit) var(--easm-ui-ease-in) forwards; }
+.easm-ui-drawer[data-side] { animation-duration: var(--easm-ui-motion-arrive); animation-timing-function: var(--easm-ui-ease-out); }
+.easm-ui-drawer[data-side][data-state='closed'] { animation-duration: calc(var(--easm-ui-motion-exit) * 1.5); animation-timing-function: var(--easm-ui-ease-in); }
+.easm-ui-overlay-backdrop { animation-duration: var(--easm-ui-motion-arrive); animation-timing-function: var(--easm-ui-ease-out); }
+.easm-ui-overlay-backdrop[data-state='closed'] { animation-duration: var(--easm-ui-motion-exit); animation-timing-function: var(--easm-ui-ease-in); }
+
+/* ── Things that move between places ──────────────────────────────────────────────────────────────────────
+   The sliding selection (tabs, segments, the sidebar's current page) and a disclosure chevron settle on the
+   soft spring; an expanding region opens on it too. */
+:where(.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul)[data-indicator='move']::before {
+  transition: transform var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), width var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft),
+    height var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft);
+}
+.easm-ui-collapsible-chevron { transition: transform var(--easm-ui-motion-release) var(--easm-ui-ease-spring), color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-collapsible-region { transition: grid-template-rows var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), visibility var(--easm-ui-motion-arrive); }
+.easm-ui-dropdown-select-chevron > .easm-ui-icon, .easm-ui-combobox-chevron > .easm-ui-icon { transition: transform var(--easm-ui-motion-release) var(--easm-ui-ease-spring); }
+
+/* ── Content that swaps ───────────────────────────────────────────────────────────────────────────────────
+   A tab's panel rises a few pixels into place as it is shown (an animation replays whenever an element goes from
+   hidden to shown), so switching tabs reads as the content changing, not the page blinking. */
+.easm-ui-tab-panel:not([hidden]) { animation: easm-ui-item-in var(--easm-ui-motion-slow) var(--easm-ui-ease-out); --easm-ui-item-from: 6px; }
+
+/* ── Quiet ────────────────────────────────────────────────────────────────────────────────────────────────
+   The state still changes (a check is still shown, a menu still opens); nothing travels. */
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-button, .easm-ui-icon-button, .easm-ui-segment, .easm-ui-tab, .easm-ui-chip, .easm-ui-sidebar-link, .easm-ui-sidebar-selector,
+  .easm-ui-checkbox, .easm-ui-radio, .easm-ui-checkbox-mark, .easm-ui-switch::before, .easm-ui-collapsible-chevron, .easm-ui-collapsible-region,
+  .easm-ui-dropdown-select-chevron > .easm-ui-icon, .easm-ui-combobox-chevron > .easm-ui-icon { transition: none !important; scale: none !important; }
+  :is(.easm-ui-button, .easm-ui-icon-button, .easm-ui-checkbox, .easm-ui-switch, .easm-ui-segment, .easm-ui-tab):focus-visible,
+  .easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup, .easm-ui-dialog, .easm-ui-tooltip,
+  .easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button, .easm-ui-tab-panel { animation: none !important; }
+  .easm-ui-switch:active::before { width: var(--easm-ui-switch-thumb) !important; }
+}
+[data-easm-motion='off'] :is(.easm-ui-button, .easm-ui-icon-button, .easm-ui-segment, .easm-ui-tab, .easm-ui-chip, .easm-ui-sidebar-link, .easm-ui-sidebar-selector,
+  .easm-ui-checkbox, .easm-ui-radio, .easm-ui-checkbox-mark, .easm-ui-collapsible-chevron, .easm-ui-collapsible-region) { transition: none !important; scale: none !important; }
+[data-easm-motion='off'] .easm-ui-switch::before { transition: none !important; }
+[data-easm-motion='off'] :is(.easm-ui-button, .easm-ui-icon-button, .easm-ui-checkbox, .easm-ui-switch, .easm-ui-segment, .easm-ui-tab):focus-visible,
+[data-easm-motion='off'] :is(.easm-ui-dropdown-menu, .easm-ui-popover, .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup, .easm-ui-dialog, .easm-ui-tooltip,
+  .easm-ui-menu-item, .easm-ui-dropdown-select-option, .easm-ui-combobox-list > li, .easm-ui-command-results > button, .easm-ui-tab-panel) { animation: none !important; }

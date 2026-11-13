@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const TenantSwitchIcon = /* @__PURE__ */ createIcon({"name":"tenant-switch","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"rect","attrs":{"x":5,"y":3,"width":14,"height":18,"rx":2.5,"fill":"surface"}},{"tag":"path","attrs":{"d":"M9 7h.01M15 7h.01M9 11h.01M15 11h.01M9 15h.01M15 15h.01M10 21v-3h4v3"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M16.3 16.8h3.4l-.7-.7m.7.7-.7.7m.7 1.7h-3.4l.7.7m-.7-.7.7-.7","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

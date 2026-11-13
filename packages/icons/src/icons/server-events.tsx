@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ServerEventsIcon = /* @__PURE__ */ createIcon({"name":"server-events","body":[{"tag":"rect","attrs":{"x":2.5,"y":12,"width":8,"height":7,"rx":1.8,"fill":"surface"}},{"tag":"path","attrs":{"d":"M4.8 15.5h.01M6.7 15.5h1.6"}},{"tag":"rect","attrs":{"x":13.5,"y":12,"width":8,"height":7,"rx":1.8,"fill":"surface"}},{"tag":"path","attrs":{"d":"M15.8 15.5h.01M17.7 15.5h1.6"}},{"tag":"path","attrs":{"d":"M6.5 12V8.3a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2V12"}},{"tag":"path","attrs":{"d":"m15.9 10.4 1.6 1.6 1.6-1.6"}}]});

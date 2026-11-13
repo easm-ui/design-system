@@ -1,0 +1,204 @@
+/* Motion: how things arrive, move and settle.
+   One rule for the whole product: nothing appears out of nowhere and nothing jumps. Content rises a few pixels
+   into place as it fades in, groups arrive one item after another, a selection slides to its new place, a
+   pressed control gives a little. Only opacity and transform animate (no layout), so motion never shifts what
+   is around it. Timings are the motion tokens: --easm-ui-motion-enter (320 ms) for content arriving,
+   --easm-ui-motion-stagger (36 ms) between items, --easm-ui-ease-out to settle and --easm-ui-ease-in to leave.
+   prefers-reduced-motion and [data-easm-motion='off'] turn all of it off; everything is then simply there.
+
+   Selectors that reach product markup are wrapped in :where(), so their specificity is zero: a component's own
+   animation (a skeleton's shimmer, a chart drawing) and any product utility always win. */
+
+@keyframes easm-ui-rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes easm-ui-rise-small { from { opacity: 0; transform: translateY(4px); } }
+@keyframes easm-ui-fade-in { from { opacity: 0; } }
+@keyframes easm-ui-pop-in { from { opacity: 0; transform: scale(.96); } }
+@keyframes easm-ui-drop-in { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes easm-ui-value-in { from { opacity: 0; transform: translateY(.3em); } }
+@keyframes easm-ui-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* ── Utilities ─────────────────────────────────────────────────────────────────────────────────────────────
+   .easm-ui-enter        rises into place when it appears.
+   .easm-ui-enter-fade   fades in where it is (for things that must not move: a sticky bar, a number).
+   .easm-ui-enter-pop    grows from 96 % (a badge, a chip, a small card that appears on its own).
+   .easm-ui-stagger      its children rise one after another (the 10th and later arrive together).
+   --easm-ui-stagger-index sets a child's place in the queue by hand (style={{ '--easm-ui-stagger-index': i }}). */
+.easm-ui-enter { animation: easm-ui-rise var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+.easm-ui-enter-fade { animation: easm-ui-fade-in var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+.easm-ui-enter-pop { animation: easm-ui-pop-in var(--easm-ui-motion-medium) var(--easm-ui-ease-out) backwards; }
+:where(.easm-ui-stagger) > :where(*) {
+  animation: easm-ui-rise var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(var(--easm-ui-stagger-index, 0) * var(--easm-ui-motion-stagger));
+}
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(2)) { --easm-ui-stagger-index: 1; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(3)) { --easm-ui-stagger-index: 2; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(4)) { --easm-ui-stagger-index: 3; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(5)) { --easm-ui-stagger-index: 4; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(6)) { --easm-ui-stagger-index: 5; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(7)) { --easm-ui-stagger-index: 6; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(8)) { --easm-ui-stagger-index: 7; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(9)) { --easm-ui-stagger-index: 8; }
+:where(.easm-ui-stagger, .easm-ui-page-flow) > :where(:nth-child(n+10)) { --easm-ui-stagger-index: 9; }
+
+/* ── Pages ─────────────────────────────────────────────────────────────────────────────────────────────────
+   A page's header carries .easm-ui-page-head; everything after it is the page's body. When a page opens (and
+   whenever a block of its body is replaced, a loading state giving way to content), the body's blocks rise in
+   one after another. The header stays put: it is the same bar from page to page, only its title changes, and
+   .easm-ui-page-title fades that in. Put .easm-ui-page-flow on any other container whose children should
+   arrive the same way. */
+:where(.easm-ui-page-head) ~ :where(*) > :where(*),
+:where(.easm-ui-page-flow) > :where(*) {
+  animation: easm-ui-rise var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(min(var(--easm-ui-stagger-index, 0), 6) * var(--easm-ui-motion-stagger) * 1.5);
+}
+:where(.easm-ui-page-head) ~ :where(*) > :where(:nth-child(2)) { --easm-ui-stagger-index: 1; }
+:where(.easm-ui-page-head) ~ :where(*) > :where(:nth-child(3)) { --easm-ui-stagger-index: 2; }
+:where(.easm-ui-page-head) ~ :where(*) > :where(:nth-child(4)) { --easm-ui-stagger-index: 3; }
+:where(.easm-ui-page-head) ~ :where(*) > :where(:nth-child(5)) { --easm-ui-stagger-index: 4; }
+:where(.easm-ui-page-head) ~ :where(*) > :where(:nth-child(n+6)) { --easm-ui-stagger-index: 5; }
+:where(.easm-ui-page-title) { animation: easm-ui-fade-in var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+
+/* ── Sliding indicator (useSlidingIndicator) ───────────────────────────────────────────────────────────────
+   The selected tab or segment and the sidebar's current page share one fill that slides between items. */
+/* useSlidingIndicator writes the four values inline on the host; these are only their resting defaults. */
+.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul {
+  position: relative;
+  --easm-ui-indicator-x: 0px; --easm-ui-indicator-y: 0px; --easm-ui-indicator-w: 0px; --easm-ui-indicator-h: 0px;
+}
+/* :where() keeps this at zero specificity, so each host's own fill below wins (`.easm-ui-settings-nav ul` inside
+   :is() outranked the sidebar's blue and painted it white). */
+:where(.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul)[data-indicator]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--easm-ui-indicator-w, 0);
+  height: var(--easm-ui-indicator-h, 0);
+  transform: translate(var(--easm-ui-indicator-x, 0), var(--easm-ui-indicator-y, 0));
+  border-radius: var(--easm-ui-radius-control);
+  background: var(--easm-ui-surface);
+  pointer-events: none;
+}
+:where(.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul)[data-indicator='move']::before {
+  transition: transform var(--easm-ui-motion-slow) var(--easm-ui-ease-out), width var(--easm-ui-motion-slow) var(--easm-ui-ease-out),
+    height var(--easm-ui-motion-slow) var(--easm-ui-ease-out);
+}
+.easm-ui-tab-list[data-indicator] .easm-ui-tab[aria-selected='true'],
+.easm-ui-segmented[data-indicator] .easm-ui-segment[aria-checked='true'] { background: transparent; }
+.easm-ui-segment, .easm-ui-settings-nav-item { position: relative; }
+.easm-ui-settings-nav ul[data-indicator] .easm-ui-settings-nav-item[aria-current='page'] { background: transparent; }
+.easm-ui-sidebar[data-indicator]::before { background: var(--easm-ui-primary-fill); }
+/* In a card the current section is the track colour, as it was before it slid (white on white otherwise). */
+:is(.easm-ui-card, .easm-ui-panel, .easm-ui-overlay-panel) .easm-ui-settings-nav ul[data-indicator]::before { background: var(--easm-ui-track); }
+.easm-ui-sidebar-link { position: relative; }
+.easm-ui-sidebar[data-indicator] .easm-ui-sidebar-link[aria-current='page']:not([aria-disabled='true']) {
+  background: transparent;
+  --easm-icon-background: var(--easm-ui-primary-fill);
+  --easm-icon-contrast: var(--easm-ui-primary-fill);
+}
+/* The text changes colour as the fill arrives under it, not before. */
+.easm-ui-sidebar[data-indicator='move'] .easm-ui-sidebar-link,
+:is(.easm-ui-tab-list, .easm-ui-segmented)[data-indicator='move'] :is(.easm-ui-tab, .easm-ui-segment) {
+  transition: color var(--easm-ui-motion-slow) var(--easm-ui-ease-out), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease),
+    transform var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────────────────────────────────────────
+   A pressed control gives a little, and springs back when released. */
+.easm-ui-button, .easm-ui-icon-button { transition-property: background-color, border-color, color, box-shadow, transform; }
+.easm-ui-button:active:not([aria-disabled='true']):not(:disabled),
+.easm-ui-icon-button:active:not([aria-disabled='true']):not(:disabled) { transform: scale(.97); }
+.easm-ui-sidebar-link:not([aria-disabled='true']):active, .easm-ui-sidebar-selector:active { transform: scale(.985); }
+.easm-ui-sidebar-link, .easm-ui-sidebar-selector { transition-property: background-color, color, transform; transition-duration: var(--easm-ui-motion-fast); transition-timing-function: var(--easm-ui-ease); }
+/* A sidebar count, a notification count or a chip that appears pops in. */
+.easm-ui-sidebar-count, .easm-ui-notification-count, .easm-ui-chip { animation: easm-ui-pop-in var(--easm-ui-motion-medium) var(--easm-ui-ease-out) backwards; }
+
+/* ── Feedback ──────────────────────────────────────────────────────────────────────────────────────────────
+   An alert arrives from where it is anchored; a toast rises in from the bottom edge it sits on. */
+@keyframes easm-ui-toast-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+.easm-ui-toast { animation: easm-ui-toast-in var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+.easm-ui-alert { animation: easm-ui-drop-in var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+.easm-ui-empty-state, .easm-ui-data-message { animation: easm-ui-rise var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+/* Loading placeholders shimmer: a soft highlight crosses them, so a waiting page reads as working. */
+.easm-ui-skeleton[data-animated=true]:not(.easm-ui-skeleton-multiline):not(.easm-ui-skeleton-content),
+.easm-ui-skeleton[data-animated=true] .easm-ui-skeleton-line {
+  background: linear-gradient(90deg, var(--easm-ui-border-subtle) 0%, var(--easm-ui-border-subtle) 35%, var(--easm-ui-surface-hover) 50%, var(--easm-ui-border-subtle) 65%, var(--easm-ui-border-subtle) 100%);
+  background-size: 200% 100%;
+  animation: easm-ui-shimmer 1.6s linear infinite;
+}
+
+/* ── Data ──────────────────────────────────────────────────────────────────────────────────────────────────
+   Rows arrive one after another when a table loads, pages or sorts; a row that stays (a refresh) stays still,
+   and a new row arriving at the top fades in on its own. A statistic's value rises in when it changes. */
+.easm-ui-data-table tbody tr[data-row-key] {
+  animation: easm-ui-rise-small var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(min(var(--easm-ui-stagger-index, 0), 11) * 22ms);
+}
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(2) { --easm-ui-stagger-index: 1; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(3) { --easm-ui-stagger-index: 2; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(4) { --easm-ui-stagger-index: 3; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(5) { --easm-ui-stagger-index: 4; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(6) { --easm-ui-stagger-index: 5; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(7) { --easm-ui-stagger-index: 6; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(8) { --easm-ui-stagger-index: 7; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(9) { --easm-ui-stagger-index: 8; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(10) { --easm-ui-stagger-index: 9; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(11) { --easm-ui-stagger-index: 10; }
+.easm-ui-data-table tbody tr[data-row-key]:nth-child(n+12) { --easm-ui-stagger-index: 11; }
+/* Cards and statistics that sit side by side (a row of figures, a grid of dashboards) arrive one after another,
+   counted among their own kind, so a heading or a toolbar beside them does not hold them back. */
+.easm-ui-card, .easm-ui-stat-card {
+  animation: easm-ui-rise-small var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(min(var(--easm-ui-card-index, 0), 7) * var(--easm-ui-motion-stagger) * 1.5);
+}
+.easm-ui-card:nth-child(2 of .easm-ui-card), .easm-ui-stat-card:nth-child(2 of .easm-ui-stat-card) { --easm-ui-card-index: 1; }
+.easm-ui-card:nth-child(3 of .easm-ui-card), .easm-ui-stat-card:nth-child(3 of .easm-ui-stat-card) { --easm-ui-card-index: 2; }
+.easm-ui-card:nth-child(4 of .easm-ui-card), .easm-ui-stat-card:nth-child(4 of .easm-ui-stat-card) { --easm-ui-card-index: 3; }
+.easm-ui-card:nth-child(5 of .easm-ui-card), .easm-ui-stat-card:nth-child(5 of .easm-ui-stat-card) { --easm-ui-card-index: 4; }
+.easm-ui-card:nth-child(6 of .easm-ui-card), .easm-ui-stat-card:nth-child(6 of .easm-ui-stat-card) { --easm-ui-card-index: 5; }
+.easm-ui-card:nth-child(7 of .easm-ui-card), .easm-ui-stat-card:nth-child(7 of .easm-ui-stat-card) { --easm-ui-card-index: 6; }
+.easm-ui-card:nth-child(n+8 of .easm-ui-card), .easm-ui-stat-card:nth-child(n+8 of .easm-ui-stat-card) { --easm-ui-card-index: 7; }
+/* The inbox list arrives the same way; a conversation that moves to the top (a new message) rises into place. */
+.easm-ui-conversation-item {
+  animation: easm-ui-rise-small var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards;
+  animation-delay: calc(min(var(--easm-ui-stagger-index, 0), 11) * 22ms);
+}
+.easm-ui-conversation-item:nth-child(2 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 1; }
+.easm-ui-conversation-item:nth-child(3 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 2; }
+.easm-ui-conversation-item:nth-child(4 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 3; }
+.easm-ui-conversation-item:nth-child(5 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 4; }
+.easm-ui-conversation-item:nth-child(6 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 5; }
+.easm-ui-conversation-item:nth-child(7 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 6; }
+.easm-ui-conversation-item:nth-child(8 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 7; }
+.easm-ui-conversation-item:nth-child(9 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 8; }
+.easm-ui-conversation-item:nth-child(10 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 9; }
+.easm-ui-conversation-item:nth-child(11 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 10; }
+.easm-ui-conversation-item:nth-child(n+12 of .easm-ui-conversation-item) { --easm-ui-stagger-index: 11; }
+.easm-ui-stat-number { display: inline-block; animation: easm-ui-value-in var(--easm-ui-motion-enter) var(--easm-ui-ease-out) backwards; }
+/* A meter or progress ring fills from empty the first time it shows, then moves to each new value. */
+@starting-style { .easm-ui-meter-track > span { width: 0; } }
+
+/* ── Loading ───────────────────────────────────────────────────────────────────────────────────────────────
+   Spinner draws the brand's loaders: the EASM mark connecting (page-sized) or the searching dots (inline). */
+.easm-ui-spinner[data-variant='brand'] { color: var(--easm-ui-primary); }
+.easm-ui-spinner[data-variant='brand'] > svg { color: var(--easm-ui-text); }
+
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-enter, .easm-ui-enter-fade, .easm-ui-enter-pop, :where(.easm-ui-stagger, .easm-ui-page-flow) > *, :where(.easm-ui-page-head) ~ * > *, .easm-ui-page-title,
+  .easm-ui-sidebar-count, .easm-ui-notification-count, .easm-ui-chip, .easm-ui-toast, .easm-ui-alert, .easm-ui-empty-state, .easm-ui-data-message,
+  .easm-ui-data-table tbody tr[data-row-key], .easm-ui-conversation-item, .easm-ui-card, .easm-ui-stat-card, .easm-ui-stat-number,
+  .easm-ui-skeleton[data-animated=true], .easm-ui-skeleton[data-animated=true] .easm-ui-skeleton-line { animation: none !important; }
+  :is(.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul)[data-indicator]::before { transition: none !important; }
+  .easm-ui-button:active, .easm-ui-icon-button:active, .easm-ui-sidebar-link:active, .easm-ui-sidebar-selector:active { transform: none !important; }
+}
+[data-easm-motion='off'] :is(.easm-ui-enter, .easm-ui-enter-fade, .easm-ui-enter-pop, .easm-ui-stagger > *, .easm-ui-page-flow > *, .easm-ui-page-title,
+  .easm-ui-sidebar-count, .easm-ui-notification-count, .easm-ui-chip, .easm-ui-toast, .easm-ui-alert, .easm-ui-empty-state, .easm-ui-data-message,
+  .easm-ui-data-table tbody tr[data-row-key], .easm-ui-conversation-item, .easm-ui-card, .easm-ui-stat-card, .easm-ui-stat-number,
+  .easm-ui-skeleton[data-animated=true], .easm-ui-skeleton[data-animated=true] .easm-ui-skeleton-line),
+[data-easm-motion='off'] .easm-ui-page-head ~ * > * { animation: none !important; }
+[data-easm-motion='off'] :is(.easm-ui-tab-list, .easm-ui-segmented, .easm-ui-sidebar, .easm-ui-settings-nav ul)[data-indicator]::before { transition: none !important; }
+
+/* Scroll edges are hard lines. The fades this file once drew (a mask over the first and last 24 px of a scroller,
+   and a page-coloured band under a sticky header, `.easm-ui-scroll-fade` / `.easm-ui-sticky-fade`) hid content,
+   on phones above all; the header and the page are now told apart by fill alone. Both class names are kept and
+   do nothing, so markup that still carries them is unaffected. */

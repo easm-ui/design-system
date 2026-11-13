@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ResponseCorrectedIcon = /* @__PURE__ */ createIcon({"name":"response-corrected","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M6 3h8l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z","fill":"surface"}},{"tag":"path","attrs":{"d":"M14 3v4a1 1 0 0 0 1 1h4"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M16.2 19.8l.4-1.5 2.4-2.4 1.1 1.1-2.4 2.4Z","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

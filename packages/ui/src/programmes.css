@@ -1,0 +1,57 @@
+/* ProgrammeTree (programmes.tsx). Schemes and semesters are rows told apart by fill; the scheme for new students
+   wears a pale blue badge; courses are a table that turns into labelled rows on a narrow box. */
+.easm-ui-programme { container-type: inline-size; display: grid; gap: 10px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-programme-title { display: flex; align-items: center; gap: 4px 10px; margin: 0; font-size: var(--easm-ui-text-lg); font-weight: 600; line-height: 24px; }
+.easm-ui-programme-title > .easm-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-programme-title-text { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
+.easm-ui-programme-title-text > span { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 500; }
+.easm-ui-programme-schemes, .easm-ui-programme-semesters { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-programme-semesters { gap: 4px; margin-block-start: 6px; padding-inline-start: 20px; }
+.easm-ui-programme-scheme { border-radius: var(--easm-ui-radius-card); }
+.easm-ui-programme-toggle {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 8px 12px; border: 0; border-radius: var(--easm-ui-radius-control);
+  background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; text-align: start; cursor: pointer; transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+  --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track);
+}
+.easm-ui-programme-toggle:hover { background: var(--easm-ui-track-hover); }
+.easm-ui-programme-toggle[data-level='semester'] { min-height: 40px; background: color-mix(in srgb, var(--easm-ui-track) 50%, var(--easm-ui-surface)); }
+.easm-ui-programme-toggle:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-programme-toggle-text { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-width: 0; }
+.easm-ui-programme-chevron { flex: none; color: var(--easm-ui-text-secondary); transition: rotate var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-programme-toggle[aria-expanded='true'] > .easm-ui-programme-chevron { rotate: 90deg; }
+[dir='rtl'] .easm-ui-programme-chevron { scale: -1 1; }
+[dir='rtl'] .easm-ui-programme-toggle[aria-expanded='true'] > .easm-ui-programme-chevron { rotate: -90deg; }
+.easm-ui-programme-scheme-name { flex: 1 1 160px; min-width: 0; font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere; }
+.easm-ui-programme-toggle[data-level='semester'] .easm-ui-programme-scheme-name { font-weight: 550; }
+.easm-ui-programme-chosen { display: inline-flex; align-items: center; gap: 4px; min-height: 22px; padding: 0 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-badge-brand); color: var(--easm-ui-primary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; --easm-icon-background: var(--easm-ui-badge-brand); --easm-icon-contrast: var(--easm-ui-badge-brand); }
+.easm-ui-programme-total { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-variant-numeric: tabular-nums; }
+.easm-ui-programme-courses { width: 100%; margin-block: 4px 6px; border-collapse: separate; border-spacing: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-programme-courses th { padding: 6px 10px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; text-align: start; }
+.easm-ui-programme-courses th:last-child, .easm-ui-programme-credits { text-align: end; }
+.easm-ui-programme-courses td { padding: 7px 10px; vertical-align: top; }
+.easm-ui-programme-courses tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+.easm-ui-programme-courses tbody tr td:first-child { border-start-start-radius: 8px; border-end-start-radius: 8px; }
+.easm-ui-programme-courses tbody tr td:last-child { border-start-end-radius: 8px; border-end-end-radius: 8px; }
+.easm-ui-programme-code { white-space: nowrap; font: 500 12.5px/20px ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+.easm-ui-programme-code button { padding: 0; border: 0; background: none; color: var(--easm-ui-primary); font: inherit; cursor: pointer; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-underline-offset: 3px; }
+.easm-ui-programme-code button:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: 4px; }
+.easm-ui-programme-course { min-width: 0; overflow-wrap: anywhere; }
+.easm-ui-programme-level { margin-inline-start: 8px; padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); white-space: nowrap; }
+.easm-ui-programme-kind { display: inline-flex; align-items: center; gap: 6px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); white-space: nowrap; }
+.easm-ui-programme-prereqs { display: flex; flex-wrap: wrap; gap: 4px; }
+.easm-ui-programme-prereqs > span { padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-chart-indigo-tint); color: var(--easm-ui-chart-indigo-ink); font: 500 12px/20px ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace; }
+.easm-ui-programme-none { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); }
+.easm-ui-programme-credits { font-weight: 600; font-variant-numeric: tabular-nums; }
+/* A narrow box turns each course into a small block: code and credits on one line, then the rest. */
+@container (max-width: 599px) {
+  .easm-ui-programme-semesters { padding-inline-start: 0; }
+  .easm-ui-programme-courses thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .easm-ui-programme-courses, .easm-ui-programme-courses tbody { display: grid; gap: 4px; }
+  .easm-ui-programme-courses tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 10px; border-radius: 8px; background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+  .easm-ui-programme-courses tbody tr td { padding: 0; background: none !important; border-radius: 0 !important; }
+  .easm-ui-programme-courses td[data-label='Course'], .easm-ui-programme-courses td[data-label='Kind'], .easm-ui-programme-courses td[data-label='Needs first'] { grid-column: 1 / -1; }
+  .easm-ui-programme-courses td[data-label='Needs first']::before { content: 'Needs first: '; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); }
+  .easm-ui-programme-courses td[data-label='Credits'] { grid-row: 1; grid-column: 2; }
+  .easm-ui-programme-courses td[data-label='Credits']::after { content: ' cr'; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; }
+}
+@media (forced-colors: active) { .easm-ui-programme-toggle { border: 1px solid CanvasText; } }

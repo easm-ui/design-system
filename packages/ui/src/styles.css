@@ -1,0 +1,128 @@
+@import '@easm-ui/icons/styles.css';
+@import '@easm-ui/icons/animation.css';
+@import './tokens.css';
+@import './actions.css';
+@import './inputs.css';
+@import './additional-inputs.css';
+@import './selection.css';
+@import './feedback.css';
+@import './validation.css';
+@import './containers.css';
+@import './overlays.css';
+@import './utility.css';
+@import './navigation.css';
+@import './patterns.css';
+@import './data-display.css';
+@import './pickers.css';
+@import './insights.css';
+@import './charts.css';
+@import './product.css';
+@import './settings.css';
+@import './pipeline.css';
+@import './tones.css';
+@import './workflow.css';
+@import './roles.css';
+@import './calls.css';
+@import './forms.css';
+@import './knowledge.css';
+@import './marketing.css';
+@import './automation.css';
+@import './panels.css';
+@import './setup.css';
+@import './choices.css';
+@import './layout.css';
+@import './schedule.css';
+@import './tree.css';
+@import './support.css';
+@import './changes.css';
+@import './programmes.css';
+@import './tracking.css';
+@import './planning.css';
+@import './resolver.css';
+@import './publishing.css';
+@import './admin.css';
+@import './illustrations.css';
+@import './app-pieces.css';
+@import './app-pictures.css';
+@import './motion.css';
+@import './interaction.css';
+@import './responsive.css';
+
+/* Cascade layers and Tailwind CSS 4.
+   Component class rules (.easm-ui-button and the rest) and the component root rule below are unlayered, so a
+   reset such as Tailwind's preflight never breaks a component. Rules that reach bare elements or generic
+   descendants (the reset, control typography, the focus ring on elements EASM does not own, [hidden]) sit in
+   @layer base. Tailwind declares `@layer theme, base, components, utilities`, so a layer named base stays below
+   its utilities whichever stylesheet loads first, and product utilities on product elements win. In an app
+   without Tailwind the layer is harmless: author rules in any layer still beat the browser's own styles. */
+
+/* Component roots: every EASM component carries .easm-ui. Unlayered on purpose (see above). */
+:where(.easm-ui) { box-sizing: border-box; color: var(--easm-ui-text); font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-md); line-height: var(--easm-ui-line-height, 1.5); -webkit-font-smoothing: antialiased; }
+
+@layer base {
+  :where(.easm-ui) *, :where(.easm-ui) *::before, :where(.easm-ui) *::after { box-sizing: border-box; }
+  :where(.easm-ui) :where(button,input,textarea,select) { font-family: inherit; font-size: inherit; line-height: inherit; }
+  /* hidden="until-found" stays searchable: the browser's own content-visibility handling applies. */
+  :where(.easm-ui) [hidden]:not([hidden='until-found']) { display: none !important; }
+  /* Focus on elements EASM does not own (product content inside an .easm-ui page or container). :is() lifts it
+     above Tailwind preflight's :-moz-focusring inside the base layer; any utility still wins. The solid edge is
+     drawn as an outline over the ring's own edge, so it looks the same as the ring, and a product utility that
+     replaces box-shadow (shadow-sm on a button) still leaves a visible focus edge; outline-none removes it. */
+  :where(.easm-ui) :is(a[href],button,input,textarea,select,summary,[tabindex],[contenteditable]):focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 0; box-shadow: var(--easm-ui-focus-ring); }
+}
+
+/* The focus treatment: one solid primary-fill edge plus the soft halo (--easm-ui-focus-ring). The transparent
+   outline costs nothing in normal colours and becomes the visible system outline in forced-colours mode, where
+   box-shadow is not painted. Components must not cancel it; a component that draws its own ring sets box-shadow
+   (and may set outline-offset) but leaves the outline to the forced-colours rule below.
+   Applies to every focusable element EASM owns: component roots (.easm-ui) and their parts (.easm-ui-*). */
+:where(.easm-ui) :where(a[href],button,input,textarea,select,summary,[tabindex],[contenteditable]):where(.easm-ui,[class*='easm-ui-']):focus-visible,
+:where(a[href],button,input,textarea,select,summary,[tabindex],[contenteditable]).easm-ui:focus-visible { outline: 2px solid transparent; outline-offset: 2px; box-shadow: var(--easm-ui-focus-ring); }
+
+.easm-ui-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.easm-ui-icon.easm-icon[data-tone='inherit'][data-state] { color: inherit; --easm-icon-fill: none; }
+
+/* Touch. Coarse pointers get hit areas of at least --easm-ui-size-touch (44 px). Components set their own
+   minimums in a (pointer: coarse) block (responsive.css and each component's stylesheet); a component that
+   cannot grow can read --easm-ui-hit-min, which is 0px on fine pointers and the touch size on coarse ones:
+   min-height: max(32px, var(--easm-ui-hit-min)). */
+:root { --easm-ui-hit-min: 0px; }
+@media (pointer: coarse) { :root { --easm-ui-hit-min: var(--easm-ui-size-touch, 44px); } }
+
+@media (forced-colors: active) {
+  :is(button,input,textarea,select).easm-ui { forced-color-adjust: auto; border-color: ButtonText; }
+  /* Focus is a solid system outline on every focusable element, whatever a component draws in normal colours.
+     It wins over local `outline: none` rules; a component's own outline-offset (an inset ring in a list) is kept.
+     Containers focused by a click inside them (quietPointerFocus) and whole overlay panels show none, as in
+     normal colours. */
+  :is(.easm-ui, .easm-ui *):is(a[href],button,input,textarea,select,summary,[tabindex],[contenteditable]):focus-visible:not([data-pointer-focus], [role='dialog'], [role='alertdialog'], [role='menu'], .easm-ui-dropdown-select-popup) { outline: 2px solid Highlight !important; }
+  /* Selection is an inset outline; focus sits outside the control, so the two never look the same. A selected
+     item that also has focus shows a double outline, at the offset the component chose (inside a scroll clip,
+     a list option keeps its inset). */
+  :is(.easm-ui, .easm-ui *):is([aria-selected='true'],[aria-checked='true'],[aria-pressed='true']) { outline: 2px solid Highlight; outline-offset: -4px; }
+  :is(.easm-ui, .easm-ui *):is([aria-selected='true'],[aria-checked='true'],[aria-pressed='true']):is(a[href],button,input,textarea,select,summary,[tabindex],[contenteditable]):focus-visible:not([data-pointer-focus], [role='dialog'], [role='alertdialog'], [role='menu']) { outline: 6px double Highlight !important; }
+  .easm-ui .easm-icon { --easm-icon-fill: none; }
+}
+@layer base {
+  @media (forced-colors: active) {
+    :where(.easm-ui) :where(button,input,textarea,select) { forced-color-adjust: auto; border-color: ButtonText; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui { --easm-ui-motion-fast: 0ms; --easm-ui-motion-medium: 0ms; --easm-ui-motion-slow: 0ms; --easm-ui-motion-enter: 0ms; --easm-ui-motion-stagger: 0ms; }
+}
+
+/* Scroll containers contain what is positioned inside them. An absolutely positioned descendant (a screen-reader
+   label, a channel mark, a floating row action) takes the nearest positioned ancestor as its frame; inside an
+   unpositioned scroller that is the page, so items far down a long list stretched the page itself and a
+   full-height screen (an inbox) became scrollable as a whole. In @layer base, so a component's own position and
+   any product utility (sticky) still win. */
+@layer base {
+  :where(.easm-ui-message-thread, .easm-ui-data-table-scroll, .easm-ui-chart-viewport, .easm-ui-heatmap-scroll,
+    .easm-ui-kanban-scroll, .easm-ui-quick-filters-row, .easm-ui-scroll-row-track, .easm-ui-composer-tools,
+    .easm-ui-command-results, .easm-ui-overlay-body) { position: relative; }
+}
+
+/* Opt-in page setup for apps: the white page, Inter and the body text colour. Put class
+   "easm-ui easm-ui-page" on <body> or the app's root element. Cards, panels and tables are white on it. */
+.easm-ui-page { min-height: 100vh; min-height: 100dvh; margin: 0; background: var(--easm-ui-background); color: var(--easm-ui-text); font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-md); line-height: 1.5; -webkit-font-smoothing: antialiased; }

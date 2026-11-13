@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const LinkAddIcon = /* @__PURE__ */ createIcon({"name":"link-add","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"m9.5 14.5 5-5M8 15.5l-1 1a3 3 0 0 0 4.3 4.3l4.5-4.5a3 3 0 0 0 0-4.3M16 8.5l1-1a3 3 0 0 0-4.3-4.3L8.2 7.7a3 3 0 0 0 0 4.3"}}]},{"tag":"circle","attrs":{"cx":18,"cy":17.5,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 15.5v4m-2-2h4","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

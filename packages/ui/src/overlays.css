@@ -1,0 +1,165 @@
+.easm-ui-dropdown-menu,.easm-ui-popover{--easm-ui-layer-offset:0;z-index:calc(var(--easm-ui-z-popover,1100) + var(--easm-ui-layer-offset));background:var(--easm-ui-surface);color:var(--easm-ui-text);border:0;box-shadow:none;transform-origin:var(--radix-popper-transform-origin);animation:easm-ui-overlay-enter var(--easm-ui-motion-medium) var(--easm-ui-ease)}
+.easm-ui-dropdown-menu[data-state=closed],.easm-ui-popover[data-state=closed]{animation:easm-ui-overlay-exit var(--easm-ui-motion-medium) var(--easm-ui-ease);pointer-events:none}
+.easm-ui-dropdown-menu{min-width:196px;max-width:min(320px,calc(100vw - 24px));max-height:var(--radix-dropdown-menu-content-available-height);overflow:auto;border-radius:var(--easm-ui-radius-float);padding:4px;outline:none}
+.easm-ui-menu-item{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 10px;border-radius:var(--easm-ui-radius-mark);font-size:var(--easm-ui-text-md);line-height:20px;font-weight:500;cursor:default;user-select:none;outline:none;overflow-wrap: break-word}
+.easm-ui-menu-item > .easm-ui-icon{flex:none}.easm-ui-menu-icon-slot{flex:none;width:16px;height:16px}.easm-ui-menu-item > span{min-width:0}
+.easm-ui-menu-item[data-highlighted]{background:var(--easm-ui-track);color:var(--easm-ui-text)}
+/* A menu row draws its focus inside its own edge, where the menu's scroll clip cannot cut it; the outer ring is not added. */
+.easm-ui-menu-item:focus-visible{outline:2px solid var(--easm-ui-primary-fill);outline-offset:-2px;box-shadow:none}.easm-ui-menu-item[data-destructive=true]:focus-visible{ outline-color: var(--easm-ui-danger); }
+.easm-ui-menu-item[data-destructive=true]{color:var(--easm-ui-danger)}
+.easm-ui-menu-item[data-destructive=true][data-highlighted]{background:var(--easm-ui-danger-highlight);color:var(--easm-ui-danger-hover)}
+.easm-ui-menu-item[data-disabled]{color:var(--easm-ui-text-disabled);pointer-events:none;background:transparent}
+.easm-ui-popover{width:320px;max-width:calc(100vw - 24px);max-height:var(--radix-popover-content-available-height);overflow:auto;border-radius:var(--easm-ui-radius-float);padding:14px 16px;outline:none}
+.easm-ui-popover-title{margin:0 0 12px;font-size:var(--easm-ui-text-lg);font-weight:600;line-height:1.4}
+.easm-ui-popover-body{display:flex;flex-direction:column;gap:16px;min-width:0;font-size:var(--easm-ui-text-md);line-height:1.5;color:var(--easm-ui-text-secondary)}
+.easm-ui-overlay-backdrop{position:fixed;inset:0;--easm-ui-layer-offset:0;z-index:calc(var(--easm-ui-z-dialog,1000) + var(--easm-ui-layer-offset));background:var(--easm-ui-scrim);animation:easm-ui-backdrop-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-overlay-backdrop[data-state=closed]{animation:easm-ui-backdrop-exit var(--easm-ui-motion-slow) var(--easm-ui-ease);pointer-events:none}
+.easm-ui-overlay-panel{--easm-ui-layer-offset:0;z-index:calc(var(--easm-ui-z-dialog,1000) + 1 + var(--easm-ui-layer-offset));display:flex;flex-direction:column;gap:20px;background:var(--easm-ui-surface);color:var(--easm-ui-text);border:1px solid var(--easm-ui-border-subtle);box-shadow:var(--easm-ui-shadow-overlay);outline:none;padding:20px;overflow:auto;overscroll-behavior:contain;border-color:transparent}
+.easm-ui-overlay-header{padding-inline-end:40px;flex:none;min-width:0}
+.easm-ui-overlay-title{margin:0;font-size:var(--easm-ui-text-xl);line-height:1.35;font-weight:600;letter-spacing:-.35px;overflow-wrap: break-word}
+.easm-ui-overlay-description{margin-top:0;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-md);line-height:1.55;overflow-wrap: break-word}
+.easm-ui-overlay-body{flex:1 1 auto;min-height:0;min-width:0;overflow:auto;padding:6px;margin:-6px;overscroll-behavior:contain;font-size:var(--easm-ui-text-md);line-height:1.6}
+.easm-ui-overlay-body-described{margin-top:-18px}.easm-ui-overlay-description + .easm-ui-overlay-content{margin-top:20px}.easm-ui-overlay-content{display:flex;flex-direction:column;gap:16px;min-width:0}.easm-ui-overlay-content > :is(.easm-ui-button,.easm-ui-badge,.easm-ui-user-chip,.easm-ui-chip,.easm-ui-tag,.easm-ui-spinner,.easm-ui-segmented),.easm-ui-popover-body > :is(.easm-ui-button,.easm-ui-badge,.easm-ui-user-chip,.easm-ui-chip,.easm-ui-tag,.easm-ui-spinner,.easm-ui-segmented){align-self:flex-start}.easm-ui-overlay-content > .easm-ui-divider,.easm-ui-popover-body > .easm-ui-divider{margin-block:0}
+/* Spacing for product content (paragraphs and lists) placed in an overlay sits below Tailwind's utilities, so a
+   product's own margin classes on its own elements still apply. */
+@layer base {
+  .easm-ui-overlay-content > :where(p,ul,ol),.easm-ui-popover-body > :where(p,ul,ol),.easm-ui-overlay-description > :where(p,ul,ol){margin-block:0}
+  .easm-ui-overlay-description > * + *{margin-top:12px}
+}
+.easm-ui-overlay-footer{flex:none;display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;padding-top:4px}
+.easm-ui-overlay-close{position:absolute;inset-inline-end:10px;top:10px}
+.easm-ui-dialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:560px;max-width:calc(100vw - 28px);max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);border-radius:var(--easm-ui-radius-overlay);animation:easm-ui-dialog-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-dialog[data-size=sm]{width:420px}.easm-ui-dialog[data-size=lg]{width:760px}
+.easm-ui-dialog[data-state=closed]{animation:easm-ui-dialog-exit var(--easm-ui-motion-slow) var(--easm-ui-ease);pointer-events:none}
+.easm-ui-drawer{position:fixed;top:0;bottom:0;width:440px;max-width:calc(100vw - 12px);max-height:100vh;max-height:100dvh;padding:24px 20px}
+.easm-ui-drawer[data-size=sm]{width:360px}.easm-ui-drawer[data-size=lg]{width:560px}
+.easm-ui-drawer[data-side=right]{right:0;border-radius:var(--easm-ui-radius-overlay) 0 0 var(--easm-ui-radius-overlay);animation:easm-ui-drawer-right-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-drawer[data-side=left]{left:0;border-radius:0 var(--easm-ui-radius-overlay) var(--easm-ui-radius-overlay) 0;animation:easm-ui-drawer-left-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+/* side="start" | "end" follow the reading direction: in Urdu or Arabic the end is the left edge. */
+.easm-ui-drawer[data-side=end]{inset-inline-end:0;border-radius:0;border-start-start-radius:var(--easm-ui-radius-overlay);border-end-start-radius:var(--easm-ui-radius-overlay);animation:easm-ui-drawer-right-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-drawer[data-side=start]{inset-inline-start:0;border-radius:0;border-start-end-radius:var(--easm-ui-radius-overlay);border-end-end-radius:var(--easm-ui-radius-overlay);animation:easm-ui-drawer-left-enter var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-drawer[data-state=closed]{pointer-events:none}
+.easm-ui-drawer[data-side=right][data-state=closed],.easm-ui-drawer[data-side=end][data-state=closed]{animation:easm-ui-drawer-right-exit var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-drawer[data-side=left][data-state=closed],.easm-ui-drawer[data-side=start][data-state=closed]{animation:easm-ui-drawer-left-exit var(--easm-ui-motion-slow) var(--easm-ui-ease)}
+.easm-ui-drawer[data-side=end]:dir(rtl){animation-name:easm-ui-drawer-left-enter}
+.easm-ui-drawer[data-side=start]:dir(rtl){animation-name:easm-ui-drawer-right-enter}
+.easm-ui-drawer[data-side=end][data-state=closed]:dir(rtl){animation-name:easm-ui-drawer-left-exit}
+.easm-ui-drawer[data-side=start][data-state=closed]:dir(rtl){animation-name:easm-ui-drawer-right-exit}
+.easm-ui-drawer .easm-ui-overlay-body{flex:1}
+.easm-ui-drawer .easm-ui-overlay-footer{padding-top:8px}
+.easm-ui-confirmation-dialog .easm-ui-overlay-header{padding-inline-end:0}
+.easm-ui-confirmation-indicator{display:grid;place-items:center;width:42px;height:42px;margin-bottom:16px;border-radius:11px;background:var(--easm-ui-danger-surface);color:var(--easm-ui-danger)}
+@keyframes easm-ui-overlay-enter{from{opacity:0;transform:translateY(-3px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes easm-ui-overlay-exit{from{opacity:1}to{opacity:0}}
+@keyframes easm-ui-backdrop-enter{from{opacity:0}to{opacity:1}}
+@keyframes easm-ui-backdrop-exit{from{opacity:1}to{opacity:0}}
+/* A dialog fades as it moves: the backdrop fades on close, and a panel that only slid 3px stayed fully drawn over a
+   page that was already clear of it. */
+@keyframes easm-ui-dialog-enter{from{opacity:0;transform:translate(-50%,calc(-50% + 6px))}to{opacity:1;transform:translate(-50%,-50%)}}
+@keyframes easm-ui-dialog-exit{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,calc(-50% + 3px))}}
+@keyframes easm-ui-drawer-right-enter{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes easm-ui-drawer-right-exit{from{transform:translateX(0)}to{transform:translateX(100%)}}
+@keyframes easm-ui-drawer-left-enter{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes easm-ui-drawer-left-exit{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+/* Compact screens (< 600px), the same boundary as responsive.css. */
+@media(min-width:600px){.easm-ui-overlay-panel{padding:24px}.easm-ui-dialog{max-width:calc(100vw - 40px);max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px)}.easm-ui-drawer{max-width:calc(100vw - 20px);padding:28px 24px}.easm-ui-overlay-close{inset-inline-end:14px;top:14px}.easm-ui-menu-item{min-height:34px}}
+@media(prefers-reduced-motion:reduce){.easm-ui-dropdown-menu,.easm-ui-popover,.easm-ui-overlay-backdrop,.easm-ui-dialog,.easm-ui-drawer{animation:none!important}}
+/* data-easm-motion="off" on <html> freezes motion for screenshots, tests and print, as reduced motion does. */
+[data-easm-motion='off'] :is(.easm-ui-dropdown-menu,.easm-ui-popover,.easm-ui-overlay-backdrop,.easm-ui-dialog,.easm-ui-drawer){animation:none!important}
+@media(forced-colors:active){.easm-ui-overlay-backdrop{background:Canvas;opacity:.75}.easm-ui-overlay-panel,.easm-ui-dropdown-menu,.easm-ui-popover{border-color:CanvasText;box-shadow:none}.easm-ui-menu-item[data-highlighted]{background:Highlight;color:HighlightText}.easm-ui-menu-item[data-disabled]{color:GrayText}}
+
+@media(pointer:coarse){.easm-ui-menu-item{min-height:44px}}
+
+/* Short landscape windows keep the title and actions visible while the body
+   consumes only the available height. Outer scrolling is a last resort for
+   unusually long headings or a large custom action footer. */
+@media (max-height:500px) {
+  .easm-ui-overlay-panel { padding:16px; gap:16px; }
+  .easm-ui-dialog { max-height:calc(100vh - 20px); max-height:calc(100dvh - 20px); }
+  .easm-ui-overlay-title { font-size:18px; }
+  .easm-ui-overlay-close { top:8px; inset-inline-end:8px; }
+  .easm-ui-overlay-body-described { margin-top:-12px; }
+  .easm-ui-overlay-description + .easm-ui-overlay-content { margin-top:12px; }
+  .easm-ui-confirmation-indicator { width:32px; height:32px; margin-bottom:8px; }
+  .easm-ui-drawer .easm-ui-overlay-footer { padding-top:12px; }
+}
+
+/* White: menu and popover surfaces */
+.easm-ui-menu-item + .easm-ui-menu-item { margin-top: 2px; }
+.easm-ui-menu-item > .easm-ui-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-menu-item[data-destructive=true] > .easm-ui-icon { color: inherit; }
+/* A whole floating panel that receives focus (a menu opened by pointer, a drawer without fields) shows no ring:
+   the panel itself is the context, and its controls show their own. */
+/* `.easm-ui` is doubled: the base focus rule in styles.css (`.easm-ui:focus-visible`) comes later at the same
+   specificity and otherwise drew a ring round an open menu. A menu shows focus on its highlighted row. */
+/* Radix moves focus onto a menu's or a select's panel while the pointer is between its rows or in its padding; the
+   rows show focus, so the panel draws no ring (on the select it flickered on and off as the pointer crossed the list). */
+.easm-ui.easm-ui-dropdown-menu:focus-visible, .easm-ui.easm-ui-popover:focus-visible, .easm-ui.easm-ui-overlay-panel:focus-visible,
+.easm-ui.easm-ui-dropdown-select-popup:focus-visible { outline: none; box-shadow: none; }
+/* surface: 'page' = white sheet over the white page; 'card' = grey panel over white cards; 'ink' = dark panel for primary actions */
+.easm-ui-dropdown-menu[data-surface='card'], .easm-ui-popover[data-surface='card'] { background: var(--easm-ui-float); }
+.easm-ui-dropdown-menu[data-surface='card'] .easm-ui-menu-item[data-highlighted] { background: var(--easm-ui-float-hover); }
+.easm-ui-dropdown-menu[data-surface='ink'], .easm-ui-popover[data-surface='ink'] { background: var(--easm-ui-ink-panel); color: var(--easm-ui-on-ink); --easm-icon-background: var(--easm-ui-ink-panel); --easm-icon-contrast: var(--easm-ui-ink-panel); --easm-icon-fill: none; }
+.easm-ui-popover[data-surface='ink'] .easm-ui-popover-body { color: var(--easm-ui-on-ink-muted); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item { color: var(--easm-ui-on-ink); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item > .easm-ui-icon { color: var(--easm-ui-on-ink-muted); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-highlighted] { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink-strong); --easm-icon-background: var(--easm-ui-ink-panel-hover); --easm-icon-contrast: var(--easm-ui-ink-panel-hover); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-highlighted] > .easm-ui-icon { color: var(--easm-ui-on-ink-strong); }
+/* Destructive rows keep their danger colour on ink, in the light tint that reads on the dark panel. */
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-destructive=true], .easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-destructive=true][data-highlighted] { color: var(--easm-ui-on-ink-danger); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-destructive=true] > .easm-ui-icon { color: inherit; }
+/* On ink the primary and danger edges are too dark to see on a highlighted row; the focus edge takes the on-ink colours. */
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item:focus-visible { outline-color: var(--easm-ui-on-ink); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-destructive=true]:focus-visible { outline-color: var(--easm-ui-on-ink-danger); }
+/* Disabled rows on ink stay visibly unavailable (the on-ink row colour above would otherwise make them look enabled). */
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-disabled] { color: color-mix(in srgb, var(--easm-ui-on-ink) 45%, transparent); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-disabled] > .easm-ui-icon { color: inherit; }
+@media (forced-colors: active) { .easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-disabled] { color: GrayText; } }
+/* The current choice on an ink panel. Ink items are drawn in on-ink, so the pale primary-surface every other panel
+   uses for a selected item would put light text on a light tint. Instead it deepens the panel with the on-ink brand
+   blue (hover a step deeper, so the two stay apart), with the strongest on-ink text and an on-ink brand check. */
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-selected] { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink-strong); }
+.easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-selected] .easm-ui-menu-check { color: var(--easm-ui-on-ink-brand); }
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-selected] { background: color-mix(in srgb, var(--easm-ui-on-ink-brand) 18%, var(--easm-ui-ink-panel)); }
+  .easm-ui-dropdown-menu[data-surface='ink'] .easm-ui-menu-item[data-selected][data-highlighted] { background: color-mix(in srgb, var(--easm-ui-on-ink-brand) 28%, var(--easm-ui-ink-panel)); }
+}
+/* matchTriggerWidth: the menu shares its trigger's exact width and edges */
+.easm-ui-dropdown-menu[data-match-width='true'] { width: var(--radix-dropdown-menu-trigger-width); min-width: 0; max-width: none; }
+.easm-ui-popover[data-match-width='true'] { width: var(--radix-popover-trigger-width); min-width: 0; }
+/* Never narrower than the control that opened it: a menu or popover from a wide trigger spans
+   at least that trigger, so the shared edge always lines up. Icon triggers keep the usual size. */
+.easm-ui-dropdown-menu:not([data-match-width='true']) { min-width: max(196px, var(--radix-dropdown-menu-trigger-width, 0px)); }
+.easm-ui-popover:not([data-match-width='true']) { min-width: min(var(--radix-popover-trigger-width, 0px), calc(100vw - 24px)); }
+
+/* Surface context: the colour an overlay opened from inside an element sits on (OverlaySurface 'auto' reads it).
+   Each container declares it once; the nearest declaration wins, and a data-easm-surface pin wins on its element. */
+.easm-ui-overlay-panel, .easm-ui-popover, .easm-ui-dropdown-menu { --easm-ui-surface-context: card; }
+.easm-ui-popover[data-surface='card'], .easm-ui-dropdown-menu[data-surface='card'],
+.easm-ui-popover[data-surface='ink'], .easm-ui-dropdown-menu[data-surface='ink'] { --easm-ui-surface-context: page; }
+[data-easm-surface][data-easm-surface='page'] { --easm-ui-surface-context: page; }
+[data-easm-surface][data-easm-surface='card'] { --easm-ui-surface-context: card; }
+[data-easm-surface][data-easm-surface='ink'] { --easm-ui-surface-context: ink; }
+
+/* A menu whose items carry a line of description (a dashboard switcher): roomier items, the icon on a tile, the
+   label over its description, the current one tinted with a check; a quiet heading and dividers where asked. */
+.easm-ui-menu-heading { margin: 0; padding: 10px 10px 6px; color: var(--easm-ui-text-secondary); font-size: 11px; font-weight: 600; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; }
+.easm-ui-menu-separator { height: 1px; margin: 6px 8px; background: var(--easm-ui-border-subtle); }
+.easm-ui-dropdown-menu[data-rich] { padding: 6px; }
+.easm-ui-dropdown-menu[data-rich] .easm-ui-menu-item { gap: 12px; min-height: 56px; padding: 8px 10px; border-radius: var(--easm-ui-radius-control); }
+.easm-ui-dropdown-menu[data-rich] .easm-ui-menu-item + .easm-ui-menu-item { margin-top: 2px; }
+.easm-ui-menu-tile { display: grid; flex: none; place-items: center; width: 36px; height: 36px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); color: var(--easm-ui-text); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-menu-copy { display: flex; flex: 1 1 auto; flex-direction: column; gap: 1px; min-width: 0; }
+.easm-ui-menu-label { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-menu-copy > small { color: var(--easm-ui-text-secondary); font-size: 12px; font-weight: 400; line-height: 16px; overflow-wrap: break-word; }
+.easm-ui-menu-item[data-selected] { background: var(--easm-ui-primary-surface); }
+.easm-ui-menu-item[data-selected] .easm-ui-menu-tile { background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); --easm-icon-background: var(--easm-ui-primary-fill); --easm-icon-contrast: var(--easm-ui-primary-fill); }
+.easm-ui-menu-item[data-selected][data-highlighted] { background: color-mix(in srgb, var(--easm-ui-primary-surface) 60%, var(--easm-ui-primary-border)); }
+.easm-ui-menu-check { flex: none; margin-inline-start: auto; color: var(--easm-ui-primary); }
+
+/* The shade behind an open popover or a large menu: lighter than a dialog's backdrop, enough to set the panel
+   apart from the page it floats over (2026-10-15). It sits just under the panel's own layer. */
+.easm-ui-overlay-scrim { position: fixed; inset: 0; --easm-ui-layer-offset: 0; z-index: calc(var(--easm-ui-z-popover, 1100) + var(--easm-ui-layer-offset) - 1); background: color-mix(in srgb, var(--easm-ui-scrim) 55%, transparent); animation: easm-ui-backdrop-enter var(--easm-ui-motion-medium) var(--easm-ui-ease); }
+@media (prefers-reduced-motion: reduce) { .easm-ui-overlay-scrim { animation: none; } }
+[data-easm-motion='off'] .easm-ui-overlay-scrim { animation: none; }
+@media (forced-colors: active) { .easm-ui-overlay-scrim { background: transparent; } }

@@ -1,0 +1,71 @@
+{
+  "name": "@easm-ui/brand",
+  "version": "1.4.0",
+  "description": "EASM brand kit: logo v6 (lockups for EASM, EASM One and every product), brand data, and the app motion kit (the animated icon in twelve states, the voice waveform and the three-dot indicators).",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easm-ui/design-system.git",
+    "directory": "packages/brand"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "svg",
+    "png",
+    "tokens",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./engines": {
+      "types": "./dist/motion/engines.d.ts",
+      "import": "./dist/motion/engines.js"
+    },
+    "./svg/*": "./svg/*",
+    "./png/*": "./png/*",
+    "./tokens/*": "./tokens/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../scripts/esm-extensions.mjs dist",
+    "artwork": "node scripts/artwork.mjs",
+    "artwork:check": "node scripts/artwork.mjs --check",
+    "motion-tokens": "node scripts/motion-tokens.mjs",
+    "motion-tokens:check": "node scripts/motion-tokens.mjs --check",
+    "scope-svg": "node scripts/scope-svg.mjs",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "node scripts/artwork.mjs --check && node scripts/motion-tokens.mjs --check && node scripts/scope-svg.mjs --check && node --test test/brand.test.mjs test/particle-field.test.mjs test/mascot.test.mjs",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typescript": "~5.9.3"
+  },
+  "homepage": "https://github.com/easm-ui/design-system/tree/main/packages/brand#readme",
+  "bugs": {
+    "url": "https://github.com/easm-ui/design-system/issues"
+  }
+}

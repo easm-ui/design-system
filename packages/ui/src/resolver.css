@@ -1,0 +1,65 @@
+/* ResolverResult, GoLiveGate and ToolCallRow (resolver.tsx). Columns and rows are told apart by fill; an outcome is a
+   glyph dot with its word; the way past failing checks is a plain secondary button, never a loud one. */
+
+/* ------------------------------------------------------------------ ResolverResult */
+.easm-ui-resolver { container-type: inline-size; display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-resolver-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+@container (max-width: 659px) { .easm-ui-resolver-columns { grid-template-columns: minmax(0, 1fr); } }
+.easm-ui-resolver-column { display: grid; align-content: start; gap: 8px; min-width: 0; padding: 12px; border-radius: var(--easm-ui-radius-card); background: color-mix(in srgb, var(--easm-tone-tint) 55%, var(--easm-ui-surface)); }
+.easm-ui-resolver h4 { display: flex; align-items: center; gap: 6px; margin: 0; font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 20px; }
+.easm-ui-resolver-column h4 > .easm-icon { color: var(--easm-tone-ink); --easm-icon-fill: none; }
+.easm-ui-resolver h4 > span { margin-inline-start: auto; min-width: 22px; padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-resolver ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-resolver-column li { display: grid; gap: 2px; padding: 8px 10px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-resolver-tool, .easm-ui-resolver-rule { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: var(--easm-ui-text-sm); font-weight: 550; line-height: 20px; overflow-wrap: anywhere; }
+.easm-ui-resolver-tool > .easm-icon, .easm-ui-resolver-rule > .easm-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-resolver-reason { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-resolver-empty { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); }
+.easm-ui-resolver-rules { display: grid; gap: 8px; padding: 12px; border-radius: var(--easm-ui-radius-card); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+.easm-ui-resolver-rules li { display: grid; gap: 4px; padding: 6px 0; }
+.easm-ui-resolver-builtin { margin-inline-start: 4px; padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 500; }
+.easm-ui-resolver-wording > summary { width: fit-content; color: var(--easm-ui-primary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 18px; cursor: pointer; }
+.easm-ui-resolver-wording > summary:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: 4px; }
+.easm-ui-resolver-wording > p { margin: 6px 0 0; padding: 8px 10px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); font-size: var(--easm-ui-text-sm); line-height: 20px; white-space: pre-wrap; }
+
+/* ------------------------------------------------------------------ GoLiveGate */
+.easm-ui-golive { display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-golive-head { display: flex; align-items: flex-start; gap: 12px; }
+.easm-ui-golive-icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); }
+.easm-ui-golive[data-ready] .easm-ui-golive-icon { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary-fill); }
+.easm-ui-golive-head h3 { margin: 0; font-size: var(--easm-ui-text-md); font-weight: 600; line-height: 22px; overflow-wrap: anywhere; }
+.easm-ui-golive-head p { margin: 2px 0 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-golive-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.easm-ui-golive-anyway { display: grid; gap: 10px; padding: 12px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-warning-surface); }
+
+/* ------------------------------------------------------------------ ToolCallRow */
+.easm-ui-tool-call { container-type: inline-size; min-width: 0; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-tool-call[data-open] { background: var(--easm-ui-track); }
+.easm-ui-tool-call-row { display: grid; grid-template-columns: 28px minmax(0, 1.6fr) minmax(140px, 1fr) 76px 48px 158px; align-items: center; gap: 6px 14px; padding: 8px 10px; }
+.easm-ui-tool-call-row > .easm-ui-status-chip[data-variant='dot'] { width: 28px; height: 28px; }
+.easm-ui-tool-call-name { display: grid; min-width: 0; }
+.easm-ui-tool-call-name > span:first-child { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere; }
+.easm-ui-tool-call-name > span:first-child > .easm-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-tool-call-who { display: flex; align-items: center; gap: 6px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 18px; }
+.easm-ui-tool-call-time { display: flex; align-items: center; gap: 8px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.easm-ui-tool-call-bar { flex: 1 1 auto; height: 6px; border-radius: 3px; background: var(--easm-ui-track-pressed); overflow: hidden; }
+.easm-ui-tool-call-bar > i { display: block; height: 100%; border-radius: 3px; background: var(--easm-ui-chart-blue); }
+.easm-ui-tool-call-time[data-slow] .easm-ui-tool-call-bar > i { background: var(--easm-ui-chart-amber); }
+.easm-ui-tool-call-status, .easm-ui-tool-call-at { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.easm-ui-tool-call-status { font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+.easm-ui-tool-call-why { justify-self: end; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0 10px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface); color: var(--easm-ui-text); font: 500 var(--easm-ui-text-xs)/16px var(--easm-ui-font); cursor: pointer; white-space: nowrap; }
+.easm-ui-tool-call-why:hover { background: var(--easm-ui-surface-hover); }
+.easm-ui-tool-call-why:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-tool-call-why > .easm-icon { transition: rotate var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-tool-call-why[aria-expanded='true'] > .easm-icon { rotate: 180deg; }
+.easm-ui-tool-call-detail { padding: 0 12px 12px 52px; }
+.easm-ui-tool-call-detail p { margin: 0; padding: 8px 10px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+@container (max-width: 639px) {
+  .easm-ui-tool-call-row { grid-template-columns: 28px minmax(0, 1fr) auto; }
+  .easm-ui-tool-call-at { grid-column: 3; grid-row: 1; }
+  .easm-ui-tool-call-time { grid-column: 2; grid-row: 2; }
+  .easm-ui-tool-call-status { grid-column: 3; grid-row: 2; }
+  .easm-ui-tool-call-why { grid-column: 2 / -1; grid-row: 3; justify-self: start; }
+  .easm-ui-tool-call-detail { padding-inline-start: 12px; }
+}
+@media (forced-colors: active) { .easm-ui-resolver-column, .easm-ui-tool-call, .easm-ui-golive-anyway { border: 1px solid CanvasText; } }

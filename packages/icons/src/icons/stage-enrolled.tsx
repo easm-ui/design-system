@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const StageEnrolledIcon = /* @__PURE__ */ createIcon({"name":"stage-enrolled","body":[{"tag":"path","attrs":{"d":"M5.2 18.8 18.8 5.2"}},{"tag":"circle","attrs":{"cx":5.2,"cy":18.8,"r":1.7,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":8.6,"cy":15.4,"r":1.7,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":12,"cy":12,"r":1.7,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":15.4,"cy":8.6,"r":1.7,"fill":"ink","stroke":"none"}},{"tag":"g","attrs":{},"children":[{"tag":"circle","attrs":{"cx":18.8,"cy":5.2,"r":3.2,"fill":"surface"}},{"tag":"circle","attrs":{"cx":18.8,"cy":5.2,"r":1.3,"fill":"ink","stroke":"none"}}]}]});

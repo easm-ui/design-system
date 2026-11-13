@@ -1,0 +1,9 @@
+.easm-ui-inline-validation { display: flex; align-items: flex-start; gap: 8px; min-width: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; color: var(--easm-ui-danger); }
+.easm-ui-inline-validation > .easm-ui-icon { flex: none; margin-top: 2px; }
+.easm-ui-inline-validation > span { min-width: 0; overflow-wrap: break-word; }
+.easm-ui-inline-validation[data-tone='success'] { color: var(--easm-ui-success); }
+.easm-ui-inline-validation[data-tone='info'] { color: var(--easm-ui-primary); }
+.easm-ui-inline-validation[data-appearance='surface'] { padding: 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-danger-surface); }
+.easm-ui-inline-validation[data-appearance='surface'][data-tone='success'] { background: var(--easm-ui-success-surface); }
+.easm-ui-inline-validation[data-appearance='surface'][data-tone='info'] { background: var(--easm-ui-primary-surface); }
+@media (forced-colors: active) { .easm-ui-inline-validation[data-appearance='surface'] { border: 1px solid CanvasText; background: Canvas; color: CanvasText; } }

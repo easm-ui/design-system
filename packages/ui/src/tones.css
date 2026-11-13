@@ -1,0 +1,38 @@
+/* Accent tones for small places. Any element carrying data-easm-tone gets --easm-tone (the mark), --easm-tone-tint
+   and --easm-tone-ink from the palette; avatars, tags and chips read them: colour for people and categories only, never for chrome. Contrast is checked in
+   tokens/contrast.mjs: the mark at 3:1 on card and page, the ink at 4.5:1 on its tint and on white. */
+[data-easm-tone='blue'] { --easm-tone: var(--easm-ui-chart-blue); --easm-tone-tint: var(--easm-ui-chart-blue-tint); --easm-tone-ink: var(--easm-ui-chart-blue-ink); }
+[data-easm-tone='violet'] { --easm-tone: var(--easm-ui-chart-violet); --easm-tone-tint: var(--easm-ui-chart-violet-tint); --easm-tone-ink: var(--easm-ui-chart-violet-ink); }
+[data-easm-tone='teal'] { --easm-tone: var(--easm-ui-chart-teal); --easm-tone-tint: var(--easm-ui-chart-teal-tint); --easm-tone-ink: var(--easm-ui-chart-teal-ink); }
+[data-easm-tone='green'] { --easm-tone: var(--easm-ui-chart-green); --easm-tone-tint: var(--easm-ui-chart-green-tint); --easm-tone-ink: var(--easm-ui-chart-green-ink); }
+[data-easm-tone='amber'] { --easm-tone: var(--easm-ui-chart-amber); --easm-tone-tint: var(--easm-ui-chart-amber-tint); --easm-tone-ink: var(--easm-ui-chart-amber-ink); }
+[data-easm-tone='coral'] { --easm-tone: var(--easm-ui-chart-coral); --easm-tone-tint: var(--easm-ui-chart-coral-tint); --easm-tone-ink: var(--easm-ui-chart-coral-ink); }
+[data-easm-tone='sky'] { --easm-tone: var(--easm-ui-chart-sky); --easm-tone-tint: var(--easm-ui-chart-sky-tint); --easm-tone-ink: var(--easm-ui-chart-sky-ink); }
+[data-easm-tone='honey'] { --easm-tone: var(--easm-ui-chart-honey); --easm-tone-tint: var(--easm-ui-chart-honey-tint); --easm-tone-ink: var(--easm-ui-chart-honey-ink); }
+[data-easm-tone='indigo'] { --easm-tone: var(--easm-ui-chart-indigo); --easm-tone-tint: var(--easm-ui-chart-indigo-tint); --easm-tone-ink: var(--easm-ui-chart-indigo-ink); }
+[data-easm-tone='rose'] { --easm-tone: var(--easm-ui-chart-rose); --easm-tone-tint: var(--easm-ui-chart-rose-tint); --easm-tone-ink: var(--easm-ui-chart-rose-ink); }
+[data-easm-tone='orange'] { --easm-tone: var(--easm-ui-chart-orange); --easm-tone-tint: var(--easm-ui-chart-orange-tint); --easm-tone-ink: var(--easm-ui-chart-orange-ink); }
+[data-easm-tone='lime'] { --easm-tone: var(--easm-ui-chart-lime); --easm-tone-tint: var(--easm-ui-chart-lime-tint); --easm-tone-ink: var(--easm-ui-chart-lime-ink); }
+
+/* Avatar: initials in the tone's ink on its tint. A photo covers both. */
+.easm-ui-avatar[data-easm-tone] { background: var(--easm-tone-tint); color: var(--easm-tone-ink); }
+/* Tag: a category reads by its colour as well as its word. */
+.easm-ui-tag[data-easm-tone] { background: var(--easm-tone-tint); color: var(--easm-tone-ink); --easm-icon-background: var(--easm-tone-tint); --easm-icon-contrast: var(--easm-tone-tint); }
+/* Chip: in its tint at rest; selected, filled with its ink (white text on the ink is 4.5:1 or more). */
+.easm-ui-chip[data-easm-tone] { background: var(--easm-tone-tint); color: var(--easm-tone-ink); --easm-icon-background: var(--easm-tone-tint); --easm-icon-contrast: var(--easm-tone-tint); }
+.easm-ui-chip[data-easm-tone][data-selected='true'] { background: var(--easm-tone-ink); color: var(--easm-ui-on-primary-fill); --easm-icon-background: var(--easm-tone-ink); --easm-icon-contrast: var(--easm-tone-ink); }
+.easm-ui-chip[data-easm-tone] :is(.easm-ui-chip-select, .easm-ui-chip-remove):hover:not(:disabled) { background: color-mix(in srgb, currentColor 12%, transparent); }
+@media (forced-colors: active) {
+  .easm-ui-chip[data-easm-tone] { background: ButtonFace; color: ButtonText; }
+  .easm-ui-chip[data-easm-tone][data-selected='true'] { background: Highlight; color: HighlightText; }
+  .easm-ui-avatar[data-easm-tone], .easm-ui-tag[data-easm-tone] { background: Canvas; color: CanvasText; }
+}
+[data-easm-tone='plum'] { --easm-tone: var(--easm-ui-chart-plum); --easm-tone-tint: var(--easm-ui-chart-plum-tint); --easm-tone-ink: var(--easm-ui-chart-plum-ink); }
+
+/* The dashboards' accents (palette.ts productTones): anything carrying data-easm-product gets the same three
+   properties as a tone, so a switcher tile, a home hero or an origin chip can say which dashboard it belongs to. */
+[data-easm-product='support'] { --easm-tone: var(--easm-ui-product-support); --easm-tone-tint: var(--easm-ui-product-support-tint); --easm-tone-ink: var(--easm-ui-product-support-ink); }
+[data-easm-product='knowledge'] { --easm-tone: var(--easm-ui-product-knowledge); --easm-tone-tint: var(--easm-ui-product-knowledge-tint); --easm-tone-ink: var(--easm-ui-product-knowledge-ink); }
+[data-easm-product='marketing'] { --easm-tone: var(--easm-ui-product-marketing); --easm-tone-tint: var(--easm-ui-product-marketing-tint); --easm-tone-ink: var(--easm-ui-product-marketing-ink); }
+[data-easm-product='automation'] { --easm-tone: var(--easm-ui-product-automation); --easm-tone-tint: var(--easm-ui-product-automation-tint); --easm-tone-ink: var(--easm-ui-product-automation-ink); }
+[data-easm-product='forms'] { --easm-tone: var(--easm-ui-product-forms); --easm-tone-tint: var(--easm-ui-product-forms-tint); --easm-tone-ink: var(--easm-ui-product-forms-ink); }

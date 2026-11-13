@@ -1,0 +1,31 @@
+@import './part-motion.css';
+
+/* Legacy preset compatibility. New motions use semantic part groups (part-motion.css). */
+.easm-icon-artwork { transform-box: view-box; transform-origin: 12px 12px; }
+.easm-icon[data-active='true'][data-motion='spin'] .easm-icon-artwork { animation: easm-motion-spin 900ms linear both; }
+.easm-icon[data-active='true'][data-motion='sync'] .easm-icon-artwork { animation: easm-motion-sync 640ms cubic-bezier(.2,0,.2,1) both; }
+.easm-icon[data-active='true'][data-motion='confirm'] .easm-icon-artwork > path:last-child { animation: easm-motion-confirm 280ms cubic-bezier(.2,0,.2,1) both; }
+.easm-icon[data-active='true'][data-motion='send'] .easm-icon-artwork { animation: easm-motion-send 240ms cubic-bezier(.2,0,.2,1) both; }
+.easm-icon[data-active='true'][data-motion='notify'] .easm-icon-artwork { animation: easm-motion-notify 440ms ease-in-out both; }
+.easm-icon[data-active='true'][data-motion='listen'] .easm-icon-artwork > rect { animation: easm-motion-listen 1600ms ease-in-out both; }
+.easm-icon[data-active='true'][data-motion='wave'] .easm-icon-artwork { animation: easm-motion-wave 1200ms ease-in-out both; }
+.easm-icon[data-active='true'][data-motion='settle'] .easm-icon-artwork { animation: easm-motion-settle 220ms cubic-bezier(.2,0,.2,1) both; }
+.easm-icon[data-active='true'][data-repeat='true'][data-motion='spin'] .easm-icon-artwork,
+.easm-icon[data-active='true'][data-repeat='true'][data-motion='listen'] .easm-icon-artwork > rect,
+.easm-icon[data-active='true'][data-repeat='true'][data-motion='wave'] .easm-icon-artwork { animation-iteration-count: infinite; }
+@keyframes easm-motion-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes easm-motion-sync { from { transform: rotate(-90deg); } to { transform: rotate(0); } }
+@keyframes easm-motion-confirm { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+@keyframes easm-motion-send { 0%,100% { transform: translate(0,0); } 45% { transform: translate(.85px,-.85px); } }
+@keyframes easm-motion-notify { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-5deg); } 60% { transform: rotate(4deg); } }
+@keyframes easm-motion-listen { 0%,100% { opacity: 1; } 50% { opacity: .82; } }
+@keyframes easm-motion-wave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(.84); } }
+@keyframes easm-motion-settle { from { transform: scale(.96); opacity: .86; } to { transform: scale(1); opacity: 1; } }
+[data-easm-motion='off'] .easm-icon[data-motion] .easm-icon-artwork,
+[data-easm-motion='off'] .easm-icon[data-motion] .easm-icon-artwork > *,
+.easm-icon[data-state='disabled'] .easm-icon-artwork,
+.easm-icon[data-state='disabled'] .easm-icon-artwork > * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .easm-icon[data-motion] .easm-icon-artwork,
+  .easm-icon[data-motion] .easm-icon-artwork > * { animation: none !important; }
+}

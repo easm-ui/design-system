@@ -1,0 +1,443 @@
+/* Field sizes read the size and icon tokens (--easm-ui-size-*, --easm-ui-icon-size-*), so one token edit resizes
+   every control. */
+.easm-ui-field {
+  --easm-ui-control-height: var(--easm-ui-size-md);
+  --easm-ui-control-icon: var(--easm-ui-icon-size-md);
+  --easm-ui-input-action-target: var(--easm-ui-size-sm);
+  --easm-ui-choice-size: 20px;
+  --easm-ui-radio-inset: 5px;
+  --easm-ui-switch-width: 40px;
+  --easm-ui-switch-height: 24px;
+  --easm-ui-switch-thumb: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  font-size: var(--easm-ui-text-md);
+  color: var(--easm-ui-text);
+}
+.easm-ui-field[data-size='sm'] {
+  --easm-ui-control-height: var(--easm-ui-size-sm);
+  --easm-ui-control-icon: var(--easm-ui-icon-size-sm);
+  --easm-ui-choice-size: 16px;
+  --easm-ui-radio-inset: 4px;
+  --easm-ui-switch-width: 32px;
+  --easm-ui-switch-height: 20px;
+  --easm-ui-switch-thumb: 12px;
+  font-size: var(--easm-ui-text-sm);
+}
+.easm-ui-field[data-size='lg'] {
+  --easm-ui-control-height: var(--easm-ui-size-lg);
+  --easm-ui-control-icon: var(--easm-ui-icon-size-lg);
+  --easm-ui-choice-size: 24px;
+  --easm-ui-radio-inset: 6px;
+  --easm-ui-switch-width: 48px;
+  --easm-ui-switch-height: 28px;
+  --easm-ui-switch-thumb: 20px;
+  font-size: var(--easm-ui-text-lg);
+}
+.easm-ui-field-label { display: block; font-size: inherit; font-weight: 600; line-height: 1.5; overflow-wrap: break-word; }
+/* The control and its messages. Not a box of its own unless a row of fields aligns (below): elsewhere a field lays
+   out as its label, its control and its messages, as it always has. */
+.easm-ui-field-body { display: contents; }
+/* Labelled fields side by side (a grid that holds nothing but them, such as three NumberFields in a row): each field
+   spans two rows of the grid, the labels sharing the first and the controls the second. A label that wraps to a
+   second line ("Subsequent reply · minutes") deepens the label row for the whole row instead of pushing its own
+   control below its neighbours', and each label sits on its control. Outside a grid the rule is an ordinary stack. */
+@supports (grid-template-rows: subgrid) {
+  :where(:not(:has(> :not(.easm-ui-field[data-labelled])))) > .easm-ui-field:where([data-labelled]:not(.easm-ui-picker-field-inline)) {
+    display: grid; grid-row: span 2; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); row-gap: 8px; align-content: start;
+  }
+  :where(:not(:has(> :not(.easm-ui-field[data-labelled])))) > .easm-ui-field:where([data-labelled]:not(.easm-ui-picker-field-inline)) > .easm-ui-field-label { grid-row: 1; align-self: end; }
+  :where(:not(:has(> :not(.easm-ui-field[data-labelled])))) > .easm-ui-field:where([data-labelled]:not(.easm-ui-picker-field-inline)) > .easm-ui-field-body {
+    grid-row: 2; align-self: start; display: flex; flex-direction: column; gap: 8px; min-width: 0;
+  }
+}
+.easm-ui-required { color: var(--easm-ui-danger); }
+.easm-ui-field-description, .easm-ui-field-message, .easm-ui-file-requirements {
+  margin: 0;
+  color: var(--easm-ui-text-secondary);
+  font-size: var(--easm-ui-text-sm);
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+.easm-ui-field-message { display: flex; align-items: flex-start; gap: 8px; margin-block-start: -4px; }
+.easm-ui-field-message > .easm-ui-icon { flex: 0 0 16px; margin-top: 2px; }
+/* The message keeps its own inline flow (text with a link or emphasis) beside the icon. */
+.easm-ui-field-message-text { min-width: 0; }
+.easm-ui-field-message[data-status='error'] { color: var(--easm-ui-danger); }
+.easm-ui-field-message[data-status='success'] { color: var(--easm-ui-success); }
+.easm-ui-input-wrap { position: relative; min-width: 0; }
+.easm-ui-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: var(--easm-ui-control-height);
+  margin: 0;
+  padding: 0 12px;
+  border: 1px solid var(--easm-ui-border);
+  border-radius: var(--easm-ui-radius-control);
+  background: var(--easm-ui-surface);
+  color: var(--easm-ui-text);
+  color-scheme: light;
+  font: inherit;
+  line-height: 1.5;
+  transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-input::placeholder { color: var(--easm-ui-placeholder); opacity: 1; }
+.easm-ui-input:not(:disabled):not([readonly]):not([data-readonly]):hover { border-color: var(--easm-ui-border-hover); }
+.easm-ui-input:focus-visible { border-color: var(--easm-ui-primary-fill); }
+/* A single shadow follows the control's rounded geometry. Combining the global
+   outline with this same ring paints conflicting corner arcs in native controls.
+   Forced colours draw the system outline instead (below). */
+.easm-ui.easm-ui-field .easm-ui-input:focus-visible { outline: none; box-shadow: var(--easm-ui-field-focus-ring); border-color: var(--easm-ui-primary-fill); }
+.easm-ui-input[readonly], .easm-ui-input[data-readonly] { background: var(--easm-ui-background); }
+.easm-ui-input:disabled {
+  background: var(--easm-ui-surface-disabled);
+  border-color: var(--easm-ui-border-subtle);
+  color: var(--easm-ui-text-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+  -webkit-text-fill-color: var(--easm-ui-text-disabled);
+}
+.easm-ui-input:disabled::placeholder { color: var(--easm-ui-text-disabled); }
+.easm-ui-field[data-status='error'] .easm-ui-input:not(:disabled) { border-color: var(--easm-ui-danger); }
+.easm-ui-field[data-status='success'] .easm-ui-input:not(:disabled) { border-color: var(--easm-ui-success); }
+/* An open selection list is shown as focus on its trigger, after the status borders so it wins over them. */
+.easm-ui.easm-ui-field .easm-ui-input[data-state='open'] { border-color: var(--easm-ui-primary-fill); box-shadow: var(--easm-ui-field-focus-ring); }
+.easm-ui.easm-ui-field[data-status='error'] .easm-ui-input:focus-visible { border-color: var(--easm-ui-danger); box-shadow: var(--easm-ui-field-error-focus-ring); }
+.easm-ui-input::-webkit-date-and-time-value { min-width: 0; text-align: start; }
+.easm-ui-input-wrap[data-leading] > .easm-ui-input { padding-inline-start: calc(var(--easm-ui-control-icon) + 24px); }
+.easm-ui-input-wrap[data-trailing] > .easm-ui-input { padding-inline-end: calc(var(--easm-ui-control-icon) + 24px); }
+.easm-ui-input-wrap[data-trailing] > .easm-ui-search-input { padding-inline-end: max(calc(var(--easm-ui-control-icon) + 24px), calc(var(--easm-ui-input-action-target) + 16px)); }
+.easm-ui-input-wrap[data-clearable] > .easm-ui-input { padding-inline-end: calc(var(--easm-ui-control-icon) + var(--easm-ui-input-action-target) + 28px); }
+/* Room for one or two trailing controls: each target, the 4 px gaps and the 8 px clear space before the text. */
+.easm-ui-input-wrap[data-count='1'] > .easm-ui-input { padding-inline-end: calc(var(--easm-ui-input-action-target) + 12px); }
+.easm-ui-input-wrap[data-count='2'] > .easm-ui-input { padding-inline-end: calc(var(--easm-ui-input-action-target) * 2 + 16px); }
+.easm-ui-input-controls { position: absolute; inset-inline-end: 4px; inset-block-start: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 4px; }
+.easm-ui-input-control-slot { display: flex; flex: none; width: var(--easm-ui-input-action-target); height: var(--easm-ui-input-action-target); }
+.easm-ui-input-control-slot > .easm-ui-button { width: 100%; height: 100%; min-height: 0; padding: 0; }
+.easm-ui-input-icon {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--easm-ui-control-icon);
+  height: var(--easm-ui-control-icon);
+  color: var(--easm-ui-text-secondary);
+  pointer-events: none;
+}
+.easm-ui-input-icon[data-position='leading'] { inset-inline-start: 12px; }
+.easm-ui-input-icon[data-position='trailing'] { inset-inline-end: 12px; }
+.easm-ui-input-wrap:has(> .easm-ui-input:disabled) > .easm-ui-input-icon { color: var(--easm-ui-text-disabled); }
+.easm-ui-input-action, .easm-ui-file-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--easm-ui-input-action-target);
+  height: var(--easm-ui-input-action-target);
+  padding: 2px;
+  border: 0;
+  border-radius: var(--easm-ui-radius-inner);
+  background: transparent;
+  background-clip: content-box;
+  color: var(--easm-ui-text-secondary);
+  cursor: pointer;
+  transition: color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-input-action { position: absolute; inset-inline-end: 8px; inset-block-start: 50%; transform: translateY(-50%); }
+.easm-ui-input-action[data-offset] { inset-inline-end: calc(var(--easm-ui-control-icon) + 20px); }
+.easm-ui-input-action:hover, .easm-ui-file-remove:not(:disabled):hover { color: var(--easm-ui-primary); background: var(--easm-ui-primary-surface); }
+.easm-ui-input-action:active, .easm-ui-file-remove:not(:disabled):active { background: var(--easm-ui-primary-border); }
+.easm-ui-file-remove:disabled { color: var(--easm-ui-text-disabled); cursor: not-allowed; }
+.easm-ui-search-input::-webkit-search-cancel-button, .easm-ui-search-input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+.easm-ui-textarea { height: auto; min-height: calc(var(--easm-ui-control-height) * 2); padding: 10px 12px; resize: vertical; }
+.easm-ui-select { appearance: none; cursor: pointer; }
+.easm-ui-select[data-readonly] { cursor: default; }
+.easm-ui-dropdown-select-root { min-width: 0; }
+.easm-ui-dropdown-select-trigger { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: start; cursor: pointer; }
+/* The value truncates on one line whatever comes before it (an icon, the inline label). */
+.easm-ui-dropdown-select-value { display: block; flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.easm-ui-dropdown-select-trigger[data-placeholder]:not([data-unavailable]) { color: var(--easm-ui-placeholder); }
+.easm-ui-dropdown-select-trigger[data-readonly] { cursor: default; }
+.easm-ui-dropdown-select-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-dropdown-select-chevron { display: flex; flex: none; align-items: center; justify-content: center; color: var(--easm-ui-text-secondary); }
+.easm-ui-dropdown-select-chevron > .easm-ui-icon { flex: none; transition: transform var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-dropdown-select-trigger[data-state='open'] > .easm-ui-dropdown-select-chevron > .easm-ui-icon { transform: rotate(180deg); }
+.easm-ui-dropdown-select-trigger:disabled, .easm-ui-dropdown-select-trigger:disabled > .easm-ui-dropdown-select-chevron { color: var(--easm-ui-text-disabled); }
+/* Inline select: a compact filter pill that carries its own label ("Dept · All"). */
+.easm-ui-field-inline { width: auto; gap: 0; }
+.easm-ui-field-inline .easm-ui-dropdown-select-trigger.easm-ui-input { justify-content: flex-start; gap: 6px; width: 100%; padding-inline: 10px 8px; border-color: transparent; background: var(--easm-ui-track); }
+.easm-ui-field-inline .easm-ui-dropdown-select-trigger.easm-ui-input:hover:not(:disabled) { background: var(--easm-ui-track-hover); border-color: transparent; }
+.easm-ui-field-inline .easm-ui-dropdown-select-trigger[data-state='open'] { background: var(--easm-ui-track-hover); }
+/* Short of room, the label ("Status") gives way before the value ("All"): the value is what the pill is read for,
+   and a short value is never cut at all. */
+.easm-ui-dropdown-select-inline-label { flex: 0 100 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--easm-ui-text-secondary); font-weight: 500; white-space: nowrap; }
+.easm-ui-dropdown-select-inline-label::after { content: '·'; margin-inline-start: 6px; }
+.easm-ui-field-inline .easm-ui-dropdown-select-value { flex: 0 1 auto; min-width: min(max-content, 6ch); font-weight: 600; }
+/* Stretched to a full row, the label and value stay together and the chevron goes to the end. */
+.easm-ui-field-inline .easm-ui-dropdown-select-chevron { margin-inline-start: auto; }
+.easm-ui-dropdown-select-popup[data-appearance='inline'] { width: max-content; min-width: max(var(--radix-select-trigger-width), 180px); max-width: min(320px, calc(100vw - 24px)); }
+.easm-ui-dropdown-select-popup {
+  --easm-ui-control-height: 34px;
+  z-index: calc(var(--easm-ui-z-popover) + var(--easm-ui-layer-offset, 0));
+  display: flex;
+  flex-direction: column;
+  /* As wide as its longest option, never narrower than the field, up to 360px (or the field, if wider): an
+     option one word long ("provider.credential.create") broke between letters in a popup the field's width
+     (Master Portal → Audit log, 2026-10-14). */
+  width: max-content;
+  min-width: var(--radix-select-trigger-width);
+  max-width: min(max(var(--radix-select-trigger-width), 360px), calc(100vw - 24px));
+  max-height: min(320px, var(--radix-select-content-available-height));
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--easm-ui-radius-float);
+  background: var(--easm-ui-float);
+  color: var(--easm-ui-text);
+  font-size: var(--easm-ui-text-md);
+  box-shadow: none;
+  outline: none;
+}
+.easm-ui-dropdown-select-popup[data-size='sm'] { --easm-ui-control-height: var(--easm-ui-size-sm); font-size: var(--easm-ui-text-sm); }
+.easm-ui-dropdown-select-popup[data-size='lg'] { --easm-ui-control-height: var(--easm-ui-size-lg); font-size: var(--easm-ui-text-lg); }
+.easm-ui-dropdown-select-viewport { flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; }
+/* While more options lie past an edge, the list fades into its scroll arrow instead of cutting an option in half. */
+.easm-ui-dropdown-select-viewport:has(+ .easm-ui-dropdown-select-scroll) { mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent); }
+.easm-ui-dropdown-select-scroll + .easm-ui-dropdown-select-viewport { mask-image: linear-gradient(to top, #000 calc(100% - 28px), transparent); }
+.easm-ui-dropdown-select-scroll + .easm-ui-dropdown-select-viewport:has(+ .easm-ui-dropdown-select-scroll) { mask-image: linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
+.easm-ui-dropdown-select-option { display: flex; align-items: center; gap: 10px; min-height: var(--easm-ui-control-height); padding: 6px 10px; border-radius: var(--easm-ui-radius-mark); line-height: 20px; outline: none; cursor: pointer; overflow-wrap: break-word; font-weight: 500; }
+.easm-ui-dropdown-select-option + .easm-ui-dropdown-select-option { margin-top: 2px; }
+.easm-ui-dropdown-select-popup[data-size='sm'] .easm-ui-dropdown-select-option { padding-block: 4px; }
+.easm-ui-dropdown-select-option > span:first-child { flex: 1 1 auto; min-width: 0; }
+.easm-ui-dropdown-select-check { display: flex; flex: 0 0 16px; width: 16px; align-items: center; justify-content: center; color: var(--easm-ui-primary); }
+.easm-ui-dropdown-select-check .easm-ui-icon { flex: none; }
+.easm-ui-dropdown-select-scroll { display: flex; flex: none; align-items: center; justify-content: center; min-height: 24px; color: var(--easm-ui-text-secondary); }
+.easm-ui-dropdown-select-empty { margin: 0; padding: 12px 10px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 1.5; }
+/* The browser owns the date/time picker. Only engines with this native indicator
+   selector receive the EASM overlay; the transparent native hit target remains. */
+.easm-ui-picker-icon { display: none; }
+@supports selector(input::-webkit-calendar-picker-indicator) {
+  .easm-ui-input-wrap[data-picker] > .easm-ui-input { padding-inline-end: 12px; }
+  .easm-ui-input-wrap[data-picker] .easm-ui-picker-icon { display: flex; }
+  .easm-ui-input-wrap[data-picker] > .easm-ui-input::-webkit-calendar-picker-indicator {
+    width: var(--easm-ui-control-icon);
+    height: var(--easm-ui-control-icon);
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .easm-ui-input-wrap[data-picker] > .easm-ui-input:disabled::-webkit-calendar-picker-indicator,
+  .easm-ui-input-wrap[data-picker] > .easm-ui-input[readonly]::-webkit-calendar-picker-indicator { cursor: default; }
+}
+.easm-ui-combobox-root { min-width: 0; }
+.easm-ui-combobox-chevron > .easm-ui-icon { transition: transform var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-input-wrap[data-expanded] > .easm-ui-combobox-chevron > .easm-ui-icon { transform: rotate(180deg); }
+.easm-ui-combobox-popup {
+  --easm-ui-control-height: 34px;
+  z-index: calc(var(--easm-ui-z-popover) + var(--easm-ui-layer-offset, 0));
+  width: var(--radix-popover-trigger-width);
+  max-width: calc(100vw - 24px);
+  max-height: var(--radix-popover-content-available-height);
+  overflow: hidden;
+  font-size: var(--easm-ui-text-md);
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--easm-ui-radius-float);
+  background: var(--easm-ui-float);
+  box-shadow: none;
+}
+.easm-ui-combobox-popup[data-size='sm'] { --easm-ui-control-height: var(--easm-ui-size-sm); font-size: var(--easm-ui-text-sm); }
+.easm-ui-combobox-popup[data-size='lg'] { --easm-ui-control-height: var(--easm-ui-size-lg); font-size: var(--easm-ui-text-lg); }
+.easm-ui-combobox-list {
+  position: relative;
+  max-height: min(240px, calc(var(--radix-popover-content-available-height, 250px) - 10px));
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+.easm-ui-combobox-list > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: var(--easm-ui-control-height);
+  padding: 6px 10px;
+  border-radius: var(--easm-ui-radius-mark);
+  cursor: pointer;
+  overflow-wrap: break-word;
+  line-height: 20px;
+  font-weight: 500;
+}
+.easm-ui-combobox-list > li > span { min-width: 0; }
+.easm-ui-combobox-popup[data-size='sm'] .easm-ui-combobox-list > li { padding-block: 4px; }
+.easm-ui-combobox-list > li > .easm-ui-icon { flex: 0 0 16px; }
+.easm-ui-combobox-empty { padding: 12px 10px; margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 1.5; }
+/* The status region stays mounted (so "No matching options." is announced) and takes no room while empty. */
+.easm-ui-combobox-empty:empty { padding: 0; }
+/* Listbox rows: the Select and Combobox popups share one set of row states.
+   A hovered, highlighted or keyboard-active row takes the hover fill. Keyboard focus also draws an inset 2 px edge,
+   because the fill alone (1.13:1 on the panel) is not a visible indicator. The selected row is the white pill. */
+.easm-ui-dropdown-select-option[data-highlighted],
+.easm-ui-combobox-list > li:not([aria-disabled='true']):hover,
+.easm-ui-combobox-list > li[data-active] { background: var(--easm-ui-float-hover); color: var(--easm-ui-text); box-shadow: none; }
+.easm-ui-dropdown-select-popup .easm-ui-dropdown-select-option:focus-visible,
+.easm-ui-combobox-list > li[data-active] { outline: 2px solid var(--easm-ui-primary-fill); box-shadow: none; outline-offset: -2px; }
+.easm-ui-dropdown-select-option[data-disabled],
+.easm-ui-combobox-list > li[aria-disabled='true'] { color: var(--easm-ui-text-disabled); cursor: not-allowed; background: transparent; }
+.easm-ui-dropdown-select-option[data-state='checked'],
+.easm-ui-dropdown-select-option[data-state='checked'][data-highlighted],
+.easm-ui-combobox-list > li[aria-selected='true'],
+.easm-ui-combobox-list > li[aria-selected='true']:hover,
+.easm-ui-combobox-list > li[aria-selected='true'][data-active] { background: var(--easm-ui-surface); color: var(--easm-ui-text); font-weight: 600; }
+.easm-ui-dropdown-select-option[data-state='checked'] .easm-ui-icon,
+.easm-ui-combobox-list > li > .easm-ui-icon { color: var(--easm-ui-primary-fill); }
+/* A checkbox, radio or switch field is only as wide as its choice (still the full width of a stacked form, where
+   it stretches): at 100% three switches set side by side ("Bell · Email · Push") each took a whole line. */
+.easm-ui-field.easm-ui-choice-field { width: auto; }
+/* Choices. The row is the containing block for a visually hidden label (hideLabel). */
+.easm-ui-choice { position: relative; display: flex; align-items: center; gap: 10px; min-height: var(--easm-ui-control-height); width: fit-content; max-width: 100%; cursor: pointer; }
+.easm-ui-choice-label { min-width: 0; line-height: 1.5; overflow-wrap: break-word; }
+.easm-ui-choice:has(input:disabled), .easm-ui-choice:has(input[readonly]) { cursor: default; }
+.easm-ui-choice:has(input:disabled) .easm-ui-choice-label { color: var(--easm-ui-text-disabled); }
+.easm-ui-choice-field > .easm-ui-field-description, .easm-ui-choice-field > .easm-ui-field-message { margin-inline-start: calc(var(--easm-ui-choice-size) + 10px); }
+/* The row keeps its full target height; the description tucks up under the label text. */
+.easm-ui-choice-field > .easm-ui-choice + :is(.easm-ui-field-description, .easm-ui-field-message) { margin-top: -10px; }
+.easm-ui-choice-field:has(.easm-ui-switch) > .easm-ui-field-description,
+.easm-ui-choice-field:has(.easm-ui-switch) > .easm-ui-field-message { margin-inline-start: calc(var(--easm-ui-switch-width) + 10px); }
+.easm-ui-checkbox-wrap { position: relative; display: flex; flex: 0 0 var(--easm-ui-choice-size); width: var(--easm-ui-choice-size); height: var(--easm-ui-choice-size); }
+.easm-ui-checkbox, .easm-ui-radio {
+  appearance: none;
+  flex: 0 0 var(--easm-ui-choice-size);
+  width: var(--easm-ui-choice-size);
+  height: var(--easm-ui-choice-size);
+  margin: 0;
+  border: 1px solid var(--easm-ui-border);
+  background: var(--easm-ui-surface);
+  cursor: inherit;
+  transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-checkbox { border-radius: var(--easm-ui-radius-mark); }
+.easm-ui-radio { border-radius: 50%; }
+.easm-ui-checkbox:not(:disabled):not([readonly]):hover, .easm-ui-radio:not(:disabled):not([readonly]):hover { border-color: var(--easm-ui-primary); }
+.easm-ui-checkbox:checked, .easm-ui-checkbox:indeterminate, .easm-ui-checkbox[data-indeterminate] { background: var(--easm-ui-primary-fill); border-color: var(--easm-ui-primary-fill); }
+.easm-ui-checkbox-mark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--easm-ui-surface); opacity: 0; pointer-events: none; }
+.easm-ui-checkbox-mark > .easm-ui-icon { width: calc(var(--easm-ui-choice-size) - 4px); height: calc(var(--easm-ui-choice-size) - 4px); }
+.easm-ui-checkbox:checked + .easm-ui-checkbox-mark, .easm-ui-checkbox:indeterminate + .easm-ui-checkbox-mark, .easm-ui-checkbox[data-indeterminate] + .easm-ui-checkbox-mark { opacity: 1; }
+/* Mixed state uses only the existing menu glyph's middle stroke: the conventional
+   dash state marker, with the approved geometry and round stroke ends retained. */
+.easm-ui-checkbox[data-indeterminate] + .easm-ui-checkbox-mark > .easm-ui-icon { clip-path: inset(40% 0); }
+.easm-ui-radio:checked { background: var(--easm-ui-primary-fill); border-color: var(--easm-ui-primary-fill); box-shadow: inset 0 0 0 var(--easm-ui-radio-inset) var(--easm-ui-surface); }
+/* Keyboard focus on a choice is the system ring: one solid 2 px primary-fill edge and the soft halo. A checked
+   control's border is already primary-fill, so a halo alone would be the only change. */
+.easm-ui .easm-ui-checkbox:focus-visible, .easm-ui .easm-ui-radio:focus-visible, .easm-ui .easm-ui-switch:focus-visible { border-color: var(--easm-ui-primary-fill); box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui .easm-ui-radio:checked:focus-visible { box-shadow: inset 0 0 0 var(--easm-ui-radio-inset) var(--easm-ui-surface), var(--easm-ui-focus-ring); }
+.easm-ui-checkbox:disabled, .easm-ui-radio:disabled { background: var(--easm-ui-surface-disabled); border-color: var(--easm-ui-border-subtle); }
+.easm-ui-checkbox:disabled:checked, .easm-ui-checkbox:disabled:indeterminate, .easm-ui-checkbox:disabled[data-indeterminate], .easm-ui-radio:disabled:checked { background: var(--easm-ui-text-disabled); }
+.easm-ui-field[data-status='error'] .easm-ui-checkbox:not(:disabled), .easm-ui-field[data-status='error'] .easm-ui-radio:not(:disabled) { border-color: var(--easm-ui-danger); }
+/* The off track carries the 1 px functional border (3:1 on white and on the page); the on track is the fill. */
+.easm-ui-switch {
+  position: relative;
+  appearance: none;
+  flex: 0 0 var(--easm-ui-switch-width);
+  width: var(--easm-ui-switch-width);
+  height: var(--easm-ui-switch-height);
+  margin: 0;
+  border: 1px solid var(--easm-ui-border);
+  border-radius: var(--easm-ui-radius-pill);
+  background: var(--easm-ui-track-pressed);
+  cursor: inherit;
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), border-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-switch::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 3px;
+  width: var(--easm-ui-switch-thumb);
+  height: var(--easm-ui-switch-thumb);
+  border-radius: 50%;
+  background: var(--easm-ui-text-secondary);
+  transition: transform var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-switch:checked { background: var(--easm-ui-primary-fill); border-color: transparent; }
+.easm-ui-switch:checked::before { transform: translateX(calc(var(--easm-ui-switch-width) - var(--easm-ui-switch-thumb) - 8px)); background: var(--easm-ui-surface); }
+.easm-ui-switch:dir(rtl):checked::before { transform: translateX(calc(-1 * (var(--easm-ui-switch-width) - var(--easm-ui-switch-thumb) - 8px))); }
+.easm-ui-switch:not(:disabled):not([readonly]):hover { border-color: var(--easm-ui-border-hover); background: var(--easm-ui-switch-hover); }
+.easm-ui-switch:checked:not(:disabled):not([readonly]):hover { background: var(--easm-ui-primary-fill-hover); border-color: transparent; }
+.easm-ui-switch:disabled { background: var(--easm-ui-surface-disabled); border-color: var(--easm-ui-border-subtle); }
+.easm-ui-switch:disabled::before { background: var(--easm-ui-text-disabled); }
+.easm-ui-switch:disabled:checked { background: var(--easm-ui-surface-pressed); }
+.easm-ui-field[data-status='error'] .easm-ui-switch:not(:disabled) { border-color: var(--easm-ui-danger); }
+.easm-ui-upload-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 136px;
+  padding: 24px 16px;
+  border: 1.5px solid transparent;
+  border-radius: var(--easm-ui-radius-card);
+  background: var(--easm-ui-track);
+  text-align: center;
+  transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-upload-zone > strong { font-weight: 600; line-height: 1.5; overflow-wrap: break-word; }
+.easm-ui-upload-zone > span:not(.easm-ui-upload-illustration) { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 1.5; }
+.easm-ui-upload-illustration { display: flex; color: var(--easm-ui-primary); }
+.easm-ui-upload-zone:not([data-disabled]):not([data-readonly]):hover, .easm-ui-upload-zone[data-dragging] { border-color: var(--easm-ui-primary-fill); background: var(--easm-ui-primary-surface); }
+/* The file input fills the zone invisibly, so the zone shows its focus (forced colours: below). */
+.easm-ui-upload-zone:focus-within { border-color: var(--easm-ui-primary-fill); outline: none; box-shadow: var(--easm-ui-field-focus-ring); }
+.easm-ui-upload-zone[data-readonly] { background: var(--easm-ui-background); }
+/* A filled drop zone (the grey track), never a dashed outline. */
+.easm-ui-upload-zone[data-disabled] { background: var(--easm-ui-surface-disabled); color: var(--easm-ui-text-disabled); border-color: var(--easm-ui-border-subtle); }
+.easm-ui-upload-zone[data-disabled] .easm-ui-upload-illustration, .easm-ui-upload-zone[data-disabled] > span { color: var(--easm-ui-text-disabled); }
+.easm-ui-field[data-status='error'] .easm-ui-upload-zone:not([data-disabled]) { border-color: var(--easm-ui-danger); }
+.easm-ui-file-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.easm-ui-file-input:disabled { cursor: not-allowed; }
+.easm-ui-file-input[aria-disabled='true'] { cursor: default; }
+.easm-ui-file-list { display: flex; flex-direction: column; gap: 12px; padding: 0; margin: 4px 0 0; list-style: none; }
+.easm-ui-file-list > li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 12px; border: 1px solid var(--easm-ui-border-subtle); border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); }
+.easm-ui-file-list > li > .easm-ui-icon { flex: 0 0 var(--easm-ui-control-icon); color: var(--easm-ui-text-secondary); }
+.easm-ui-file-list > li > span { flex: 1 1 auto; min-width: 0; }
+.easm-ui-file-list strong { display: block; font-size: var(--easm-ui-text-sm); font-weight: 600; line-height: 1.5; overflow-wrap: break-word; }
+.easm-ui-file-list small { display: block; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 1.5; }
+/* Bullets are set explicitly: a reset such as Tailwind's preflight removes list styles. */
+.easm-ui-file-rejections { margin: 0; padding-inline-start: 20px; list-style: disc outside; color: var(--easm-ui-danger); font-size: var(--easm-ui-text-sm); line-height: 1.5; overflow-wrap: break-word; }
+.easm-ui-file-rejections > li + li { margin-top: 4px; }
+/* Touch: 44 px targets (--easm-ui-size-touch). Trailing-control padding follows the action target above. */
+@media (pointer: coarse) {
+  .easm-ui-field { --easm-ui-input-action-target: var(--easm-ui-size-touch); }
+  .easm-ui-field[data-size='sm'], .easm-ui-field[data-size='md'], .easm-ui-combobox-popup[data-size='sm'], .easm-ui-combobox-popup[data-size='md'] { --easm-ui-control-height: var(--easm-ui-size-touch); }
+  .easm-ui-dropdown-select-popup[data-size='sm'], .easm-ui-dropdown-select-popup[data-size='md'] { --easm-ui-control-height: var(--easm-ui-size-touch); }
+  .easm-ui-dropdown-select-option, .easm-ui-dropdown-select-scroll { min-height: max(var(--easm-ui-size-touch), var(--easm-ui-control-height)); }
+  .easm-ui-choice { min-width: var(--easm-ui-size-touch); min-height: var(--easm-ui-size-touch); }
+  .easm-ui-combobox-list > li { min-height: max(var(--easm-ui-size-touch), var(--easm-ui-control-height)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-input, .easm-ui-input-action, .easm-ui-file-remove, .easm-ui-checkbox, .easm-ui-radio, .easm-ui-switch, .easm-ui-switch::before, .easm-ui-upload-zone, .easm-ui-combobox-chevron > .easm-ui-icon, .easm-ui-dropdown-select-chevron > .easm-ui-icon { transition: none; }
+}
+@media (forced-colors: active) {
+  .easm-ui-checkbox, .easm-ui-radio, .easm-ui-switch { appearance: auto; }
+  .easm-ui-checkbox-mark, .easm-ui-switch::before { display: none; }
+  .easm-ui-input-icon, .easm-ui-upload-illustration { color: CanvasText; }
+  .easm-ui.easm-ui-field .easm-ui-input:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; box-shadow: none; }
+  .easm-ui-upload-zone:focus-within { outline: 2px solid Highlight; outline-offset: 2px; box-shadow: none; }
+  .easm-ui-dropdown-select-popup, .easm-ui-combobox-popup { border-color: CanvasText; box-shadow: none; }
+  .easm-ui-dropdown-select-option[data-highlighted],
+  .easm-ui-dropdown-select-option[data-state='checked'][data-highlighted],
+  .easm-ui-combobox-list > li[data-active],
+  .easm-ui-combobox-list > li[aria-selected='true'][data-active] { background: Highlight; color: HighlightText; }
+  .easm-ui-dropdown-select-option[data-highlighted] .easm-ui-icon, .easm-ui-combobox-list > li[data-active] > .easm-ui-icon { color: HighlightText; }
+  .easm-ui-dropdown-select-popup .easm-ui-dropdown-select-option:focus-visible, .easm-ui-combobox-list > li[data-active] { outline-color: Highlight; }
+}

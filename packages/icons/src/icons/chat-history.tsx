@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ChatHistoryIcon = /* @__PURE__ */ createIcon({"name":"chat-history","body":[{"tag":"g","attrs":{},"children":[{"tag":"path","attrs":{"d":"M8 4h8c3.3 0 5 1.7 5 5v5c0 3.3-1.7 5-5 5h-5.6l-4.1 2c-.6.3-1.3-.2-1.3-.9v-1.7C3.6 17.8 3 16.3 3 14V9c0-3.3 1.7-5 5-5Z","fill":"surface"}},{"tag":"path","attrs":{"d":"M7.5 9.5h9m-9 3.7h6"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M17.7 15.1v2.6l1.8 1.15","fill":"none","stroke":"ink","stroke-width":1.1}}]});

@@ -1,0 +1,84 @@
+/* Page rhythm, Callout and SelectionBar (layout.tsx). One gutter and one gap on every dashboard; a caveat is tinted
+   text with its sign, never an outlined box or a coloured edge; the selection bar is the pale blue of a selection. */
+
+/* ------------------------------------------------------------------ PageScaffold */
+.easm-ui-page-scaffold {
+  --easm-ui-page-gutter: 16px;
+  display: grid; align-content: start; gap: 24px; width: 100%; min-width: 0; box-sizing: border-box;
+  padding: 16px var(--easm-ui-page-gutter) 40px; font-family: var(--easm-ui-font); color: var(--easm-ui-text);
+}
+@media (min-width: 768px) { .easm-ui-page-scaffold { --easm-ui-page-gutter: 24px; padding-block-start: 24px; } }
+@media (min-width: 1280px) { .easm-ui-page-scaffold { --easm-ui-page-gutter: 32px; } }
+.easm-ui-page-scaffold > * { min-width: 0; }
+/* A column of fields stops at a readable measure and starts under the title, never centred under it. */
+.easm-ui-page-scaffold[data-width='form'] > * { max-width: 720px; }
+.easm-ui-page-scaffold[data-width='sections'] { container-type: inline-size; gap: 20px; }
+@container (min-width: 64rem) {
+  .easm-ui-page-scaffold[data-width='sections'] { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .easm-ui-page-scaffold[data-width='sections'] > :is(.easm-ui-page-intro, .easm-ui-page-back, [data-span]) { grid-column: 1 / -1; }
+}
+.easm-ui-page-intro { display: grid; gap: 12px; }
+.easm-ui-page-intro > p { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-md); line-height: 22px; }
+.easm-ui-page-intro-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+@media (min-width: 768px) { .easm-ui-page-intro { display: none; } }
+.easm-ui-page-back {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start; min-height: 32px; color: var(--easm-ui-primary);
+  font-size: var(--easm-ui-text-md); font-weight: 550; text-decoration: none; text-underline-offset: 3px;
+}
+.easm-ui-page-back:hover { text-decoration: underline; }
+.easm-ui-page-back:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: 4px; }
+.easm-ui-page-back > .easm-ui-icon:dir(rtl), [dir='rtl'] .easm-ui-page-back > .easm-ui-icon { scale: -1 1; }
+.easm-ui-page-section { display: grid; align-content: start; gap: 0; min-width: 0; }
+.easm-ui-page-section > .easm-ui-section-heading + * { min-width: 0; }
+.easm-ui-page-section > :not(.easm-ui-section-heading) + :not(.easm-ui-section-heading) { margin-block-start: 12px; }
+.easm-ui-stat-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--_stat-min, 220px)), 1fr)); min-width: 0; }
+
+/* ------------------------------------------------------------------ Callout */
+.easm-ui-callout {
+  --_callout-fill: var(--easm-ui-primary-surface); --_callout-ink: var(--easm-ui-primary-fill);
+  display: flex; align-items: flex-start; gap: 8px; min-width: 0; padding: 8px 12px; border-radius: var(--easm-ui-radius-control);
+  background: var(--_callout-fill); color: var(--easm-ui-text); font-family: var(--easm-ui-font); font-size: var(--easm-ui-text-sm); line-height: 20px;
+  --easm-icon-background: var(--_callout-fill); --easm-icon-contrast: var(--_callout-fill);
+}
+.easm-ui-callout[data-tone='caution'] { --_callout-fill: var(--easm-ui-warning-surface); --_callout-ink: var(--easm-ui-warning); }
+.easm-ui-callout[data-tone='provisional'] { --_callout-fill: var(--easm-ui-chart-honey-tint); --_callout-ink: var(--easm-ui-chart-honey-ink); }
+.easm-ui-callout[data-tone='neutral'] { --_callout-fill: var(--easm-ui-track); --_callout-ink: var(--easm-ui-text-secondary); }
+.easm-ui-callout-icon { display: flex; flex: none; margin-block-start: 2px; color: var(--_callout-ink); --easm-icon-fill: none; }
+.easm-ui-callout-text { flex: 1 1 auto; min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.easm-ui-callout-text > strong { font-weight: 600; }
+.easm-ui-callout-action { flex: none; align-self: center; }
+
+/* ------------------------------------------------------------------ SelectionBar */
+.easm-ui-selection-bar {
+  container-type: inline-size; min-width: 0; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-primary-surface); color: var(--easm-ui-text); font-family: var(--easm-ui-font);
+}
+/* One row when it fits; on a narrow bar the count and Clear share the first line and the actions take the second. */
+.easm-ui-selection-bar-inner {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: 'count actions clear'; align-items: center; gap: 8px 12px;
+  min-height: 48px; box-sizing: border-box; padding: 6px 8px 6px 14px;
+}
+@container (max-width: 559px) { .easm-ui-selection-bar-inner { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'count clear' 'actions actions'; padding-block-end: 8px; } }
+.easm-ui-selection-bar-count { grid-area: count; }
+.easm-ui-selection-bar-clear { grid-area: clear; }
+.easm-ui-selection-bar-count { margin: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-selection-bar-count > strong { font-weight: 650; font-variant-numeric: tabular-nums; }
+.easm-ui-selection-bar-all {
+  padding: 0; border: 0; background: none; color: var(--easm-ui-primary); font: inherit; font-weight: 600; cursor: pointer;
+  text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 3px;
+}
+.easm-ui-selection-bar-all:hover { text-decoration-color: currentColor; }
+.easm-ui-selection-bar-all:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: 4px; }
+.easm-ui-selection-bar-actions { grid-area: actions; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+
+@media (forced-colors: active) {
+  .easm-ui-callout, .easm-ui-selection-bar { border: 1px solid CanvasText; }
+}
+
+/* On a grey surface a secondary button takes white, so it still reads as a button (the Alert and the top header do
+   the same). Listed here once for the parts of wave 4 that set buttons on grey. */
+:is(.easm-ui-publish-card, .easm-ui-cohort-group, .easm-ui-golive-anyway, .easm-ui-registry li[data-kind='system'], .easm-ui-schedule-holidays, .easm-ui-bridge, .easm-ui-recommendation, .easm-ui-extension) .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']) {
+  background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface);
+}
+:is(.easm-ui-publish-card, .easm-ui-cohort-group, .easm-ui-golive-anyway, .easm-ui-registry li[data-kind='system'], .easm-ui-schedule-holidays, .easm-ui-bridge, .easm-ui-recommendation, .easm-ui-extension) .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):hover {
+  background: var(--easm-ui-surface-hover); --easm-icon-background: var(--easm-ui-surface-hover); --easm-icon-contrast: var(--easm-ui-surface-hover);
+}

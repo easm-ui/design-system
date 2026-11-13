@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const DragHandleIcon = /* @__PURE__ */ createIcon({"name":"drag-handle","body":[{"tag":"circle","attrs":{"cx":9,"cy":6,"r":1.5,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":15,"cy":6,"r":1.5,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":9,"cy":12,"r":1.5,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":15,"cy":12,"r":1.5,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":9,"cy":18,"r":1.5,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":15,"cy":18,"r":1.5,"fill":"ink","stroke":"none"}}]});

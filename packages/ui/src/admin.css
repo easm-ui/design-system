@@ -1,0 +1,69 @@
+/* LevelLadder, NotificationMatrix and RegistryTree (admin.tsx). Steps rise by height and fill; a lock is a glyph and a
+   word, never a greyed switch alone; the hierarchy is an indent, never connecting rules. */
+
+/* ------------------------------------------------------------------ LevelLadder */
+.easm-ui-ladder { container-type: inline-size; display: grid; gap: 10px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-ladder > ol { display: grid; grid-template-columns: repeat(var(--_steps, 4), minmax(0, 1fr)); align-items: end; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-ladder li { display: grid; align-content: start; gap: 4px; min-width: 0; min-height: calc(72px + var(--_step, 0) * 18px); padding: 10px; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); color: var(--easm-ui-text-secondary); }
+.easm-ui-ladder li[data-state='below'] { background: var(--easm-ui-track); color: var(--easm-ui-text); }
+.easm-ui-ladder li[data-state='current'] { background: var(--easm-ui-primary-surface); color: var(--easm-ui-text); }
+.easm-ui-ladder-step { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-ladder-step > b { font-weight: 600; overflow-wrap: anywhere; }
+.easm-ui-ladder li[data-state='current'] .easm-ui-ladder-step { color: var(--easm-ui-primary); }
+.easm-ui-ladder-step > .easm-icon { flex: none; }
+.easm-ui-ladder-does { font-size: var(--easm-ui-text-xs); line-height: 16px; overflow-wrap: anywhere; }
+.easm-ui-ladder-next { display: flex; align-items: flex-start; gap: 8px; margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-ladder-next > .easm-icon { flex: none; margin-block-start: 2px; }
+.easm-ui-ladder-next b { color: var(--easm-ui-text); font-weight: 600; }
+@container (max-width: 519px) {
+  .easm-ui-ladder > ol { grid-template-columns: minmax(0, 1fr); align-items: stretch; }
+  .easm-ui-ladder li { min-height: 0; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 12px; }
+}
+
+/* ------------------------------------------------------------------ NotificationMatrix */
+.easm-ui-notify-matrix { display: grid; gap: 12px; min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-notify-quiet { display: grid; gap: 6px; padding: 10px 12px; border-radius: var(--easm-ui-radius-control); background: color-mix(in srgb, var(--easm-ui-chart-indigo-tint) 55%, var(--easm-ui-surface)); }
+.easm-ui-notify-quiet-words { display: flex; align-items: flex-start; gap: 8px; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-notify-quiet-words > .easm-icon { flex: none; margin-block-start: 2px; color: var(--easm-ui-chart-indigo-ink); }
+.easm-ui-notify-quiet-day { position: relative; height: 8px; margin-block-end: 16px; border-radius: 4px; background: var(--easm-ui-surface); }
+.easm-ui-notify-quiet-day > i { position: absolute; inset-block: 0; border-radius: 4px; background: var(--easm-ui-chart-indigo); }
+.easm-ui-notify-quiet-day > span { position: absolute; inset-block-start: 10px; translate: -50% 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 14px; font-variant-numeric: tabular-nums; }
+.easm-ui-notify-quiet-day > span:first-of-type { translate: 0 0; }
+.easm-ui-notify-quiet-day > span:last-of-type { translate: -100% 0; }
+.easm-ui-notify-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+.easm-ui-notify-scroll:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; border-radius: var(--easm-ui-radius-control); }
+.easm-ui-notify-matrix table { width: 100%; border-collapse: separate; border-spacing: 0 2px; font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-notify-matrix thead th { padding: 6px 10px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; text-align: start; }
+.easm-ui-notify-matrix thead th:not(:first-child), .easm-ui-notify-matrix td { width: 92px; text-align: center; }
+.easm-ui-notify-channel { display: inline-flex; align-items: center; gap: 6px; }
+.easm-ui-notify-group th { padding: 12px 10px 4px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; letter-spacing: .06em; text-align: start; text-transform: uppercase; }
+.easm-ui-notify-matrix tbody tr:not(.easm-ui-notify-group) > * { padding: 8px 10px; background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+.easm-ui-notify-matrix tbody tr:not(.easm-ui-notify-group) > :first-child { border-start-start-radius: 8px; border-end-start-radius: 8px; }
+.easm-ui-notify-matrix tbody tr:not(.easm-ui-notify-group) > :last-child { border-start-end-radius: 8px; border-end-end-radius: 8px; }
+.easm-ui-notify-matrix tbody th { min-width: 200px; font-weight: 500; text-align: start; }
+.easm-ui-notify-event { display: block; overflow-wrap: anywhere; }
+.easm-ui-notify-description { display: block; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; line-height: 16px; }
+.easm-ui-notify-matrix td .easm-ui-field { width: auto; align-items: center; }
+.easm-ui-notify-lock { display: inline-flex; align-items: center; gap: 4px; min-height: 28px; padding: 0 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; cursor: help; }
+.easm-ui-notify-lock:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+
+/* ------------------------------------------------------------------ RegistryTree */
+.easm-ui-registry { min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); }
+.easm-ui-registry-level { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-registry-level .easm-ui-registry-level { margin-block-start: 4px; padding-inline-start: 22px; }
+.easm-ui-registry li[data-kind='system'] { padding: 8px; border-radius: var(--easm-ui-radius-card); background: color-mix(in srgb, var(--easm-ui-track) 45%, var(--easm-ui-surface)); }
+.easm-ui-registry li[data-kind='system'] + li[data-kind='system'] { margin-block-start: 6px; }
+.easm-ui-registry-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-height: 40px; padding: 4px 8px; border-radius: var(--easm-ui-radius-control); }
+li:not([data-kind='system']) > .easm-ui-registry-row { background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-registry-icon { display: grid; flex: none; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); }
+li[data-kind='system'] > .easm-ui-registry-row .easm-ui-registry-icon { width: 36px; height: 36px; background: var(--easm-ui-surface); }
+.easm-ui-registry-name { display: grid; flex: 1 1 180px; min-width: 0; font-size: var(--easm-ui-text-sm); font-weight: 550; line-height: 20px; overflow-wrap: anywhere; }
+li[data-kind='system'] > .easm-ui-registry-row .easm-ui-registry-name { font-size: var(--easm-ui-text-md); font-weight: 600; }
+.easm-ui-registry-detail { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; line-height: 16px; }
+.easm-ui-registry-easm { justify-self: start; margin-block: 2px; padding: 0 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-badge-brand); color: var(--easm-ui-primary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 18px; }
+.easm-ui-registry-confirm { display: grid; gap: 8px; margin: 6px 0 2px; padding: 10px 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-warning-surface); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-registry-confirm p { margin: 0; }
+.easm-ui-registry-confirm ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-registry-confirm li { display: flex; align-items: center; gap: 6px; }
+.easm-ui-registry-confirm-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (forced-colors: active) { .easm-ui-ladder li, .easm-ui-registry-row { border: 1px solid CanvasText; } .easm-ui-ladder li[data-state='current'] { border: 2px solid Highlight; } }

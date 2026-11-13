@@ -1,0 +1,280 @@
+.easm-ui-sidebar{display:flex;flex-direction:column;gap:20px;width:100%;max-width:100%;padding:0;border:0;border-radius:var(--easm-ui-radius-card);background:transparent;color:var(--easm-ui-text);font:14px/20px var(--easm-ui-font)}.easm-ui-sidebar-brand{display:flex;align-items:center;gap:10px;min-height:40px;min-width:0}.easm-ui-sidebar-brand>strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:600}.easm-ui-sidebar-group>ul{list-style:none;padding:0;margin:0;display:grid;gap:4px}.easm-ui-sidebar-link{min-height:44px;display:flex;align-items:center;gap:12px;padding:9px 11px;border:1px solid transparent;border-radius:var(--easm-ui-radius-control);color:var(--easm-ui-text);text-decoration:none;transition:background var(--easm-ui-motion-fast),border-color var(--easm-ui-motion-fast),color var(--easm-ui-motion-fast);font-weight:500;--easm-icon-background:var(--easm-ui-background);--easm-icon-contrast:var(--easm-ui-background)}.easm-ui-sidebar-link:not([aria-disabled=true]):hover{background:var(--easm-ui-track-hover);color:var(--easm-ui-text);--easm-icon-background:var(--easm-ui-track-hover);--easm-icon-contrast:var(--easm-ui-track-hover)}.easm-ui-sidebar-link[aria-current=page],.easm-ui-sidebar-link[aria-current=page]:not([aria-disabled=true]):hover{background:var(--easm-ui-primary-fill);color:var(--easm-ui-on-primary-fill);border-color:transparent;font-weight:600;--easm-icon-background:var(--easm-ui-primary-fill);--easm-icon-contrast:var(--easm-ui-primary-fill);--easm-icon-fill:var(--easm-ui-on-primary-fill-muted)}.easm-ui-sidebar-link[aria-disabled=true]{color:var(--easm-ui-text-disabled);cursor:not-allowed}.easm-ui-sidebar-copy{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.easm-ui-sidebar-link>.easm-ui-icon,.easm-ui-sidebar-brand>.easm-ui-module-icon{flex:none}.easm-ui-sidebar-count{flex:none;font-size:11px;line-height:18px;min-width:20px;padding:0 5px;text-align:center;border-radius:var(--easm-ui-radius-mark);background:var(--easm-ui-orange-surface);color:var(--easm-ui-orange-ink)}.easm-ui-sidebar-link:focus-visible,.easm-ui-breadcrumbs:focus-visible,.easm-ui-breadcrumbs a:focus-visible,.easm-ui-command-results button:focus-visible{box-shadow:var(--easm-ui-focus-ring)}.easm-ui-sidebar[data-collapsed=true]{width:72px;align-items:center}.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-copy{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-count{display:none}.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-link{width:44px;justify-content:center;padding:9px}.easm-ui-sidebar-footer{padding-top:0;border-top:0;font-size:12px;color:var(--easm-ui-text-secondary);overflow-wrap: break-word;margin-top:auto}.easm-ui-top-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-height:0;padding:0;background:transparent;border:0;border-radius:var(--easm-ui-radius-card);min-width:0}.easm-ui-top-header-context{flex:1 1 0;min-width:0;max-width:100%}.easm-ui-top-header-title{overflow-wrap: break-word;display:block;font-size:16px;line-height:24px;font-weight:600}.easm-ui-top-header-actions{min-width:0;max-width:100%;display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-inline-start:auto}.easm-ui-breadcrumbs{min-width:0;max-width:100%;overflow:auto;overscroll-behavior-inline:contain;scroll-padding-inline:6px}.easm-ui-breadcrumbs ol{width:max-content;min-width:100%;display:flex;align-items:center;gap:8px;list-style:none;padding:2px;margin:0;font-size:13px;line-height:20px}.easm-ui-breadcrumbs li{display:flex;align-items:center;gap:8px;white-space:nowrap}.easm-ui-breadcrumbs a{display:inline-flex;align-items:center;min-height:28px;touch-action:manipulation;color:var(--easm-ui-text-secondary);text-decoration:none}.easm-ui-breadcrumbs a:hover{color:var(--easm-ui-primary);text-decoration:underline}.easm-ui-breadcrumbs [aria-current]{color:var(--easm-ui-text);font-weight:600}.easm-ui-command-results{display:grid;gap:4px;max-height:320px;overflow:auto;padding:6px;margin:10px -6px -6px}.easm-ui-command-results button{min-width:0;display:flex;align-items:center;gap:12px;border:0;border-radius:var(--easm-ui-radius-control);padding:12px;text-align:left;background:var(--easm-ui-surface);color:var(--easm-ui-text);font:inherit;cursor:pointer;min-height:44px}.easm-ui-command-results button:not(:disabled):hover{background:var(--easm-ui-float)}.easm-ui-command-results button:disabled{color:var(--easm-ui-text-disabled);cursor:not-allowed}.easm-ui-command-results button>span{min-width:0;overflow-wrap: break-word}.easm-ui-command-results button>svg{flex:none}.easm-ui-command-results strong{font-size:14px;line-height:20px;font-weight:600;display:block}.easm-ui-command-results small{display:block;font-size:12px;line-height:18px;color:var(--easm-ui-text-secondary);margin-top:3px}.easm-ui-workspace-switcher{min-width:0;width:280px;max-width:100%}@media(min-width:481px){.easm-ui-top-header-context{flex:1 1 240px}.easm-ui-top-header-actions{margin-inline-start:0}}@media(prefers-reduced-motion:reduce){.easm-ui-sidebar-link{transition:none}}@media(forced-colors:active){.easm-ui-sidebar-link[aria-current=page]{outline:2px solid Highlight;outline-offset:-2px}.easm-ui-sidebar-link[aria-disabled=true]{color:GrayText}}
+
+/* The search field stays visible while one result region owns command scrolling. */
+.easm-ui-command-dialog .easm-ui-overlay-body{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.easm-ui-command-dialog .easm-ui-overlay-description{flex:none}
+.easm-ui-command-dialog .easm-ui-overlay-content{flex:1;min-height:0;gap:12px}
+.easm-ui-command-dialog .easm-ui-overlay-content>.easm-ui-field{flex:none}
+.easm-ui-command-dialog .easm-ui-command-results{flex:1;min-height:44px;max-height:320px;overscroll-behavior:contain;scroll-padding:6px;margin-top:0}
+/* Slot content (the product's own elements) may shrink; in the base layer so product utilities still win. */
+@layer base { .easm-ui-top-header-actions>*{min-width:0;max-width:100%} }
+/* On a phone the actions (a search, a bell) stay on the menu row, at its end; the breadcrumb gives way. Taking a
+   full row of their own left one icon alone under the menu (Master Portal, 2026-10-14). */
+@media(pointer:coarse){.easm-ui-breadcrumbs a{min-height:44px}}
+@media(max-height:420px){.easm-ui-command-dialog .easm-ui-overlay-body-described{margin-top:-6px}.easm-ui-command-dialog .easm-ui-command-results{min-height:44px}.easm-ui-command-dialog .easm-ui-overlay-description{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%)}.easm-ui-command-dialog .easm-ui-overlay-content{margin-top:0}}
+
+/* White: navigation */
+.easm-ui-sidebar-link[aria-current=page] .easm-ui-sidebar-count { background: var(--easm-ui-on-primary-fill-muted); color: var(--easm-ui-on-primary-fill); }
+.easm-ui-sidebar-link:not([aria-disabled=true]):active { background: var(--easm-ui-track-pressed); }
+.easm-ui-top-header-title { margin: 0; }
+
+/* White: header actions on the page */
+.easm-ui-top-header .easm-ui-button[data-variant='secondary'] { background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-top-header .easm-ui-button[data-variant='secondary']:hover:not([aria-disabled='true']) { background: var(--easm-ui-track); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+/* Grouped sections: a quiet heading over each run of links */
+.easm-ui-sidebar-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.easm-ui-sidebar-group + .easm-ui-sidebar-group { margin-top: -4px; }
+.easm-ui-sidebar-group-label { margin: 0; padding: 0 11px; color: var(--easm-ui-text-secondary); font-size: 11px; font-weight: 600; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* CommandBar search trigger: a field-like button for the top bar */
+.easm-ui-command-trigger { display: inline-flex; align-items: center; gap: 10px; min-width: 0; min-height: 40px; padding: 0 10px; border: 0; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-surface); color: var(--easm-ui-text-secondary); font: inherit; font-size: 14px; text-align: start; cursor: pointer; transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-command-trigger > span { flex: 1; }
+/* On a phone the search trigger keeps its name for assistive technology and shows only the icon. */
+.easm-ui-command-trigger > span:not(.easm-ui-kbd) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.easm-ui-command-trigger:hover { background: var(--easm-ui-surface-hover); }
+.easm-ui-command-trigger:focus-visible { box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-command-trigger > .easm-ui-kbd { display: none; background: var(--easm-ui-track); }
+@media (min-width: 600px) {
+  .easm-ui-command-trigger { min-width: 220px; padding: 0 8px 0 12px; }
+  .easm-ui-command-trigger > span:not(.easm-ui-kbd) { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: inherit; }
+  .easm-ui-command-trigger > .easm-ui-kbd { display: inline-grid; }
+}
+@media (pointer: coarse) { .easm-ui-command-trigger { min-height: 44px; } }
+
+/* Focus on a filled item: the plain ring matches the blue fill, so a surface gap separates them. */
+.easm-ui-sidebar-link[aria-current=page]:focus-visible { box-shadow: var(--easm-ui-focus-ring-on-fill, 0 0 0 2px var(--easm-ui-surface), 0 0 0 4px var(--easm-ui-primary-fill)); }
+/* Breadcrumb separators point along the reading direction. */
+[dir='rtl'] .easm-ui-breadcrumbs li > svg { transform: scaleX(-1); }
+.easm-ui-breadcrumbs li > svg:dir(rtl) { transform: scaleX(-1); }
+
+/* SidebarSwitcher and SidebarAccount: the matching cards at the top and bottom of a sidebar. */
+.easm-ui-sidebar-selector { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; padding: 9px 10px; border: 0; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-md); line-height: 20px; text-align: start; cursor: pointer; transition: background-color var(--easm-ui-motion-fast); }
+button.easm-ui-sidebar-selector:hover, .easm-ui-sidebar-selector[data-state='open'] { background: var(--easm-ui-track-hover); }
+button.easm-ui-sidebar-selector:active { background: var(--easm-ui-track-pressed); }
+.easm-ui-sidebar-selector:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-sidebar-selector[data-static] { cursor: default; }
+.easm-ui-sidebar-selector-tile { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-primary-fill); color: var(--easm-ui-on-primary-fill); font-size: var(--easm-ui-text-sm); font-weight: 700; line-height: 1; letter-spacing: .02em; }
+.easm-ui-sidebar-selector-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.easm-ui-sidebar-selector-copy strong, .easm-ui-sidebar-selector-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-sidebar-selector-copy strong { font-weight: 600; }
+.easm-ui-sidebar-selector-copy small { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-sidebar-selector > .easm-ui-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-sidebar-selector > .easm-ui-avatar { flex: none; }
+.easm-ui-sidebar-selector[data-collapsed] { width: 44px; min-height: 44px; padding: 6px; justify-content: center; }
+.easm-ui-sidebar-selector[data-kind='account'][data-collapsed] { background: transparent; }
+.easm-ui-sidebar-selector[data-kind='account'][data-collapsed]:hover, .easm-ui-sidebar-selector[data-kind='account'][data-collapsed][data-state='open'] { background: var(--easm-ui-track-hover); }
+/* A brand slot holding a switcher stacks the logo above the card. */
+.easm-ui-sidebar-brand:has(.easm-ui-sidebar-selector) { flex-direction: column; align-items: stretch; gap: 14px; }
+.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-brand:has(.easm-ui-sidebar-selector) { align-items: center; }
+.easm-ui-sidebar-footer:has(.easm-ui-sidebar-selector) { color: var(--easm-ui-text); font-size: var(--easm-ui-text-md); overflow-wrap: normal; }
+/* Mouse and trackpad get the compact rows; touch keeps 44 px targets. */
+@media (pointer: fine) { .easm-ui-sidebar-link { min-height: 36px; padding-block: 6px; } }
+@media (prefers-reduced-motion: reduce) { .easm-ui-sidebar-selector { transition: none; } }
+@media (forced-colors: active) { .easm-ui-sidebar-selector { border: 1px solid ButtonText; } .easm-ui-sidebar-selector:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; } }
+
+/* The foot of the sidebar: the account card and, beside it, the collapse control; in the rail they stack, the
+   control above the avatar. */
+.easm-ui-sidebar-footer[data-toggle] { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.easm-ui-sidebar-footer[data-toggle] > :not(.easm-ui-sidebar-toggle) { flex: 1 1 auto; min-width: 0; }
+.easm-ui-sidebar-footer[data-toggle] > .easm-ui-sidebar-toggle { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-sidebar-footer[data-toggle] > .easm-ui-sidebar-toggle:hover { color: var(--easm-ui-text); }
+.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-footer[data-toggle] { flex-direction: column-reverse; gap: 8px; }
+.easm-ui-sidebar[data-collapsed=true] .easm-ui-sidebar-footer[data-toggle] > :not(.easm-ui-sidebar-toggle) { flex: none; }
+/* The dashboard switcher's menu is a panel of its own, not a strip the card's width. */
+.easm-ui-dropdown-menu.easm-ui-switcher-menu { width: min(340px, calc(100vw - 24px)); max-width: none; }
+
+/* MobileTabBar: the phone's navigation, a capsule floating above the foot of the screen in thumb reach. Below
+   768px only. It is a control resting on the page, not a band cut out of it: inset from the edges, translucent
+   (content scrolls on under it), its current place a fill that slides between tabs. While the page scrolls down it
+   folds to a compact strip of icons; scrolling up, the top or the end bring it back (data-compact, set by the
+   component). It reserves its full height plus its margin at the foot of the page (--easm-ui-tabbar-space, 0 when
+   there is no bar), so the last content always clears it, and keeps above an installed app's home indicator. */
+:root { --easm-ui-tabbar-height: 56px; --easm-ui-tabbar-compact: 44px; --easm-ui-tabbar-margin: 10px; --easm-ui-tabbar-space: 0px; }
+.easm-ui-tabbar { display: none; }
+@media (max-width: 767px) {
+  :root:has(.easm-ui-tabbar) { --easm-ui-tabbar-space: calc(var(--easm-ui-tabbar-height) + var(--easm-ui-tabbar-margin) * 2 + env(safe-area-inset-bottom, 0px)); }
+  body:has(.easm-ui-tabbar) { padding-bottom: var(--easm-ui-tabbar-space); }
+  /* A page is one screen tall at least: with the bar, one screen less the bar, which the padding above makes up. */
+  :root:has(.easm-ui-tabbar) .easm-ui-page { min-height: calc(100dvh - var(--easm-ui-tabbar-space)); }
+  :root:has(.easm-ui-tabbar) body.easm-ui-page { min-height: 100dvh; }
+  .easm-ui-tabbar {
+    display: block;
+    position: fixed;
+    inset-inline: max(12px, env(safe-area-inset-left, 0px));
+    bottom: calc(var(--easm-ui-tabbar-margin) + env(safe-area-inset-bottom, 0px));
+    z-index: calc(var(--easm-ui-z-dialog, 1000) - 10);
+    max-width: 480px;
+    margin-inline: auto;
+    padding: 4px;
+    border-radius: var(--easm-ui-radius-pill);
+    background: color-mix(in srgb, var(--easm-ui-surface) 82%, transparent);
+    -webkit-backdrop-filter: saturate(1.6) blur(20px);
+    backdrop-filter: saturate(1.6) blur(20px);
+    /* Floating over moving content it needs an edge: a hairline inside the capsule, no shadow. */
+    box-shadow: inset 0 0 0 1px var(--easm-ui-border-subtle);
+  }
+  /* The on-screen keyboard is up: the bar steps aside so the field and its composer keep the room. */
+  :root:has(:is(input:not([type='checkbox'], [type='radio'], [type='range'], [type='button'], [type='submit']), textarea, select, [contenteditable='true']):focus) .easm-ui-tabbar { display: none; }
+  :root:has(:is(input:not([type='checkbox'], [type='radio'], [type='range'], [type='button'], [type='submit']), textarea, select, [contenteditable='true']):focus) { --easm-ui-tabbar-space: 0px; }
+}
+.easm-ui-tabbar > ul {
+  position: relative; display: grid; height: calc(var(--easm-ui-tabbar-height) - 8px); margin: 0; padding: 0; list-style: none;
+  transition: height var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft);
+}
+.easm-ui-tabbar[data-compact] > ul { height: calc(var(--easm-ui-tabbar-compact) - 8px); }
+.easm-ui-tabbar li { display: flex; min-width: 0; }
+.easm-ui-tabbar-link {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: var(--easm-ui-radius-pill);
+  background: none;
+  color: var(--easm-ui-text-secondary);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: color var(--easm-ui-motion-fast) var(--easm-ui-ease), scale var(--easm-ui-motion-release) var(--easm-ui-ease-spring);
+}
+.easm-ui-tabbar-link:active:not([aria-disabled='true']) { scale: .94; transition-duration: var(--easm-ui-motion-fast), var(--easm-ui-motion-press); }
+.easm-ui-tabbar-icon { position: relative; display: grid; place-items: center; width: 28px; height: 26px; }
+.easm-ui-tabbar-label {
+  max-width: 100%;
+  max-height: 14px;
+  overflow: hidden;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-height var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), opacity var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+/* Compact: the labels fold away and the icons alone carry the bar. */
+.easm-ui-tabbar[data-compact] .easm-ui-tabbar-label { max-height: 0; opacity: 0; }
+/* The current place: the primary colour, on a fill that slides between tabs (useSlidingIndicator). Colour lives on
+   the picked state, never on a strip along the bar's edge. */
+.easm-ui-tabbar > ul::before {
+  content: ''; position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none;
+  width: var(--easm-ui-indicator-w, 0); height: var(--easm-ui-indicator-h, 0);
+  transform: translate(var(--easm-ui-indicator-x, 0), var(--easm-ui-indicator-y, 0));
+  border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-primary-surface);
+  opacity: 0;
+}
+.easm-ui-tabbar > ul[data-indicator]::before { opacity: 1; }
+.easm-ui-tabbar > ul[data-indicator='move']::before {
+  transition: transform var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), width var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft), height var(--easm-ui-motion-arrive) var(--easm-ui-ease-spring-soft);
+}
+.easm-ui-tabbar-link:is([aria-current='page'], [data-active]) { color: var(--easm-ui-primary); }
+.easm-ui-tabbar-link:is([aria-current='page'], [data-active]) .easm-ui-tabbar-label { font-weight: 600; }
+.easm-ui-tabbar-link:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-tabbar-link[aria-disabled='true'] { opacity: 0.45; cursor: default; }
+.easm-ui-tabbar-badge {
+  position: absolute;
+  top: -4px;
+  left: calc(50% + 4px);
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--easm-ui-danger);
+  box-shadow: 0 0 0 2px var(--easm-ui-surface);
+  color: var(--easm-ui-on-danger);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-tabbar > ul, .easm-ui-tabbar-link, .easm-ui-tabbar-label, .easm-ui-tabbar > ul::before { transition: none !important; }
+  .easm-ui-tabbar-link:active { scale: none; }
+}
+@media (forced-colors: active) {
+  .easm-ui-tabbar { border: 1px solid CanvasText; }
+  .easm-ui-tabbar-link:is([aria-current='page'], [data-active]) { outline: 2px solid Highlight; }
+}
+@media print { .easm-ui-tabbar { display: none !important; } }
+
+/* ButtonLink: a Button on an anchor. The variant rules set its colours (they outrank link colours); an anchor adds
+   only its underline. */
+.easm-ui-button-link, .easm-ui-button-link:hover, .easm-ui-button-link:visited { text-decoration: none; }
+
+/* The command palette reads as one search field with its answers under it, the way Spotlight does: no visible
+   heading or instructions (both stay for assistive technology), a large field on a quiet fill, results that
+   start right under it. It hangs from the upper part of the screen, so narrowing the results never moves the
+   field you are typing in. A phone keeps it as a sheet with its close button. */
+.easm-ui-command-dialog :is(.easm-ui-overlay-header, .easm-ui-overlay-description) { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.easm-ui-command-dialog.easm-ui-overlay-panel { gap: 0; padding: 10px; }
+.easm-ui-command-dialog .easm-ui-overlay-body-described { margin-top: 0; }
+.easm-ui-command-dialog .easm-ui-overlay-content { gap: 6px; }
+.easm-ui-command-search .easm-ui-input-wrap { --easm-ui-control-icon: 22px; }
+.easm-ui-command-search .easm-ui-search-input { min-height: 52px; border: 0; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); font-size: 17px; line-height: 24px; box-shadow: none; }
+.easm-ui-command-search .easm-ui-search-input:hover { background: var(--easm-ui-track-hover); }
+/* The field is the dialog's only field and holds the caret, so its focus shows as a deeper fill, not a ring. */
+.easm-ui-command-dialog .easm-ui.easm-ui-field.easm-ui-command-search .easm-ui-input:is(:focus, :focus-visible) { outline: none; box-shadow: none; border-color: transparent; background: var(--easm-ui-track-hover); }
+.easm-ui-command-dialog .easm-ui-overlay-description + .easm-ui-overlay-content { margin-top: 0; }
+.easm-ui-command-dialog .easm-ui-command-results { margin: 0; padding: 4px 0 0; max-height: min(360px, 52dvh); }
+.easm-ui-command-dialog .easm-ui-command-results > p:not(.easm-ui-sr-only) { margin: 0; padding: 16px 12px; color: var(--easm-ui-text-secondary); font-size: 14px; }
+.easm-ui-command-results button { padding: 10px 12px; }
+.easm-ui-command-results button > svg { color: var(--easm-ui-text-secondary); }
+.easm-ui-command-results button:focus-visible { box-shadow: none; outline: none; background: var(--easm-ui-primary-surface); }
+.easm-ui-command-results button:focus-visible > svg { color: var(--easm-ui-primary); }
+.easm-ui-command-hint { display: flex; gap: 16px; margin: 6px 0 0; padding: 10px 12px 2px; color: var(--easm-ui-text-secondary); font-size: 12px; line-height: 18px; }
+.easm-ui-command-hint > span { display: inline-flex; align-items: center; gap: 4px; }
+.easm-ui-command-dialog .easm-ui-overlay-close { display: none; }
+@media (min-width: 768px) {
+  .easm-ui-dialog.easm-ui-command-dialog { top: 14vh; transform: translate(-50%, 0); width: 600px; max-height: 76dvh; }
+  .easm-ui-dialog.easm-ui-command-dialog { animation-name: easm-ui-command-arrive, easm-ui-arrive-fade; }
+  .easm-ui-dialog.easm-ui-command-dialog[data-state='closed'] { animation-name: easm-ui-command-leave; }
+}
+@keyframes easm-ui-command-arrive { from { transform: translate(-50%, -8px) scale(.97); } }
+@keyframes easm-ui-command-leave { to { opacity: 0; transform: translate(-50%, -4px) scale(.98); } }
+@media (pointer: coarse), (max-width: 767px) {
+  .easm-ui-command-hint { display: none; }
+  /* Close sits beside the field, as Cancel does beside a phone's search field, instead of on a row of its own. */
+  .easm-ui-command-dialog .easm-ui-overlay-close { display: inline-flex; position: absolute; top: 18px; inset-inline-end: 10px; color: var(--easm-ui-text-secondary); }
+  .easm-ui-command-dialog .easm-ui.easm-ui-field.easm-ui-command-search { width: calc(100% - 44px); }
+}
+@media (prefers-reduced-motion: reduce) { .easm-ui-dialog.easm-ui-command-dialog { animation: none !important; } }
+@media (forced-colors: active) {
+  .easm-ui-command-search .easm-ui-search-input { border: 1px solid CanvasText; }
+  .easm-ui-command-dialog .easm-ui.easm-ui-field.easm-ui-command-search .easm-ui-input:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  .easm-ui-command-results button:focus-visible { outline: 2px solid Highlight; }
+}
+
+/* Breadcrumbs, line size: one 18 px line under a page title. The text never grows the line; each link's tap area
+   reaches 44 px through a hit zone that takes no room. In a narrow box the trail becomes one "‹ Parent" link. */
+.easm-ui-breadcrumbs[data-size='line'] { container-type: inline-size; width: 100%; overflow: visible; }
+.easm-ui-breadcrumbs[data-size='line'] ol { width: auto; min-width: 0; gap: 6px; padding: 0; font-size: 13px; line-height: 18px; }
+.easm-ui-breadcrumbs[data-size='line'] li { gap: 6px; min-width: 0; }
+.easm-ui-breadcrumbs[data-size='line'] li > svg { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-breadcrumbs[data-size='line'] li:last-child { flex: 1 1 auto; overflow: hidden; }
+.easm-ui-breadcrumbs[data-size='line'] :is(a, [aria-current], li > span) { overflow: hidden; text-overflow: ellipsis; }
+.easm-ui-breadcrumbs[data-size='line'] a { position: relative; display: inline-block; max-width: 28ch; min-height: 0; border-radius: 4px; }
+.easm-ui-breadcrumbs[data-size='line'] a::after { content: ''; position: absolute; inset: -13px -4px; }
+.easm-ui-breadcrumbs[data-size='line'] [aria-current] { color: var(--easm-ui-text-secondary); font-weight: 500; }
+@media (pointer: coarse) { .easm-ui-breadcrumbs[data-size='line'] a { min-height: 0; } }
+.easm-ui-breadcrumbs-fold { position: relative; min-width: 24px; height: 18px; padding: 0 4px; border: 0; border-radius: 6px; background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font: inherit; line-height: 18px; cursor: pointer; }
+.easm-ui-breadcrumbs-fold::after { content: ''; position: absolute; inset: -13px -6px; }
+.easm-ui-breadcrumbs-fold:hover { background: var(--easm-ui-track-hover); color: var(--easm-ui-text); }
+.easm-ui-breadcrumbs:not([data-size='line']) .easm-ui-breadcrumbs-fold { height: 24px; }
+.easm-ui-breadcrumbs a.easm-ui-breadcrumbs-back { display: none; position: relative; min-height: 0; align-items: center; gap: 4px; max-width: 100%; color: var(--easm-ui-text-secondary); font-size: 13px; line-height: 18px; font-weight: 500; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-breadcrumbs a.easm-ui-breadcrumbs-back::after { content: ''; position: absolute; inset: -13px -4px; }
+.easm-ui-breadcrumbs a.easm-ui-breadcrumbs-back:hover { color: var(--easm-ui-primary); text-decoration: none; }
+.easm-ui-breadcrumbs-back > svg { flex: none; }
+.easm-ui-breadcrumbs-back:focus-visible, .easm-ui-breadcrumbs-fold:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+@container (max-width: 360px) {
+  .easm-ui-breadcrumbs[data-size='line'] ol { display: none; }
+  .easm-ui-breadcrumbs[data-size='line'] a.easm-ui-breadcrumbs-back { display: inline-flex; }
+}
+[dir='rtl'] .easm-ui-breadcrumbs-back > svg { transform: scaleX(-1); }

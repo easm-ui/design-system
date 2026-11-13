@@ -1,0 +1,338 @@
+{
+  "package": "@easm/motion",
+  "version": "1.1.0",
+  "grammar": "The core is EASM; a rail is a system (or the channel to the person); orange light inside a rail is information moving (out of the core: EASM reaching out; in: something arriving). A docked rail is in use. The core turning is thinking, glowing is EASM’s voice only, empty is no connection.",
+  "activeByDefault": false,
+  "reducedMotion": "prefers-reduced-motion or data-easm-motion=\"off\" on any ancestor: the still picture of each state",
+  "manualPause": "data-easm-motion=\"off\"",
+  "replay": "One-shots (done, error) play once and rest on the still mark; change replayKey (React) or call replay() to play again",
+  "rule": "Switch state when the real event happens, never on a timer; pair every working state with text that names the work.",
+  "icon": [
+    {
+      "name": "idle",
+      "component": "EasmIcon",
+      "prop": "state=\"idle\"",
+      "group": "presence",
+      "durationMs": 0,
+      "loopAllowed": false,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM",
+      "use": "Nothing is pending",
+      "motion": "The still mark. The engine stops.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-idle-light.svg",
+        "svg/icon/easm-icon-idle-dark.svg"
+      ]
+    },
+    {
+      "name": "connecting",
+      "component": "EasmIcon",
+      "prop": "state=\"connecting\"",
+      "group": "presence",
+      "durationMs": 1600,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is connecting",
+      "use": "A voice call, kiosk or chat session is opening",
+      "motion": "The rails plug into the core one by one, clockwise, while the core’s empty centre swells and settles.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-connecting-light.svg",
+        "svg/icon/easm-icon-connecting-dark.svg"
+      ]
+    },
+    {
+      "name": "listening",
+      "component": "EasmIcon",
+      "prop": "state=\"listening\"",
+      "group": "voice",
+      "durationMs": null,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": true,
+      "label": "EASM is listening",
+      "use": "The microphone is open (pass the MediaStream as level)",
+      "motion": "The user’s voice pours in along their rail (left) from its tip toward the core, as far as it is loud. The core never glows.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-listening-light.svg",
+        "svg/icon/easm-icon-listening-dark.svg"
+      ]
+    },
+    {
+      "name": "thinking",
+      "component": "EasmIcon",
+      "prop": "state=\"thinking\"",
+      "group": "work",
+      "durationMs": 1500,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is thinking",
+      "use": "The model is reasoning, before any tool or search",
+      "motion": "The core turns without stopping, quickening and easing on each quarter; each corner brushes the rail it passes.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-thinking-light.svg",
+        "svg/icon/easm-icon-thinking-dark.svg"
+      ]
+    },
+    {
+      "name": "searching",
+      "component": "EasmIcon",
+      "prop": "state=\"searching\"",
+      "group": "work",
+      "durationMs": 1800,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is searching",
+      "use": "Retrieval: knowledge base, documents, policies, catalogue",
+      "motion": "A sweep: each rail in turn sends light out of the core to its tip and reaches out with it.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-searching-light.svg",
+        "svg/icon/easm-icon-searching-dark.svg"
+      ]
+    },
+    {
+      "name": "toolCalling",
+      "component": "EasmIcon",
+      "prop": "state=\"toolCalling\"",
+      "group": "work",
+      "durationMs": 1600,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is using a connected system",
+      "use": "An integration is called (SIS, CRM, ERP, LMS, PBX…)",
+      "motion": "A system’s rail docks; the request fills it; it holds; the reply drains back into the core, which takes it in. A different system each call.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-tool-calling-light.svg",
+        "svg/icon/easm-icon-tool-calling-dark.svg"
+      ]
+    },
+    {
+      "name": "writing",
+      "component": "EasmIcon",
+      "prop": "state=\"writing\"",
+      "group": "reply",
+      "durationMs": 3600,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is writing",
+      "use": "A text answer is streaming into the chat",
+      "motion": "Strokes of light leave the core along the answer rail (right) at the uneven cadence of writing.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-writing-light.svg",
+        "svg/icon/easm-icon-writing-dark.svg"
+      ]
+    },
+    {
+      "name": "speaking",
+      "component": "EasmIcon",
+      "prop": "state=\"speaking\"",
+      "group": "reply",
+      "durationMs": null,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": true,
+      "label": "EASM is speaking",
+      "use": "EASM’s speech is playing (pass the audio as level)",
+      "motion": "The core glows with the real voice; the voice runs out along the answer rail as far as it is loud.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-speaking-light.svg",
+        "svg/icon/easm-icon-speaking-dark.svg"
+      ]
+    },
+    {
+      "name": "awaiting",
+      "component": "EasmIcon",
+      "prop": "state=\"awaiting\"",
+      "group": "reply",
+      "durationMs": 2400,
+      "loopAllowed": true,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is waiting for you",
+      "use": "EASM has asked for a confirmation, a choice or a missing detail",
+      "motion": "The user’s rail stays lit and the whole mark breathes slowly: over to you.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-awaiting-light.svg",
+        "svg/icon/easm-icon-awaiting-dark.svg"
+      ]
+    },
+    {
+      "name": "done",
+      "component": "EasmIcon",
+      "prop": "state=\"done\"",
+      "group": "outcome",
+      "durationMs": 1250,
+      "loopAllowed": false,
+      "oneShot": true,
+      "followsAudio": false,
+      "label": "Done",
+      "use": "A task finished (booked, sent, updated)",
+      "motion": "Plays once: light fills every rail round the circle, drains into the core, one beat, then the still mark.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-done-light.svg",
+        "svg/icon/easm-icon-done-dark.svg"
+      ]
+    },
+    {
+      "name": "error",
+      "component": "EasmIcon",
+      "prop": "state=\"error\"",
+      "group": "outcome",
+      "durationMs": 1500,
+      "loopAllowed": false,
+      "oneShot": true,
+      "followsAudio": false,
+      "label": "EASM could not complete this",
+      "use": "A task failed or a system did not answer",
+      "motion": "Plays once: a request falls back halfway, its rail comes away, the core empties and fills again, then the still mark.",
+      "reducedMotion": "The still mark",
+      "svg": [
+        "svg/icon/easm-icon-error-light.svg",
+        "svg/icon/easm-icon-error-dark.svg"
+      ]
+    },
+    {
+      "name": "offline",
+      "component": "EasmIcon",
+      "prop": "state=\"offline\"",
+      "group": "presence",
+      "durationMs": 0,
+      "loopAllowed": false,
+      "oneShot": false,
+      "followsAudio": false,
+      "label": "EASM is offline",
+      "use": "There is no connection to EASM",
+      "motion": "Still: the core is empty and the rails fall back.",
+      "reducedMotion": "The empty core, still",
+      "svg": [
+        "svg/icon/easm-icon-offline-light.svg",
+        "svg/icon/easm-icon-offline-dark.svg"
+      ]
+    }
+  ],
+  "waveform": [
+    {
+      "name": "idle",
+      "component": "EasmWaveform",
+      "prop": "mode=\"idle\"",
+      "durationMs": 0,
+      "loopAllowed": false,
+      "followsAudio": false,
+      "label": "Voice",
+      "use": "The voice channel exists but nothing is moving (mic closed, nothing playing)",
+      "motion": "A still row of dots.",
+      "reducedMotion": "A still row of dots",
+      "svg": []
+    },
+    {
+      "name": "loading",
+      "component": "EasmWaveform",
+      "prop": "mode=\"loading\"",
+      "durationMs": 1400,
+      "loopAllowed": true,
+      "followsAudio": false,
+      "label": "Loading",
+      "use": "A voice session or audio is being prepared",
+      "motion": "One crest crosses the dots left to right, each swelling into a short pill as it passes; then the row rests.",
+      "reducedMotion": "A still row of dots",
+      "svg": [
+        "svg/waveform/easm-waveform-loading-24.svg",
+        "svg/waveform/easm-waveform-loading-12.svg"
+      ]
+    },
+    {
+      "name": "listening",
+      "component": "EasmWaveform",
+      "prop": "mode=\"listening\"",
+      "durationMs": null,
+      "loopAllowed": true,
+      "followsAudio": true,
+      "label": "Listening",
+      "use": "The microphone is open (pass the MediaStream as level)",
+      "motion": "The user’s voice, tallest in the middle and rippling outward; in silence the dots breathe.",
+      "reducedMotion": "A still row of dots",
+      "svg": []
+    },
+    {
+      "name": "speaking",
+      "component": "EasmWaveform",
+      "prop": "mode=\"speaking\"",
+      "durationMs": null,
+      "loopAllowed": true,
+      "followsAudio": true,
+      "label": "EASM is speaking",
+      "use": "EASM’s speech is playing (pass the audio as level)",
+      "motion": "EASM’s voice in the same shape; without a level, the EASM voice’s own rhythm.",
+      "reducedMotion": "A still row of dots",
+      "svg": []
+    }
+  ],
+  "dots": [
+    {
+      "name": "typing",
+      "component": "EasmDots",
+      "prop": "variant=\"typing\"",
+      "durationMs": 1200,
+      "loopAllowed": true,
+      "label": "EASM is writing",
+      "use": "EASM is writing an answer",
+      "motion": "A wave runs left to right: each dot rises and swells in turn, then all rest.",
+      "reducedMotion": "Three still dots",
+      "svg": [
+        "svg/dots/easm-dots-typing-ink.svg",
+        "svg/dots/easm-dots-typing-grey.svg",
+        "svg/dots/easm-dots-typing-paper.svg",
+        "svg/dots/easm-dots-typing-orange.svg"
+      ]
+    },
+    {
+      "name": "searching",
+      "component": "EasmDots",
+      "prop": "variant=\"searching\"",
+      "durationMs": 1500,
+      "loopAllowed": true,
+      "label": "EASM is searching",
+      "use": "EASM is looking through sources",
+      "motion": "A highlight scans 1 → 2 → 3 → 2 → 1, lingering at the ends as it turns.",
+      "reducedMotion": "Three still dots",
+      "svg": [
+        "svg/dots/easm-dots-searching-ink.svg",
+        "svg/dots/easm-dots-searching-grey.svg",
+        "svg/dots/easm-dots-searching-paper.svg",
+        "svg/dots/easm-dots-searching-orange.svg"
+      ]
+    },
+    {
+      "name": "thinking",
+      "component": "EasmDots",
+      "prop": "variant=\"thinking\"",
+      "durationMs": 1800,
+      "loopAllowed": true,
+      "label": "EASM is thinking",
+      "use": "EASM is reasoning",
+      "motion": "Slow swells, one dot after another; nothing moves position.",
+      "reducedMotion": "Three still dots",
+      "svg": [
+        "svg/dots/easm-dots-thinking-ink.svg",
+        "svg/dots/easm-dots-thinking-grey.svg",
+        "svg/dots/easm-dots-thinking-paper.svg",
+        "svg/dots/easm-dots-thinking-orange.svg"
+      ]
+    }
+  ]
+}

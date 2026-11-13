@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ConnectorAddIcon = /* @__PURE__ */ createIcon({"name":"connector-add","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"rect","attrs":{"x":3,"y":3.5,"width":6,"height":6,"rx":2,"fill":"surface"}},{"tag":"rect","attrs":{"x":15,"y":14.5,"width":6,"height":6,"rx":2,"fill":"surface"}},{"tag":"path","attrs":{"d":"M6 9.5v5a3.5 3.5 0 0 0 3.5 3.5H15"}}]},{"tag":"circle","attrs":{"cx":18,"cy":17.5,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 15.5v4m-2-2h4","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

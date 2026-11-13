@@ -1,0 +1,95 @@
+{
+  "name": "@easm-ui/icons",
+  "version": "1.14.0",
+  "description": "EASM One icons: 676 icon ids over 532 drawings, 309 directed motions, motion presets and brand marks for channels, campus and business systems, websites, marketing and payments.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easm-ui/design-system.git",
+    "directory": "packages/icons"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/**/*.css",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./src/styles.css",
+    "./animation.css": "./src/animation.css",
+    "./part-motion.css": "./src/part-motion.css",
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.js"
+    },
+    "./motion": {
+      "types": "./dist/motion.d.ts",
+      "import": "./dist/motion.js"
+    },
+    "./icon": {
+      "types": "./dist/Icon.d.ts",
+      "import": "./dist/Icon.js"
+    },
+    "./brand-icon": {
+      "types": "./dist/BrandIcon.d.ts",
+      "import": "./dist/BrandIcon.js"
+    },
+    "./animated": {
+      "types": "./dist/AnimatedIcon.d.ts",
+      "import": "./dist/AnimatedIcon.js"
+    },
+    "./motion-icon": {
+      "types": "./dist/MotionIcon.d.ts",
+      "import": "./dist/MotionIcon.js"
+    },
+    "./widget-icons": {
+      "types": "./dist/widget-icons.d.ts",
+      "import": "./dist/widget-icons.js"
+    },
+    "./form-icons": {
+      "types": "./dist/form-icons.d.ts",
+      "import": "./dist/form-icons.js"
+    },
+    "./icons/*": {
+      "types": "./dist/icons/*.d.ts",
+      "import": "./dist/icons/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../scripts/esm-extensions.mjs dist",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "node test/components.cjs",
+    "test:motion": "node test/part-motion.cjs",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sharp": "0.35.5",
+    "typescript": "~5.9.3"
+  },
+  "homepage": "https://github.com/easm-ui/design-system/tree/main/packages/icons#readme",
+  "bugs": {
+    "url": "https://github.com/easm-ui/design-system/issues"
+  }
+}

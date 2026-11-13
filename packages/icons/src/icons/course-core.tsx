@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const CourseCoreIcon = /* @__PURE__ */ createIcon({"name":"course-core","body":[{"tag":"g","attrs":{"transform":"translate(0.9600000000000006 0.9600000000000006) scale(0.82)","stroke-width":1.951},"children":[{"tag":"path","attrs":{"d":"M7 3.5h12V20H7a3 3 0 0 1-3-3V6.5a3 3 0 0 1 3-3ZM4 17a3 3 0 0 1 3-3h12M8 7h7","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M17.7 15.7l.6 1.3 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2Z","stroke-width":1.15}}]});

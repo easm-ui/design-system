@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const DashboardMarketingIcon = /* @__PURE__ */ createIcon({"name":"dashboard-marketing","body":[{"tag":"path","attrs":{"d":"M6.3 6.6 12.6 10.9M6.5 12h5.7M6.3 17.4l6.3-4.3"}},{"tag":"circle","attrs":{"cx":4.8,"cy":5.6,"r":1.6,"fill":"none"}},{"tag":"circle","attrs":{"cx":4.8,"cy":12,"r":1.6,"fill":"none"}},{"tag":"circle","attrs":{"cx":4.8,"cy":18.4,"r":1.6,"fill":"none"}},{"tag":"circle","attrs":{"cx":16.6,"cy":12,"r":4.4,"fill":"surface"}},{"tag":"circle","attrs":{"cx":16.6,"cy":12,"r":1.5,"fill":"none"}}]});

@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const InputFixedIcon = /* @__PURE__ */ createIcon({"name":"input-fixed","body":[{"tag":"g","attrs":{"transform":"rotate(40 7.6 7.2)"},"children":[{"tag":"path","attrs":{"d":"M5.1 2.9h5M6.2 2.9v3.2L4.7 8.8h5.8L9 6.1V2.9","fill":"surface"}},{"tag":"path","attrs":{"d":"M7.6 8.8v3.6"}}]},{"tag":"path","attrs":{"d":"M13.2 6.8h3.3a2 2 0 0 1 2 2v2.6m-1.6-1.5 1.6 1.6 1.6-1.6"}},{"tag":"rect","attrs":{"x":3,"y":14,"width":18,"height":6.5,"rx":2.2,"fill":"surface"}},{"tag":"path","attrs":{"d":"M6.5 17.25h5.5"}}]});

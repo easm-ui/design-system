@@ -1,0 +1,175 @@
+{
+  "easm": {
+    "motion": {
+      "$description": "@easm/motion 1.1.0: the EASM One app's icon states, voice waveform and dots (logo v6). Generated from the kit; do not edit by hand.",
+      "ease": {
+        "io": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.65,
+            0,
+            0.35,
+            1
+          ],
+          "$description": "Ease in and out: blends between states, drains, docking."
+        },
+        "soft": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.45,
+            0,
+            0.2,
+            1
+          ],
+          "$description": "Sets off from rest and lands softly: light leaving the core, fills."
+        },
+        "snap": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.5,
+            0,
+            0.2,
+            1
+          ],
+          "$description": "A quicker landing."
+        },
+        "dots": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.45,
+            0,
+            0.55,
+            1
+          ],
+          "$description": "The three-dot indicators."
+        }
+      },
+      "duration": {
+        "blend": {
+          "$type": "duration",
+          "$value": "500ms",
+          "$description": "Every change of icon state blends over this."
+        },
+        "blend-one-shot": {
+          "$type": "duration",
+          "$value": "280ms",
+          "$description": "A change into done or error (an event) blends faster."
+        },
+        "wave-blend": {
+          "$type": "duration",
+          "$value": "450ms",
+          "$description": "Every change of waveform mode blends over this."
+        },
+        "icon-connecting": {
+          "$type": "duration",
+          "$value": "1600ms",
+          "$description": "connecting: one cycle."
+        },
+        "icon-thinking": {
+          "$type": "duration",
+          "$value": "1500ms",
+          "$description": "thinking: one cycle."
+        },
+        "icon-searching": {
+          "$type": "duration",
+          "$value": "1800ms",
+          "$description": "searching: one cycle."
+        },
+        "icon-tool-calling": {
+          "$type": "duration",
+          "$value": "1600ms",
+          "$description": "One tool call (the loop visits all six systems)."
+        },
+        "icon-writing": {
+          "$type": "duration",
+          "$value": "3600ms",
+          "$description": "writing: one cycle."
+        },
+        "icon-awaiting": {
+          "$type": "duration",
+          "$value": "2400ms",
+          "$description": "awaiting: one cycle."
+        },
+        "icon-done": {
+          "$type": "duration",
+          "$value": "1250ms",
+          "$description": "done: plays once, then the still mark."
+        },
+        "icon-error": {
+          "$type": "duration",
+          "$value": "1500ms",
+          "$description": "error: plays once, then the still mark."
+        },
+        "icon-voice-loop": {
+          "$type": "duration",
+          "$value": "7150ms",
+          "$description": "The EASM voice rhythm that speaking and listening follow without live audio."
+        },
+        "wave-loading": {
+          "$type": "duration",
+          "$value": "1400ms",
+          "$description": "One loading crest across the waveform, then rest."
+        },
+        "dots-typing": {
+          "$type": "duration",
+          "$value": "1200ms",
+          "$description": "typing dots: one cycle at speed 1."
+        },
+        "dots-searching": {
+          "$type": "duration",
+          "$value": "1500ms",
+          "$description": "searching dots: one cycle at speed 1."
+        },
+        "dots-thinking": {
+          "$type": "duration",
+          "$value": "1800ms",
+          "$description": "thinking dots: one cycle at speed 1."
+        }
+      },
+      "color": {
+        "core": {
+          "$type": "color",
+          "$value": "#FF6A00",
+          "$description": "The core and every light: signature orange, always fully opaque."
+        },
+        "core-glow": {
+          "$type": "color",
+          "$value": "#FF8A33",
+          "$description": "The core at the top of a syllable while speaking."
+        },
+        "rail-on-light": {
+          "$type": "color",
+          "$value": "#161616",
+          "$description": "Rails on light surfaces (ink)."
+        },
+        "rail-on-dark": {
+          "$type": "color",
+          "$value": "#FAFAF8",
+          "$description": "Rails on dark surfaces (paper)."
+        }
+      },
+      "size": {
+        "icon-min": {
+          "$type": "dimension",
+          "$value": "16px",
+          "$description": "Smallest icon size; every state stays legible here."
+        },
+        "icon-default": {
+          "$type": "dimension",
+          "$value": "24px",
+          "$description": "Status lines and chat avatars."
+        },
+        "dots-default": {
+          "$type": "dimension",
+          "$value": "6px",
+          "$description": "Dot diameter for chat bubbles."
+        },
+        "wave-default": {
+          "$type": "dimension",
+          "$value": "28px",
+          "$description": "Waveform height in a composer."
+        }
+      }
+    }
+  }
+}

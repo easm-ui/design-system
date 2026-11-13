@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const InputFromAssistantIcon = /* @__PURE__ */ createIcon({"name":"input-from-assistant","body":[{"tag":"g","attrs":{"transform":"translate(7.5 7.2) scale(0.46) translate(-12 -12)","stroke-width":3.478},"children":[{"tag":"path","attrs":{"d":"M12 3c1.1 5.8 3.2 7.9 9 9-5.8 1.1-7.9 3.2-9 9-1.1-5.8-3.2-7.9-9-9 5.8-1.1 7.9-3.2 9-9Z","fill":"surface"}}]},{"tag":"path","attrs":{"d":"M13.2 6.8h3.3a2 2 0 0 1 2 2v2.6m-1.6-1.5 1.6 1.6 1.6-1.6"}},{"tag":"rect","attrs":{"x":3,"y":14,"width":18,"height":6.5,"rx":2.2,"fill":"surface"}},{"tag":"path","attrs":{"d":"M6.5 17.25h5.5"}}]});

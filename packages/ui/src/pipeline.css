@@ -1,0 +1,86 @@
+/* Pipeline layer. Each stage has a tinted header in its tone; cards are white on the white page;
+   the drop zone and the drop slot are fills, never dashed lines. */
+
+.easm-ui-kanban { position: relative; min-width: 0; container-type: inline-size; font-family: var(--easm-ui-font); }
+/* Columns share the width when there is room and scroll sideways when there is not; a paging button marks
+   the side that hides more stages. The edge is a hard line: a fade there hid half a column on phones. */
+.easm-ui-kanban-scroll { display: grid; grid-auto-columns: minmax(272px, 1fr); grid-auto-flow: column; align-items: start; gap: 14px; min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain; scroll-padding-inline: 4px; padding: 4px 4px 12px; margin: -4px; border-radius: var(--easm-ui-radius-overlay); outline: none; scrollbar-width: thin; scrollbar-color: var(--easm-ui-track-pressed) transparent; }
+.easm-ui-kanban-scroll:focus-visible { outline-offset: -2px; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-kanban-page.easm-ui-button { position: absolute; top: 6px; z-index: 1; background: var(--easm-ui-surface); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-kanban-page.easm-ui-button:hover:not([aria-disabled='true']) { background: var(--easm-ui-track-hover); }
+.easm-ui-kanban-page[data-side='start'] { inset-inline-start: -4px; }
+.easm-ui-kanban-page[data-side='end'] { inset-inline-end: -4px; }
+.easm-ui-kanban-page[data-side='start']:dir(rtl), .easm-ui-kanban-page[data-side='end']:dir(rtl) { scale: -1 1; }
+
+.easm-ui-kanban-column { display: flex; flex-direction: column; gap: 10px; min-width: 0; border-radius: var(--easm-ui-radius-card); transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-kanban-column[data-drop='true'] { background: color-mix(in srgb, var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)) 45%, transparent); }
+.easm-ui-kanban-column-footer { display: flex; justify-content: center; }
+.easm-ui-kanban-column-header { --easm-kanban-chip: color-mix(in srgb, var(--easm-ui-surface) 70%, var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint))); --easm-kanban-chip-hover: color-mix(in srgb, var(--easm-ui-surface) 55%, var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint))); display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 8px 8px 14px; border-radius: var(--easm-ui-radius-card); background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); --easm-icon-background: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); --easm-icon-contrast: var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)); }
+.easm-ui-kanban-column-dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--easm-chart-tone, var(--easm-ui-chart-blue)); }
+.easm-ui-kanban-column-title { flex: 0 1 auto; min-width: 0; margin: 0; overflow: hidden; font-size: 14px; font-weight: 650; line-height: 20px; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-kanban-column-count { flex: none; min-width: 24px; padding: 1px 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-kanban-chip); font-size: 12px; font-weight: 650; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-kanban-column-badge { display: inline-flex; flex: none; }
+.easm-ui-kanban-column-badge .easm-ui-tag { background: var(--easm-kanban-chip); color: inherit; --easm-icon-background: var(--easm-kanban-chip); --easm-icon-contrast: var(--easm-kanban-chip); }
+.easm-ui-kanban-column-actions { display: inline-flex; margin-inline-start: auto; }
+/* The stage's ink for enabled actions only, so Button's disabled state still shows. */
+.easm-ui-kanban-column-actions .easm-ui-button[data-variant='subtle']:not(:disabled, [aria-disabled='true']:not([data-loading='true'])) { color: inherit; }
+.easm-ui-kanban-column-actions .easm-ui-button[data-variant='subtle']:hover:not([aria-disabled='true']) { background: var(--easm-kanban-chip-hover); --easm-icon-background: var(--easm-kanban-chip-hover); --easm-icon-contrast: var(--easm-kanban-chip-hover); }
+.easm-ui-kanban-column-description { margin: -2px 6px 0; color: var(--easm-ui-text-secondary); font-size: 12px; line-height: 18px; }
+.easm-ui-kanban-list { display: flex; flex-direction: column; gap: 8px; min-height: 96px; margin: 0; padding: 0 0 4px; list-style: none; }
+.easm-ui-kanban-item { min-width: 0; }
+.easm-ui-kanban-item[data-dragging='true'] { opacity: .45; }
+.easm-ui-kanban-placeholder { height: 64px; border-radius: var(--easm-ui-radius-card); background: color-mix(in srgb, var(--easm-chart-tone, var(--easm-ui-chart-blue)) 18%, transparent); animation: easm-chart-fade var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-kanban-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 96px; padding: 16px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: 13px; font-weight: 500; text-align: center; --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-kanban[data-dragging='true'] .easm-ui-kanban-empty { background: color-mix(in srgb, var(--easm-chart-tone-tint, var(--easm-ui-chart-blue-tint)) 70%, var(--easm-ui-track)); color: var(--easm-chart-tone-ink, var(--easm-ui-chart-blue-ink)); }
+
+/* LeadCard */
+.easm-ui-lead-card { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 14px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); color: var(--easm-ui-text); font-family: var(--easm-ui-font); transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease), transform var(--easm-ui-motion-fast) var(--easm-ui-ease); --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface); }
+.easm-ui-lead-card[draggable='true'] { cursor: grab; }
+.easm-ui-lead-card[draggable='true']:active { cursor: grabbing; }
+.easm-ui-lead-card-head { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.easm-ui-lead-card-title { flex: 1; min-width: 0; }
+.easm-ui-lead-card-name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.easm-ui-lead-card-name > .easm-ui-score-pill { flex: none; }
+/* The name clips with an ellipsis; 4px of padding (taken back by the margin) keeps the link's focus ring and the
+   forced-colours outline inside the clip instead of cutting them off. */
+/* A person's name wraps to a second line before it is ever cut: a cut name reads as a different person. */
+.easm-ui-lead-card-title h4 { flex: 0 1 auto; min-width: 0; margin: -4px; padding: 4px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: break-word; font-size: 14px; font-weight: 600; line-height: 20px; }
+.easm-ui-lead-card-title h4 :is(a, button) { padding: 0; border: 0; border-radius: var(--easm-ui-radius-mark); background: none; color: inherit; font: inherit; text-align: start; text-decoration: none; cursor: pointer; }
+.easm-ui-lead-card-title h4 :is(a, button):hover { color: var(--easm-ui-primary); }
+.easm-ui-lead-card-title p { margin: 1px 0 0; overflow: hidden; color: var(--easm-ui-primary); font-size: 12px; font-weight: 500; line-height: 18px; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-lead-card-menu.easm-ui-button { flex: none; margin: -4px -6px 0 -4px; color: var(--easm-ui-text-secondary); }
+.easm-ui-lead-card-details { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; color: var(--easm-ui-text-secondary); font-size: 12px; line-height: 18px; }
+.easm-ui-lead-card-details li { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.easm-ui-lead-card-details li > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-lead-card-details .easm-icon { flex: none; }
+.easm-ui-lead-card-progress { margin-top: 2px; }
+.easm-ui-lead-card-name > .easm-ui-lead-card-temperature { flex: none; width: 24px; height: 24px; }
+.easm-ui-lead-card-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; color: var(--easm-ui-text-secondary); font-size: 12px; line-height: 18px; }
+.easm-ui-lead-card-meta > span { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.easm-ui-lead-card-next { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 6px 10px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); color: var(--easm-ui-text); font-size: 12px; line-height: 18px; --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-lead-card-next > .easm-icon { flex: none; margin-top: 1px; color: var(--easm-ui-text-secondary); }
+.easm-ui-lead-card-next strong { font-weight: 600; }
+.easm-ui-lead-card-next[data-overdue] { background: var(--easm-ui-warning-surface); --easm-icon-background: var(--easm-ui-warning-surface); --easm-icon-contrast: var(--easm-ui-warning-surface); }
+.easm-ui-lead-card-next[data-overdue] > .easm-icon { color: var(--easm-ui-warning); }
+.easm-ui-lead-card-foot { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.easm-ui-lead-card-tags { display: flex; flex: 1; flex-wrap: wrap; gap: 4px; min-width: 0; }
+.easm-ui-lead-card-time { display: inline-flex; flex: none; align-items: center; gap: 4px; margin-inline-start: auto; color: var(--easm-ui-text-secondary); font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; }
+.easm-ui-lead-card-owner.easm-ui-avatar { flex: none; width: 24px; height: 24px; font-size: 10px; }
+
+/* Inside a white card, panel or drawer the cards take the white page fill so they still read as cards. */
+:is(.easm-ui-card, .easm-ui-panel, .easm-ui-overlay-panel) .easm-ui-lead-card { background: var(--easm-ui-background); --easm-icon-background: var(--easm-ui-background); --easm-icon-contrast: var(--easm-ui-background); }
+
+/* Phones and narrow split views: one column at a time, the next one peeking, snapping as you swipe. */
+@container (max-width: 600px) {
+  .easm-ui-kanban-scroll { scroll-snap-type: x mandatory; }
+  .easm-ui-kanban-scroll { grid-auto-columns: calc(100cqi - 52px); gap: 10px; }
+  .easm-ui-kanban-page { display: none; }
+  .easm-ui-kanban-column { scroll-snap-align: start; }
+}
+
+@media (pointer: coarse) { .easm-ui-lead-card[draggable='true'] { cursor: auto; } }
+@media (prefers-reduced-motion: reduce) { .easm-ui-kanban-column, .easm-ui-lead-card { transition: none; } .easm-ui-kanban-placeholder { animation: none; } }
+@media (forced-colors: active) {
+  .easm-ui-lead-card, .easm-ui-kanban-column-header, .easm-ui-kanban-empty, .easm-ui-kanban-placeholder { border: 1px solid CanvasText; }
+  .easm-ui-kanban-column[data-drop='true'] { outline: 2px solid Highlight; }
+}

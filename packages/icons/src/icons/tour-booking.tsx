@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const TourBookingIcon = /* @__PURE__ */ createIcon({"name":"tour-booking","body":[{"tag":"g","attrs":{},"children":[{"tag":"path","attrs":{"d":"M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z","fill":"surface"}},{"tag":"circle","attrs":{"cx":12,"cy":10,"r":2.6,"fill":"none"}}]},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M17.7 15.1v2.6l1.8 1.15","fill":"none","stroke":"ink","stroke-width":1.1}}]});

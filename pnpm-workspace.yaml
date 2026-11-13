@@ -1,0 +1,6 @@
+packages:
+  - "packages/*"
+# Packages allowed to run install scripts (esbuild and sharp fetch native binaries).
+allowBuilds:
+  esbuild: true
+  sharp: true

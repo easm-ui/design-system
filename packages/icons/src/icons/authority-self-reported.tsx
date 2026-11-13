@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const AuthoritySelfReportedIcon = /* @__PURE__ */ createIcon({"name":"authority-self-reported","body":[{"tag":"path","attrs":{"d":"M8 4h8c3.3 0 5 1.7 5 5v5c0 3.3-1.7 5-5 5h-5.6l-4.1 2c-.6.3-1.3-.2-1.3-.9v-1.7C3.6 17.8 3 16.3 3 14V9c0-3.3 1.7-5 5-5Z","fill":"surface"}},{"tag":"circle","attrs":{"cx":9.6,"cy":10.3,"r":1.35,"fill":"ink","stroke":"none"}},{"tag":"circle","attrs":{"cx":14.4,"cy":10.3,"r":1.35,"fill":"ink","stroke":"none"}},{"tag":"path","attrs":{"d":"M10.9 10.3c0 1.7-.7 2.7-2 3.3M15.7 10.3c0 1.7-.7 2.7-2 3.3"}}]});

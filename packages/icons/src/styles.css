@@ -1,0 +1,205 @@
+/* EASM One icon contract v1.3 — scoped; importing this does not recolor the app.
+
+   Cascade layers and Tailwind CSS 4: the glyph defaults (display, colour, tone and state) sit in @layer base,
+   below Tailwind's utilities and below any unlayered product CSS, so `text-*`, `hidden`/`inline` and size
+   utilities on an <Icon> win. They sit directly in base, not in a sublayer: Tailwind's preflight is directly in
+   base too (`svg { display: block }`), and rules in a sublayer of base would lose to it whatever their
+   specificity. IconButton, its feedback badge and BrandIcon are components and stay unlayered, so a reset
+   never breaks them. In an app without Tailwind the layer is harmless.
+
+   Colours follow the EASM UI tokens (--easm-ui-*) when @easm-ui/ui's tokens are loaded and fall back to the
+   original icon palette when they are not. */
+@layer base {
+  .easm-icon {
+    display: inline-block;
+    flex: none;
+    vertical-align: middle;
+    color: var(--easm-icon-ink, var(--easm-ui-primary, #2457C5));
+  }
+  .easm-icon[data-tone='neutral'] { color: var(--easm-ui-text, #161616); --easm-icon-fill: none; }
+  .easm-icon[data-tone='inverse'] {
+    color: #CEDAFA; --easm-icon-fill: none;
+    --easm-icon-background: var(--easm-ui-dark, #0F0F0E); --easm-icon-contrast: var(--easm-ui-dark, #0F0F0E);
+  }
+  .easm-icon[data-tone='inherit'] { color: inherit; }
+  .easm-icon[data-state='hover'] { --easm-icon-ink: var(--easm-ui-primary-hover, #1E459F); }
+  .easm-icon[data-state='pressed'] { --easm-icon-ink: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-fill: var(--easm-ui-primary-border, #CEDAFA); }
+  .easm-icon[data-state='selected'] { --easm-icon-ink: var(--easm-ui-primary, #2457C5); --easm-icon-fill: var(--easm-ui-primary-border, #CEDAFA); }
+  .easm-icon[data-state='disabled'] { --easm-icon-ink: var(--easm-ui-text-disabled, #757D8D); --easm-icon-fill: var(--easm-ui-surface-disabled, #F7F8FA); }
+  .easm-icon[data-outline='true'],
+  .easm-icon[data-outline='true'][data-tone][data-state] { --easm-icon-fill: none; }
+  .easm-icon[data-state='hover'], .easm-icon[data-state='pressed'],
+  .easm-icon[data-state='selected'], .easm-icon[data-state='disabled'] { color: var(--easm-icon-ink); }
+  .easm-icon[data-tone='inherit'][data-state] { color: inherit; --easm-icon-fill: inherit; }
+  .easm-icon[data-tone='inverse'][data-state='hover'],
+  .easm-icon[data-tone='inverse'][data-state='pressed'],
+  .easm-icon[data-tone='inverse'][data-state='selected'] { color: var(--easm-ui-on-ink-strong, #FFFFFF); --easm-icon-fill: none; }
+  .easm-icon[data-tone='inverse'][data-state='disabled'] { --easm-icon-fill: none; }
+  /* Forced colours: the glyph takes its parent's system colour (LinkText in a link, HighlightText in a
+     selected row) instead of a fixed CanvasText. */
+  @media (forced-colors: active) {
+    .easm-icon[data-tone][data-state] { color: inherit; --easm-icon-fill: none; --easm-icon-background: Canvas; --easm-icon-contrast: Canvas; }
+  }
+}
+
+/* IconButton (deprecated in favour of @easm-ui/ui's IconButton; kept for compatibility). */
+.easm-icon-button {
+  appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: 1.5px solid transparent;
+  border-radius: var(--easm-ui-radius-control, 8px);
+  background: transparent;
+  color: var(--easm-ui-primary, #2457C5);
+  cursor: pointer;
+  touch-action: manipulation;
+  --easm-icon-fill: none;
+  --easm-icon-background: var(--easm-ui-surface, #FFFFFF);
+  --easm-icon-contrast: var(--easm-ui-surface, #FFFFFF);
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: var(--easm-ui-motion-fast, 140ms);
+  transition-timing-function: var(--easm-ui-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+.easm-icon-button[data-density='compact'] { width: 32px; height: 32px; padding: 4px; border-radius: var(--easm-ui-radius-control, 8px); }
+.easm-icon-button[data-density='comfortable'] { width: 44px; height: 44px; }
+.easm-icon-button[data-tone='neutral'] { color: var(--easm-ui-text, #161616); }
+/* Hover only where a pointer can hover, so the colour does not stick after a tap. */
+@media (hover: hover) {
+  .easm-icon-button:hover:not(:disabled):not([aria-disabled='true']) {
+    color: var(--easm-ui-primary-hover, #1E459F); background: var(--easm-ui-primary-surface, #EEF3FF); --easm-icon-background: var(--easm-ui-primary-surface, #EEF3FF);
+  }
+}
+.easm-icon-button[data-preview='hover']:not(:disabled) {
+  color: var(--easm-ui-primary-hover, #1E459F); background: var(--easm-ui-primary-surface, #EEF3FF); --easm-icon-background: var(--easm-ui-primary-surface, #EEF3FF);
+}
+.easm-icon-button:active:not(:disabled):not([aria-disabled='true']),
+.easm-icon-button[data-preview='pressed']:not(:disabled) {
+  color: var(--easm-ui-primary-pressed, #1E459F); background: var(--easm-ui-primary-border, #CEDAFA); --easm-icon-background: var(--easm-ui-primary-border, #CEDAFA);
+}
+.easm-icon-button[data-selected='true'] {
+  color: var(--easm-ui-primary, #2457C5); background: var(--easm-ui-primary-surface, #EEF3FF); border-color: var(--easm-ui-primary, #2457C5);
+  --easm-icon-background: var(--easm-ui-primary-surface, #EEF3FF);
+}
+.easm-icon-button[data-tone='primary'] {
+  background: var(--easm-ui-primary-fill, #2457C5); color: var(--easm-ui-on-primary-fill, #FFFFFF);
+  --easm-icon-background: var(--easm-ui-primary-fill, #2457C5); --easm-icon-contrast: var(--easm-ui-primary-fill, #2457C5);
+}
+.easm-icon-button[data-tone='primary'][data-selected='true']:not(:disabled) {
+  background: var(--easm-ui-primary-fill-pressed, #1E459F); color: var(--easm-ui-on-primary-fill, #FFFFFF); border-color: var(--easm-ui-primary-border, #CEDAFA);
+  box-shadow: inset 0 0 0 1.5px var(--easm-ui-primary-border, #CEDAFA);
+  --easm-icon-background: var(--easm-ui-primary-fill-pressed, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-fill-pressed, #1E459F);
+}
+@media (hover: hover) {
+  .easm-icon-button[data-tone='primary']:hover:not(:disabled):not([aria-disabled='true']) {
+    background: var(--easm-ui-primary-fill-hover, #1E459F); color: var(--easm-ui-on-primary-fill, #FFFFFF);
+    --easm-icon-background: var(--easm-ui-primary-fill-hover, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-fill-hover, #1E459F);
+  }
+}
+.easm-icon-button[data-tone='primary']:active:not(:disabled):not([aria-disabled='true']) {
+  background: var(--easm-ui-primary-fill-pressed, #1E459F); color: var(--easm-ui-on-primary-fill, #FFFFFF);
+  --easm-icon-background: var(--easm-ui-primary-fill-pressed, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-fill-pressed, #1E459F);
+}
+.easm-icon-button:disabled, .easm-icon-button[aria-disabled='true']:not([data-busy='true']) {
+  color: var(--easm-ui-text-disabled, #757D8D); background: var(--easm-ui-surface-disabled, #F7F8FA); border-color: transparent; cursor: not-allowed; box-shadow: none;
+  --easm-icon-background: var(--easm-ui-surface-disabled, #F7F8FA); --easm-icon-contrast: var(--easm-ui-surface-disabled, #F7F8FA);
+}
+.easm-icon-button[data-busy='true'] { cursor: progress; }
+/* Focus: the system focus ring (--easm-ui-focus-ring: one solid edge plus a soft halo), never a second offset
+   outline. The transparent outline becomes the visible system outline in forced-colours mode. */
+.easm-icon-button:focus-visible, .easm-icon-button[data-preview='focus'] {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--easm-ui-focus-ring, 0 0 0 2px #2457C5);
+}
+/* Without the EASM UI tokens the fallback ring must not merge with what is under it: on the dark theme #2457C5 is
+   under 3:1 against #0F0F0E, and on a primary fill it is the fill's own colour, so it keeps a gap there. */
+[data-easm-icon-theme='dark'] .easm-icon-button:is(:focus-visible, [data-preview='focus']) {
+  box-shadow: var(--easm-ui-focus-ring, 0 0 0 2px #CEDAFA);
+}
+.easm-icon-button[data-tone='primary']:is(:focus-visible, [data-preview='focus']) {
+  box-shadow: var(--easm-ui-focus-ring, 0 0 0 2px #FFFFFF, 0 0 0 4px #2457C5);
+}
+.easm-icon-button[data-tone='primary'][data-selected='true']:not(:disabled):is(:focus-visible, [data-preview='focus']) {
+  box-shadow: var(--easm-ui-focus-ring, 0 0 0 2px #FFFFFF, 0 0 0 4px #2457C5), inset 0 0 0 1.5px var(--easm-ui-primary-border, #CEDAFA);
+}
+.easm-icon-feedback {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  display: inline-flex;
+  border-radius: 50%;
+  background: var(--easm-ui-surface, #FFFFFF);
+  color: var(--easm-ui-text, #161616);
+  --easm-icon-fill: none;
+}
+.easm-icon-spin { animation: easm-icon-spin 900ms linear infinite; }
+[data-easm-motion='off'] .easm-icon-spin { animation: none !important; }
+.easm-icon-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+@keyframes easm-icon-spin { to { transform: rotate(360deg); } }
+[data-easm-icon-theme='dark'] .easm-icon-button {
+  color: #CEDAFA; --easm-icon-background: var(--easm-ui-dark, #0F0F0E); --easm-icon-contrast: var(--easm-ui-dark, #0F0F0E);
+}
+@media (hover: hover) {
+  [data-easm-icon-theme='dark'] .easm-icon-button:hover:not(:disabled):not([aria-disabled='true']) {
+    color: var(--easm-ui-on-primary-fill, #FFFFFF); background: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-background: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-pressed, #1E459F);
+  }
+}
+[data-easm-icon-theme='dark'] .easm-icon-button:active:not(:disabled):not([aria-disabled='true']) {
+  color: var(--easm-ui-on-primary-fill, #FFFFFF); background: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-background: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-pressed, #1E459F);
+}
+[data-easm-icon-theme='dark'] .easm-icon-button[data-selected='true'] {
+  color: var(--easm-ui-on-primary-fill, #FFFFFF); border-color: #CEDAFA; background: var(--easm-ui-primary-pressed, #1E459F);
+  --easm-icon-background: var(--easm-ui-primary-pressed, #1E459F); --easm-icon-contrast: var(--easm-ui-primary-pressed, #1E459F);
+}
+[data-easm-icon-theme='dark'] .easm-icon-button:disabled {
+  color: var(--easm-ui-text-disabled, #757D8D); background: var(--easm-ui-dark, #0F0F0E); border-color: transparent;
+  --easm-icon-background: var(--easm-ui-dark, #0F0F0E); --easm-icon-contrast: var(--easm-ui-dark, #0F0F0E);
+}
+[data-easm-icon-theme='dark'] .easm-icon-button[data-tone='primary'] {
+  color: var(--easm-ui-on-primary-fill, #FFFFFF); --easm-icon-background: var(--easm-ui-primary-fill, #2457C5); --easm-icon-contrast: var(--easm-ui-primary-fill, #2457C5);
+}
+[data-easm-icon-theme='dark'] .easm-icon-button[data-tone='primary']:disabled {
+  color: var(--easm-ui-text-disabled, #757D8D); --easm-icon-background: var(--easm-ui-dark, #0F0F0E); --easm-icon-contrast: var(--easm-ui-dark, #0F0F0E);
+}
+[data-easm-icon-theme='dark'] .easm-icon-feedback { background: var(--easm-ui-dark, #0F0F0E); color: #CEDAFA; }
+/* Touch: coarse pointers get a hit area of at least the touch size (44 px), like @easm-ui/ui's controls. */
+@media (pointer: coarse) {
+  .easm-icon-button, .easm-icon-button[data-density='compact'] {
+    min-width: var(--easm-ui-size-touch, 44px);
+    min-height: var(--easm-ui-size-touch, 44px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-icon-button { transition: none; }
+  .easm-icon-spin { animation: none; }
+}
+@media (forced-colors: active) {
+  .easm-icon-button { color: ButtonText; background: ButtonFace; border-color: ButtonText; forced-color-adjust: auto; }
+  /* Selection is an inset outline and focus an outside one, so the two never look the same; a selected
+     button that also has focus shows a double outline (the same rules as @easm-ui/ui). */
+  .easm-icon-button[data-selected='true'] { outline: 2px solid Highlight; outline-offset: -4px; }
+  .easm-icon-button:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  .easm-icon-button[data-selected='true']:focus-visible { outline: 6px double Highlight; outline-offset: 0; }
+  .easm-icon-button:disabled { color: GrayText; }
+}
+
+/* Brand marks (BrandIcon). The tile is the EASM tone-tile shape, a corner about a quarter of its size. */
+.easm-brand-icon { display: inline-grid; flex: none; place-items: center; box-sizing: border-box; border-radius: 26%; vertical-align: middle; line-height: 0; }
+.easm-brand-icon > svg { display: block; width: 62%; height: 62%; overflow: visible; }
+.easm-brand-icon[data-appearance='tile'] { background: color-mix(in srgb, var(--easm-brand) 13%, var(--easm-ui-surface, #FFFFFF)); color: var(--easm-brand-ink); }
+.easm-brand-icon[data-appearance='tile'][data-multicolor='true'] { background: var(--easm-ui-track, #F1F3F6); }
+.easm-brand-icon[data-appearance='solid'] { background: var(--easm-brand-solid); color: #FFFFFF; }
+.easm-brand-icon[data-appearance='solid'][data-multicolor='true'] { background: var(--easm-ui-surface, #FFFFFF); }
+.easm-brand-icon[data-appearance='glyph'] { color: var(--easm-brand); border-radius: 0; }
+.easm-brand-icon[data-appearance='mono'] { color: inherit; border-radius: 0; }
+.easm-brand-icon:is([data-appearance='glyph'], [data-appearance='mono']) > svg { width: 100%; height: 100%; }
+@media (forced-colors: active) { .easm-brand-icon { forced-color-adjust: none; } .easm-brand-icon[data-appearance='mono'] { forced-color-adjust: auto; } }

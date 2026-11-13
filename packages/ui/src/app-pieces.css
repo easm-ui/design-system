@@ -1,0 +1,134 @@
+/* The dashboards' own pieces, moved into EASM UI (app-pieces.tsx). Looks are the ones they had in the app. */
+
+/* ------------------------------------------------------------------ ProductHomeHero, ProductHomeBody */
+@keyframes easm-ui-home-rise { from { opacity: 0; transform: translateY(10px); } }
+.easm-ui-home-rise { animation: easm-ui-home-rise 520ms cubic-bezier(.2, 0, 0, 1) both; animation-delay: var(--_rise-delay, 0ms); }
+
+.easm-ui-home-hero { position: relative; display: flex; flex-direction: column; align-items: center; overflow-x: clip; padding: 8px 4px 24px; }
+@media (min-width: 640px) { .easm-ui-home-hero { min-height: min(62vh, 640px); padding-bottom: 40px; } }
+.easm-ui-home-anchor-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.easm-ui-home-anchor { position: absolute; top: 0; right: 0; width: min(118vw, 480px); height: min(118vw, 480px); border-radius: 50%; translate: 50% -6%; }
+@media (min-width: 640px) { .easm-ui-home-anchor { width: clamp(480px, 46vw, 760px); height: clamp(480px, 46vw, 760px); translate: 36% -26%; } }
+
+.easm-ui-home-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; width: 100%; max-width: 384px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .easm-ui-home-metrics { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 12px 40px; max-width: none; } }
+.easm-ui-home-metrics > li { display: flex; justify-content: center; min-width: 0; }
+.easm-ui-home-metric { display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 4px 8px; border-radius: var(--easm-ui-radius-control); color: inherit; text-decoration: none; }
+.easm-ui-home-metric-label { max-width: 100%; overflow: hidden; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.easm-ui-home-metric-value { color: var(--easm-ui-text); font-size: var(--easm-ui-text-md); font-weight: 600; line-height: 20px; font-variant-numeric: tabular-nums; transition: color var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+a.easm-ui-home-metric:hover .easm-ui-home-metric-value { color: var(--easm-ui-primary); }
+a.easm-ui-home-metric:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+
+.easm-ui-home-centre { display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; justify-content: center; gap: 20px; width: 100%; padding: 24px 0; text-align: center; }
+@media (min-width: 640px) { .easm-ui-home-centre { gap: 28px; padding: 40px 0; } }
+.easm-ui-home-heading { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.easm-ui-home-greeting { margin: 0; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-lg); line-height: 24px; }
+.easm-ui-home-headline { max-width: 26ch; margin: 0; color: var(--easm-ui-text); font-size: clamp(1.4rem, 2.6vw, 2.15rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+
+.easm-ui-home-search { width: 100%; max-width: 680px; margin: 0; }
+.easm-ui-home-search-box {
+  display: flex; align-items: center; gap: 12px; min-height: 56px; box-sizing: border-box; padding: 0 20px; border: 1px solid var(--easm-ui-border-subtle); border-radius: 16px;
+  background: var(--easm-ui-surface); text-align: left; cursor: text; transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), box-shadow var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-home-search-box:hover { border-color: var(--easm-ui-border-hover); }
+.easm-ui-home-search-box:focus-within { border-color: var(--easm-ui-primary); box-shadow: 0 0 0 4px var(--easm-ui-halo); }
+.easm-ui-home-search-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-home-search-box input { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-md); appearance: none; }
+.easm-ui-home-search-box input::placeholder { color: var(--easm-ui-text-secondary); opacity: 1; }
+/* The box's own edge and halo show focus; the input inside takes no ring of its own (it would draw a double edge). */
+.easm-ui-home-search-box input:focus, .easm-ui-home-search-box input:focus-visible { outline: none; box-shadow: none; }
+@media (max-width: 639px) { .easm-ui-home-search-kbd { display: none; } }
+
+.easm-ui-home-actions {
+  display: flex; align-items: center; gap: 8px; width: calc(100% + 32px); margin: 0 -16px; padding: 0 16px 4px; overflow-x: auto; list-style: none;
+  scroll-snap-type: x; scroll-padding-inline: 16px; scrollbar-width: none;
+}
+.easm-ui-home-actions::-webkit-scrollbar { display: none; }
+@media (min-width: 640px) { .easm-ui-home-actions { flex-wrap: wrap; justify-content: center; width: auto; max-width: 860px; margin: 0; padding: 0; overflow: visible; } }
+.easm-ui-home-actions > li { flex: none; scroll-snap-align: start; }
+.easm-ui-home-action {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--easm-ui-border-subtle); border-radius: var(--easm-ui-radius-pill);
+  background: var(--easm-ui-surface); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-sm); font-weight: 500; line-height: 20px; text-decoration: none; cursor: pointer;
+  transition: border-color var(--easm-ui-motion-fast) var(--easm-ui-ease), background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+  --easm-icon-background: var(--easm-ui-surface); --easm-icon-contrast: var(--easm-ui-surface);
+}
+.easm-ui-home-action:hover { border-color: var(--easm-ui-border-hover); background: var(--easm-ui-surface-hover); --easm-icon-background: var(--easm-ui-surface-hover); --easm-icon-contrast: var(--easm-ui-surface-hover); }
+.easm-ui-home-action:focus-visible { outline: 2px solid var(--easm-ui-primary); outline-offset: 2px; }
+.easm-ui-home-action-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-home-action-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-orange); }
+.easm-ui-home-action-count { min-width: 24px; box-sizing: border-box; padding: 2px 8px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-home-action-count[data-attention] { background: var(--easm-ui-orange-surface); color: var(--easm-ui-orange-ink); }
+
+.easm-ui-home-body { width: 100%; max-width: 1200px; margin-inline: auto; padding-bottom: 40px; }
+.easm-ui-home-body > * + * { margin-top: 32px; }
+
+/* ------------------------------------------------------------------ BrandLockup, LoadingMark, LiveWaveform */
+.easm-ui-brand-lockup { display: inline-flex; align-items: center; }
+
+@keyframes easm-ui-fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* A loader waits a beat before it shows, so a quick answer never flashes one. */
+.easm-ui-loading-mark { display: inline-grid; place-items: center; animation: easm-ui-fade-in 240ms var(--easm-ui-ease-out) 180ms backwards; }
+
+@keyframes easm-ui-wave-bar { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+.easm-ui-live-wave { display: inline-flex; align-items: center; gap: 2px; height: 14px; color: var(--easm-ui-primary); vertical-align: middle; }
+.easm-ui-live-wave > span { display: block; width: 2px; height: 100%; border-radius: 999px; background: currentColor; transform: scaleY(0.5); transform-origin: center; animation: easm-ui-wave-bar 900ms ease-in-out infinite; }
+.easm-ui-live-wave > span:nth-child(3) { transform: scaleY(0.8); }
+
+/* ------------------------------------------------------------------ IconTapMotion */
+/* The ninth icon preset, `tap`: a press and a release on the artwork, played once (beside the pack's presets). */
+@keyframes easm-ui-motion-tap { 0% { transform: scale(1); } 35% { transform: scale(.82); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.easm-icon[data-active='true'][data-motion='tap'] .easm-icon-artwork { animation: easm-ui-motion-tap 360ms cubic-bezier(.2, 0, .2, 1) both; }
+
+/* ------------------------------------------------------------------ ExplainTip */
+.easm-ui-explain-tip { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 1.6; }
+.easm-ui-explain-tip > * { margin: 0; }
+.easm-ui-explain-tip > * + * { margin-top: 8px; }
+
+/* ------------------------------------------------------------------ PrimaryAction */
+.easm-ui-primary-action { display: contents; }
+.easm-ui-fab {
+  position: fixed; right: 16px; bottom: max(calc(var(--easm-ui-tabbar-space, 0px) + 2px), calc(16px + env(safe-area-inset-bottom, 0px))); z-index: 800;
+  display: none; place-items: center; width: 56px; height: 56px; margin: 0; padding: 0; border: 0; border-radius: 50%;
+  background: var(--easm-ui-primary-pressed); color: var(--easm-ui-on-primary-fill); box-shadow: 0 6px 20px rgb(16 19 24 / 22%); cursor: pointer; text-decoration: none;
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+  /* On the tab bar's deep blue the icon's cut-outs take the fill, so an add badge reads. */
+  --easm-icon-background: var(--easm-ui-primary-pressed); --easm-icon-contrast: var(--easm-ui-primary-pressed); --easm-icon-fill: var(--easm-ui-on-primary-fill-muted);
+}
+.easm-ui-fab:hover { background: var(--easm-ui-primary-hover); }
+.easm-ui-fab:focus-visible { outline: none; box-shadow: var(--easm-ui-focus-ring); }
+.easm-ui-fab:disabled { opacity: .5; cursor: not-allowed; }
+@media (max-width: 767px) {
+  .easm-ui-fab { display: grid; }
+  .easm-ui-primary-action { display: none; }
+  /* The page keeps room at its foot while the button floats, so it never covers the last row. */
+  body[data-easm-fab] main { padding-bottom: 88px; }
+}
+
+/* ------------------------------------------------------------------ ComingSoon */
+.easm-ui-coming-soon { display: flex; align-items: flex-start; gap: 16px; max-width: 768px; }
+.easm-ui-coming-soon-icon { --easm-tone-icon-size: 48px; }
+.easm-ui-coming-soon[data-compact] .easm-ui-coming-soon-icon { --easm-tone-icon-size: 40px; }
+.easm-ui-coming-soon-body { flex: 1 1 auto; min-width: 0; }
+.easm-ui-coming-soon-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.easm-ui-coming-soon-title > h3 { margin: 0; color: var(--easm-ui-text); font-size: var(--easm-ui-text-lg); font-weight: 600; line-height: 24px; }
+.easm-ui-coming-soon-text { margin-top: 4px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-md); line-height: 1.6; }
+.easm-ui-coming-soon-still { margin-top: 12px; padding: 8px 12px; border-radius: var(--easm-ui-radius-control); background: var(--easm-ui-track); color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+
+/* ------------------------------------------------------------------ ErrorScreen */
+.easm-ui-error-screen { display: flex; align-items: center; justify-content: center; min-height: 60vh; box-sizing: border-box; padding: 40px 16px; }
+.easm-ui-error-screen[data-full-page] { flex-direction: column; gap: 32px; min-height: 100dvh; background: var(--easm-ui-background); }
+.easm-ui-error-screen-body { width: 100%; max-width: 512px; }
+.easm-ui-error-screen-card { width: 100%; max-width: 512px; box-sizing: border-box; padding: 24px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); }
+.easm-ui-error-screen-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+.easm-ui-error-screen-details { max-height: 192px; margin: 16px 0 0; padding: 12px; overflow: auto; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); white-space: pre-wrap; }
+
+/* ------------------------------------------------------------------ Motion off */
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-home-rise, .easm-ui-loading-mark, .easm-ui-live-wave > span, .easm-icon[data-motion='tap'] .easm-icon-artwork { animation: none; }
+}
+[data-easm-motion='off'] :is(.easm-ui-home-rise, .easm-ui-loading-mark, .easm-ui-live-wave > span) { animation: none; }
+[data-easm-motion='off'] .easm-icon[data-motion='tap'] .easm-icon-artwork { animation: none; }
+
+@media (forced-colors: active) {
+  .easm-ui-fab, .easm-ui-coming-soon-still { border: 1px solid CanvasText; }
+}

@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const AiAgentIcon = /* @__PURE__ */ createIcon({"name":"ai-agent","body":[{"tag":"path","attrs":{"d":"M12 3v3M2.7 10.5v3.8m18.6-3.8v3.8"}},{"tag":"rect","attrs":{"x":"4.5","y":"6","width":"15","height":"13","rx":"4.5","fill":"surface"}},{"tag":"rect","attrs":{"x":"8","y":"10","width":"1.8","height":"2.6","rx":".9","fill":"ink","stroke":"none"}},{"tag":"rect","attrs":{"x":"14.2","y":"10","width":"1.8","height":"2.6","rx":".9","fill":"ink","stroke":"none"}},{"tag":"path","attrs":{"d":"M9.5 15.8h5"}}]});

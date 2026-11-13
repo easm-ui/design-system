@@ -1,0 +1,142 @@
+{
+  "layer": "Data & Analytics",
+  "specificationParts": [
+    "purpose",
+    "anatomy",
+    "variants",
+    "sizes",
+    "states",
+    "colorBehavior",
+    "iconBehavior",
+    "typography",
+    "spacing",
+    "bordersAndSurfaces",
+    "motion",
+    "accessibility",
+    "responsiveBehavior",
+    "contentRules",
+    "usageRules"
+  ],
+  "components": [
+    {
+      "name": "DataTable",
+      "specification": {
+        "purpose": "Compare structured records by column. Use explicit links or buttons for row actions; selection is a checkbox action, not a clickable row.",
+        "anatomy": "Accessible caption; labelled horizontal scroll region; scoped column headers; sort buttons; optional selection column; record rows; selection summary; optional footer. Empty/error guidance and retry remain outside the wide table viewport.",
+        "variants": "Data Table / Default, Selectable, Manual Sort, Empty, Loading and Error. Client sorting orders supplied rows; manual sorting delegates ordering to the caller.",
+        "sizes": "Small: 8px/12px cell padding with 13px text. Medium: 12px/16px and 14px. Large: 16px/20px. Column width categories: compact, regular and wide.",
+        "states": "Default, hover, focus, ascending/descending sort, selected and disabled rows; empty; loading skeleton rows; caller-supplied error with optional retry. Bulk selection excludes disabled rows and preserves selections from other pages.",
+        "colorBehavior": "White table on the page; the header row is the white page fill (#FFFFFF) with #5E6470 labels. Rows band softly (#F6F7F9 on even rows), hover #F5F7FA, selected #EEF4FF, disabled #F3F4F6. Status uses pastel badges with dark text; orange never decorates data.",
+        "iconBehavior": "16px Sort/Arrow up/Arrow down in headers; core Checkbox for selection; Table for empty and Error circle for failure. Badged or detailed artwork stays 20px+",
+        "typography": "13px semibold headers, 14px cells and 13px selection summary. Sort labels, numeric values and short status badges remain on one line. Long descriptive cell content wraps with overflow-wrap:anywhere.",
+        "spacing": "Cells follow density padding. The selection column reserves 56px, increasing to 68px for a 44px touch target plus horizontal padding on coarse pointers. Header sort and checkbox targets are 32px minimum, 44px on coarse pointers. Footer has 12px/16px padding.",
+        "bordersAndSurfaces": "12 px container radius and no outline. Rows are told apart by soft banding, never by row rules; the footer and selection summary sit on the page fill. With narrowLayout='cards' each row becomes a #F6F7F9 card below 600 px. Forced colours restore row rules.",
+        "motion": "140ms hover/selection response. Data and numeric values update when the actual source changes, without artificial delays or count-up animation. Reduced motion removes transitions.",
+        "accessibility": "Native table/caption, scope=col headers, aria-sort direction, explicit sort action labels and labelled checkboxes. Space toggles native checkboxes; Enter/Space activate native sort buttons. The horizontal scroll region is keyboard-focusable. Loading is aria-busy with one status message.",
+        "responsiveBehavior": "Preserve table semantics, declared column minimums and all columns. Sort labels, numbers and status badges remain intact; a labelled internal overflow region provides horizontal scrolling when needed. Empty/error messages and retry stay within the visible component width. Do not conceal important columns or collapse them into unlabeled values.",
+        "contentRules": "Column IDs and row keys must be unique, stable and nonempty. Sortable columns need an accessor/comparator. Null, undefined, invalid dates and nonfinite numeric values display unknown. Missing values sort last in both directions. Keep error descriptions and row-action names specific.",
+        "usageRules": "Pass authoritative row data and permissions. Client mode sorts the supplied collection, not unseen server pages. Use manual mode with onSortChange for server sorting. Selection state may contain other-page keys; summary counts only enabled supplied rows."
+      }
+    },
+    {
+      "name": "StatCard",
+      "specification": {
+        "purpose": "Show one KPI with its scope, units and optional comparison. Treat missing or unavailable values differently from a measured zero.",
+        "anatomy": "Metric label, optional contextual icon, value, scope/supporting description, optional labelled trend and error/loading message.",
+        "variants": "Stat Card / Default, With Trend, Loading, Unavailable and Error. KPI is an API alias of StatCard.",
+        "sizes": "Small uses 16px padding and 28px value; Medium 20px and 32px; Large 24px and 40px. Value area reserves at least 48px.",
+        "states": "Default; caller-supplied loading skeleton; unavailable em dash; error with clear reason. Trends state their direction and sentiment separately.",
+        "colorBehavior": "White card with #101318 value and #5E6470 label; an optional icon sits in a tinted tile in one chart tone. The trend is a pill: #0C8138 on #E6F8EC when good, #D92644 on #FFF5F6 when bad, #5E6470 on the grey track when neutral. An optional sparkline uses the card's tone.",
+        "iconBehavior": "Optional 16px compact or 20px normal metric icon. Arrow up, Arrow down or Subtract shows trend direction. Color communicates supplied positive/negative/neutral meaning, not whether the arrow points up.",
+        "typography": "14px/1.5 semibold label; 28/32/40px semibold tabular value; 13px/1.5 support and comparison. Long values wrap.",
+        "spacing": "8/12/16/20/24px scale; controls have at least 32px keyboard/pointer area and 44px touch area. Never fit data by reducing text below the standard scale.",
+        "bordersAndSurfaces": "12 px radius, no outline and no shadow; separated from the page by fill. The value scales with the card (24 to 34 px).",
+        "motion": "No rolling digits or delayed count-up. Loading uses the existing static Skeleton until the actual caller loading flag clears.",
+        "accessibility": "Use semantic HTML, visible keyboard focus and meaningful labels. Status text accompanies color. Preserve source values and keyboard access at reduced widths.",
+        "responsiveBehavior": "Wrap surrounding controls; keep content within the module width. Detailed data may scroll inside its labelled region instead of causing page overflow.",
+        "contentRules": "A metric value may be string, finite number or missing. Zero remains zero. Always name units and comparison window in the description/trend label. A higher cost may be negative; a lower response time may be positive.",
+        "usageRules": "Use one metric per card. Do not imply a trend without a real comparison period. Do not encode business actions into the whole card; use explicit controls nearby."
+      }
+    },
+    {
+      "name": "Chart",
+      "specification": {
+        "purpose": "Present one modest bar or line series with an honest linear scale and an accessible data-table fallback. Use dedicated analytics patterns for multi-series or advanced exploration.",
+        "anatomy": "Figure and caption; title and supporting scope; visible unit/scale description; decorative SVG plot with axis/grid; optional missing-value gaps; native expandable data table.",
+        "variants": "Chart / Bar, Line, Empty, Loading and Error. One series only; no gradients, smoothing, decorative animation or external chart runtime.",
+        "sizes": "Small: 16px padding and 180px minimum plot height. Medium: 20px and 180px. Large: 24px and 280px. SVG uses a 640\u00d7224 logical coordinate space and a 360px minimum inner width.",
+        "states": "Default plotted values; null values create gaps in lines or absent bars; all values unknown gives an explicit unavailable surface; loading/error replace the plot; the table remains available in empty/data states.",
+        "colorBehavior": "Single-series legacy chart in #2563EB on a light #E8EAEE grid. For new work use SeriesChart and the chart palette (blue, teal, amber, sky, green, plum, rose, violet, lime, indigo, honey, coral), each with a mark colour, a tint and an ink. Meaning is always also in text and numbers. Forced colours map plot ink to CanvasText.",
+        "iconBehavior": "Analytics for unavailable series; Error circle for failure. Plot markers are geometric data points, not decorative icons.",
+        "typography": "16px title, 13px scope/scale and 12px axis labels. Full labels and exact values are always available in the table. Plot labels may use ellipsis to prevent collisions.",
+        "spacing": "8/12/16/20/24px scale; controls have at least 32px keyboard/pointer area and 44px touch area. Never fit data by reducing text below the standard scale.",
+        "bordersAndSurfaces": "12 px card radius, no outline and no shadow. 'View data table' is a grey toggle with a chevron over a compact table with a rounded honey header and no row rules.",
+        "motion": "Plot positions update directly from current data. No count-up, interpolation or entrance delays. Expansion uses native details behavior with no decorative animation.",
+        "accessibility": "The plot SVG is hidden from assistive technology to avoid duplicate unreliable geometry descriptions. Native figure/caption describes it; the named plot viewport is keyboard-focusable for scrolling, with visible focus and any overflow hint attached by aria-describedby. The View data table summary is keyboard-operable and reveals full labels, units and numbers in a semantic table.",
+        "responsiveBehavior": "Observe the actual plot container, including narrow cards on tablets and desktops. Matching SVG canvas/viewBox dimensions keep text at 12px rather than shrinking it. Category and value-label lengths establish a readable intrinsic width; only the named plot region scrolls below that width, with visible guidance and keyboard focus. The plot grows into wider cards while keeping text size constant. Full labels and exact values remain available in the data table.",
+        "contentRules": "IDs must be unique; labels meaningful; values finite or null. Automatic domains include zero and all values. Explicit domains must also include zero and all values; clipping/truncated baselines are rejected. Negative values appear below the zero baseline. Do not use zero to represent missing.",
+        "usageRules": "Use for simple factual series; prefer 24 or fewer categories and few label collisions. Include period/units/source context. Multi-series, stacking, confidence bands, logarithmic scales and interaction-heavy analytics need a dedicated component rather than stretching this primitive."
+      }
+    },
+    {
+      "name": "FilterBar",
+      "specification": {
+        "purpose": "Group independent search and filter controls with a clear reset action. Changes are reported to the caller; the library does not fetch or invent matching records.",
+        "anatomy": "Labelled group, optional core SearchField, native disabled fieldset containing caller controls, optional Reset filters button and explicit active-filter count.",
+        "variants": "Filter Bar / Search and Filters, Filters Only, Active, Default and Disabled.",
+        "sizes": "Uses standard sm/md/lg input and button sizes. Container padding is 16px, reduced to 12px on narrow screens; all controls keep their core dimensions.",
+        "states": "Default and focused controls; query/active filters; disabled group; Reset disabled when no query or active filters. No automatic debounce or artificial loading.",
+        "colorBehavior": "Controls take the bar's own size. Inline filters are honey pills (#F1F3F6) showing 'Label \u00b7 Value'; the search field is white with the grey border; Reset is a subtle text action.",
+        "iconBehavior": "Core SearchField uses Search and Close; Reset uses the shared Reset icon. Caller filters retain their core selected/check behavior.",
+        "typography": "Inter/system fallback, 14px/1.5 body and 13px supporting text. Sentence case labels. Numeric values use tabular figures.",
+        "spacing": "12px control gap. Search basis 220px; filter basis 180px; children wrap from 160px. Maintain all visible labels above controls.",
+        "bordersAndSurfaces": "A grey fill (#F6F7F9) with 12 px radius and no outline. One row when wide, search on its own row at medium widths, everything stacked when narrow; it follows its own width (container queries).",
+        "motion": "140ms hover/selection response. Data and numeric values update when the actual source changes, without artificial delays or count-up animation. Reduced motion removes transitions.",
+        "accessibility": "Search has a meaningful label. Filters are in a native fieldset with a legend. The disabled fieldset blocks native controls; custom controls supplied by callers must also respect disabled state. Reset is a labelled button.",
+        "responsiveBehavior": "Search and filters wrap to full-width rows below 480px of available component space, including a narrow card inside a wider tablet/desktop viewport. A phone viewport fallback preserves the same behavior. Reset remains visible and does not overlay fields.",
+        "contentRules": "activeCount is a nonnegative integer counting filters, not records. Keep labels short and use explicit All values options. Preserve the committed query on unrelated changes unless the caller intentionally resets it.",
+        "usageRules": "Use only as a control group. Keep API fetching, debounce, URL synchronization and page resets in the caller; route-specific filters remain composed core inputs."
+      }
+    },
+    {
+      "name": "Pagination",
+      "specification": {
+        "purpose": "Move between a known total of numbered result pages. Use a cursor-based pattern for feeds with no reliable total.",
+        "anatomy": "Labelled nav; current record-range summary; Previous and Next buttons with branded chevrons; current page status; optional stale-page explanation and explicit recovery button.",
+        "variants": "Pagination / Default, First Page, Last Page, Empty, Disabled and Stale Requested Page.",
+        "sizes": "Standard Small, Medium and Large core buttons. At least 88px page status width; 12px desktop gaps, 8px reduced-width gaps.",
+        "states": "First disables Previous; last disables Next; zero records disables both and says No pages. Out-of-range requests display a clamped valid range and explicit recovery action without mutating caller state. Disabled blocks every action.",
+        "colorBehavior": "Previous and next use the secondary grey fill (#F1F3F6) with #101318 labels; the page counter is #101318 tabular text and summary copy #5E6470. A stale-page warning uses #94530A. The page-size select uses the field colours.",
+        "iconBehavior": "Chevron left on Previous and Chevron right on Next, sized according to the core Button scale.",
+        "typography": "Inter/system fallback, 14px/1.5 body and 13px supporting text. Sentence case labels. Numeric values use tabular figures.",
+        "spacing": "8/12/16/20/24px scale; controls have at least 32px keyboard/pointer area and 44px touch area. Never fit data by reducing text below the standard scale.",
+        "bordersAndSurfaces": "8 px control corners and no outline; separated from the table above by space. Narrow containers centre the summary and give previous and next equal columns.",
+        "motion": "140ms core button response. Pagination reports a desired page immediately; rows change only when the caller actually provides the next page data.",
+        "accessibility": "Native nav with a meaningful label and native disabled buttons. The page status is a polite atomic live region. Current page recovery is an explicit labelled button.",
+        "responsiveBehavior": "Summary and controls wrap. Below 400px of actual component width, the record summary and page status each occupy a row, followed by equal Previous/Next buttons. This also applies to narrow tablet/desktop cards, and button labels remain visible. Wider controls retain their inline layout. Stale-page guidance and recovery wrap within the component.",
+        "contentRules": "page is an integer; pageSize is a positive integer; total is a nonnegative integer. A total of zero is known empty, not unknown. For unavailable totals use a different cursor/unknown-total pattern.",
+        "usageRules": "Keep rows and pagination query synchronized in the caller. Stale-page feedback describes the valid range; it must not imply that unfetched rows have already appeared. Use the recovery action to request the valid page."
+      }
+    },
+    {
+      "name": "DataStatus",
+      "specification": {
+        "purpose": "Describe freshness and availability of a data source independently from business outcome or workflow status.",
+        "anatomy": "Core StatusBadge with a distinct icon/label plus optional freshness or failure description; optional live-region wrapper.",
+        "variants": "Data Status / Ready, Loading, Empty, Error and Stale. A custom factual label may replace the default label.",
+        "sizes": "Small and Medium inherit core StatusBadge sizes; 8px badge-description gap.",
+        "states": "Ready maps to active; loading to processing; empty to inactive; error to error; stale to warning. State is caller supplied. No rotating decoration or invented freshness.",
+        "colorBehavior": "Use core success, primary, neutral, danger and warning status tokens respectively. Text and icons provide a second signal beyond color.",
+        "iconBehavior": "Reuses StatusBadge Check circle, Spinner, Pause, Error circle and Warning artwork. Loading glyph remains static unless an actual process requires motion.",
+        "typography": "Inter/system fallback, 14px/1.5 body and 13px supporting text. Sentence case labels. Numeric values use tabular figures.",
+        "spacing": "8/12/16/20/24px scale; controls have at least 32px keyboard/pointer area and 44px touch area. Never fit data by reducing text below the standard scale.",
+        "bordersAndSurfaces": "No frame; the status sits on its parent surface with the tone's icon and text. 8 px control corners; focus is one 2 px #2F6BEB edge with a soft halo.",
+        "motion": "No artificial status cycling or timers. A status changes with actual source state. Persistent loading does not imply a countdown.",
+        "accessibility": "Badge includes readable text and a distinct symbol. Use live=true only when a newly changing status needs announcement; errors use alert, other statuses use status.",
+        "responsiveBehavior": "Badge and description wrap without clipping. Preserve full timestamp/reason text at narrow widths.",
+        "contentRules": "Use precise source or last-updated descriptions supplied by the caller. Stale is distinct from empty; missing data is distinct from a measured zero. No fabricated timestamps.",
+        "usageRules": "Use for data availability/freshness. Business outcomes such as admitted, paid or resolved use a contextual StatusBadge rather than these data-source states."
+      }
+    }
+  ]
+}

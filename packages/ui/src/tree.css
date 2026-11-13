@@ -1,0 +1,58 @@
+/* Tree (tree.tsx). Rows are told apart by fill (the honey of a hovered row, the pale blue of the open one), never by
+   rules between them; a level is an indent, and a drop shows where the row will land before it is let go. */
+.easm-ui-tree-wrap { min-width: 0; font-family: var(--easm-ui-font); color: var(--easm-ui-text); font-size: var(--easm-ui-text-md); }
+.easm-ui-tree { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.easm-ui-tree-row {
+  --_indent: 20px;
+  display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 36px; box-sizing: border-box;
+  padding-block: 4px; padding-inline: calc(4px + var(--_level, 0) * var(--_indent)) 4px;
+  border-radius: var(--easm-ui-radius-control); cursor: pointer; user-select: none;
+  transition: background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);
+}
+.easm-ui-tree-wrap[data-size='sm'] .easm-ui-tree-row { --_indent: 16px; min-height: 32px; font-size: var(--easm-ui-text-sm); gap: 4px; }
+.easm-ui-tree-row:hover { background: var(--easm-ui-row-hover); }
+.easm-ui-tree-row[data-active] { background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); }
+.easm-ui-tree-row[aria-disabled] { color: var(--easm-ui-text-disabled); cursor: default; }
+.easm-ui-tree-row:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--easm-ui-primary-fill); }
+.easm-ui-tree-row[data-dragging] { opacity: .45; }
+/* Where a dragged row will land: a line above or below, or the row tinted to take it inside. */
+.easm-ui-tree-row[data-drop='before'] { box-shadow: inset 0 2px 0 var(--easm-ui-primary-fill); }
+.easm-ui-tree-row[data-drop='after'] { box-shadow: inset 0 -2px 0 var(--easm-ui-primary-fill); }
+.easm-ui-tree-row[data-drop='inside'] { background: var(--easm-ui-badge-brand); }
+.easm-ui-tree-expander { display: grid; flex: none; place-items: center; width: 24px; height: 24px; border-radius: 6px; color: var(--easm-ui-text-secondary); }
+.easm-ui-tree-row[aria-expanded] > .easm-ui-tree-expander:hover { background: var(--easm-ui-track-pressed); color: var(--easm-ui-text); }
+.easm-ui-tree-expander > .easm-ui-icon { transition: rotate var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-tree-row[aria-expanded='true'] > .easm-ui-tree-expander > .easm-ui-icon { rotate: 90deg; }
+[dir='rtl'] .easm-ui-tree-expander > .easm-ui-icon { scale: -1 1; }
+[dir='rtl'] .easm-ui-tree-row[aria-expanded='true'] > .easm-ui-tree-expander > .easm-ui-icon { rotate: -90deg; }
+.easm-ui-tree-check {
+  display: grid; flex: none; place-items: center; width: 18px; height: 18px; margin-inline: 1px 3px; border-radius: 5px;
+  background: var(--easm-ui-surface); box-shadow: inset 0 0 0 1.5px var(--easm-ui-border-hover); color: var(--easm-ui-on-primary-fill);
+}
+.easm-ui-tree-check:is([data-state='on'], [data-state='mixed']) { background: var(--easm-ui-primary-fill); box-shadow: none; --easm-icon-fill: none; }
+.easm-ui-tree-icon { flex: none; color: var(--easm-ui-text-secondary); }
+.easm-ui-tree-row[data-active] .easm-ui-tree-icon { color: var(--easm-ui-primary-fill); }
+.easm-ui-tree-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 20px; }
+.easm-ui-tree-row[data-active] .easm-ui-tree-label { font-weight: 600; }
+.easm-ui-tree-detail { margin-inline-start: 8px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 400; }
+.easm-ui-tree-count {
+  flex: none; min-width: 24px; padding: 0 7px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-badge-neutral);
+  color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums;
+}
+.easm-ui-tree-row[data-active] .easm-ui-tree-count { background: var(--easm-ui-surface); color: var(--easm-ui-primary); }
+.easm-ui-tree-menu { flex: none; display: inline-flex; opacity: 0; transition: opacity var(--easm-ui-motion-fast) var(--easm-ui-ease); }
+.easm-ui-tree-row:is(:hover, :focus-visible, :focus-within, [data-active]) .easm-ui-tree-menu, .easm-ui-tree-menu:has([data-state='open'], [aria-expanded='true']) { opacity: 1; }
+@media (hover: none) { .easm-ui-tree-menu { opacity: 1; } }
+.easm-ui-tree-rename { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; }
+.easm-ui-tree-rename > input {
+  width: 100%; min-width: 0; height: 28px; box-sizing: border-box; margin: 0; padding: 0 8px; border: 1px solid var(--easm-ui-primary-fill);
+  border-radius: 6px; background: var(--easm-ui-surface); color: var(--easm-ui-text); font: inherit; box-shadow: var(--easm-ui-field-focus-ring); outline: none;
+}
+.easm-ui-tree-rename > input[aria-invalid] { border-color: var(--easm-ui-danger); box-shadow: var(--easm-ui-field-error-focus-ring); }
+.easm-ui-tree-refusal { color: var(--easm-ui-danger); font-size: var(--easm-ui-text-xs); line-height: 16px; white-space: normal; }
+.easm-ui-tree-empty { padding: 16px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); }
+@media (forced-colors: active) {
+  .easm-ui-tree-row[data-active] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .easm-ui-tree-check { forced-color-adjust: none; border: 1px solid CanvasText; }
+  .easm-ui-tree-check:is([data-state='on'], [data-state='mixed']) { background: Highlight; color: HighlightText; }
+}

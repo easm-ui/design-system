@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const EmbeddingIcon = /* @__PURE__ */ createIcon({"name":"embedding","body":[{"tag":"rect","attrs":{"x":2.8,"y":5.1,"width":6.6,"height":13.8,"rx":1.8,"fill":"surface"}},{"tag":"path","attrs":{"d":"M5 9h2.2M5 12h2.2M5 15h2.2","stroke-width":1.15}},{"tag":"path","attrs":{"d":"M10.7 12h3.6m-1.5-1.65L14.3 12l-1.5 1.65","stroke-width":1.2}},{"tag":"path","attrs":{"d":"M19 8.2v1.6M19 14.2v1.6","stroke-width":1.2}},{"tag":"circle","attrs":{"cx":19,"cy":6,"r":2.2,"fill":"surface"}},{"tag":"circle","attrs":{"cx":19,"cy":12,"r":2.2,"fill":"surface"}},{"tag":"circle","attrs":{"cx":19,"cy":18,"r":2.2,"fill":"surface"}}]});

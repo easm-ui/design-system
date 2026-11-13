@@ -1,0 +1,27 @@
+/* The apps' own pictures, now here (app-pictures.tsx). FileKindArt keeps its proportions in any box; the form topic
+   tile is the form's accent on an 11% tint of it; the thank-you burst flies out once and is gone under reduced motion. */
+.easm-ui-file-kind-art { display: block; flex: none; max-width: 100%; height: auto; overflow: visible; }
+.easm-ui-form-question-icon { flex: none; }
+.easm-ui-form-topic {
+  --_topic-accent: var(--easm-ui-primary-fill);
+  display: inline-grid; place-items: center; flex: none;
+  color: var(--_topic-accent);
+  background: color-mix(in srgb, var(--_topic-accent) 11%, var(--easm-ui-surface));
+}
+.easm-ui-thanks-burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.easm-ui-thanks-burst-piece {
+  position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 999px; opacity: 0;
+  animation: easm-ui-thanks-burst 1100ms cubic-bezier(0.15, 0.7, 0.25, 1) forwards;
+}
+.easm-ui-thanks-burst-piece[data-shape='1'] { border-radius: 2px; }
+.easm-ui-thanks-burst-piece[data-shape='2'] { width: 6px; height: 14px; border-radius: 3px; }
+@keyframes easm-ui-thanks-burst {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0) scale(0.4); }
+  12%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .easm-ui-thanks-burst { display: none; }
+  .easm-ui-thanks-burst-piece { animation: none; }
+}
+@media (forced-colors: active) { .easm-ui-form-topic { color: CanvasText; background: Canvas; } }

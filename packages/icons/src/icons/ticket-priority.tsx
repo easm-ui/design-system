@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const TicketPriorityIcon = /* @__PURE__ */ createIcon({"name":"ticket-priority","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M5 5h14a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6V7a2 2 0 0 1 2-2Z","fill":"surface"}},{"tag":"path","attrs":{"d":"M15 8v1m0 3v1m0 3v1"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 16v2.3m0 1.7h.01","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

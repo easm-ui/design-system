@@ -1,0 +1,43 @@
+.easm-ui-avatar { display: inline-flex; position: relative; flex: none; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: 50%; background: var(--easm-ui-avatar); color: var(--easm-ui-avatar-ink); font-size: 14px; line-height: 20px; font-weight: 600; }
+.easm-ui-avatar[data-size='sm'] { width: 32px; height: 32px; font-size: 12px; }
+.easm-ui-avatar[data-size='lg'] { width: 48px; height: 48px; font-size: 16px; }
+.easm-ui-avatar[data-shape='rounded'] { border-radius: var(--easm-ui-radius-control); }
+.easm-ui-avatar-initials { max-width: 100%; white-space: nowrap; }
+.easm-ui-avatar img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: inherit; opacity: 0; }
+.easm-ui-avatar[data-shape='rounded'] img { border-radius: calc(var(--easm-ui-radius-control) - 1px); }
+.easm-ui-avatar[data-image-state='loaded'] img { opacity: 1; }
+/* Presence differs in shape as well as colour (WCAG 1.4.1): online a filled dot, away a half-filled dot, offline
+   a hollow ring. Each sits on a 2px ring of the surface behind the avatar and meets 3:1 on it. */
+.easm-ui-avatar-status { --_easm-presence-ring: var(--easm-ui-avatar-status-surface, var(--easm-ui-surface)); --_easm-presence-tone: var(--easm-ui-presence-offline); position: absolute; width: 12px; height: 12px; bottom: 0; right: 0; border: 2px solid var(--_easm-presence-ring); border-radius: 50%; background: var(--_easm-presence-ring); box-shadow: inset 0 0 0 2px var(--_easm-presence-tone); }
+.easm-ui-avatar[data-size='sm'] .easm-ui-avatar-status { width: 10px; height: 10px; }
+.easm-ui-avatar-status[data-status='online'] { --_easm-presence-tone: var(--easm-ui-presence-online); background: var(--_easm-presence-tone); box-shadow: none; }
+.easm-ui-avatar-status[data-status='away'] { --_easm-presence-tone: var(--easm-ui-presence-away); background: linear-gradient(90deg, var(--_easm-presence-tone) 50%, var(--_easm-presence-ring) 50%); box-shadow: inset 0 0 0 1.5px var(--_easm-presence-tone); }
+.easm-ui-user-chip { display: inline-flex; width: max-content; min-width: 0; max-width: 100%; min-height: 48px; align-items: center; gap: 8px; padding: 3px; padding-inline-end: 7px; border: 1px solid transparent; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface-hover); --easm-ui-avatar-status-surface: var(--easm-ui-surface-hover); }
+/* In a table cell the person is content, not a chip: no fill, aligned with the column. */
+.easm-ui-data-table td > .easm-ui-user-chip:not([data-removable='true']) { min-height: 0; padding: 0; background: transparent; --easm-ui-avatar-status-surface: var(--easm-ui-surface); }
+.easm-ui-user-chip[data-size='sm'] { min-height: 40px; }
+.easm-ui-user-chip-copy { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.easm-ui-user-chip-name { font-size: 14px; line-height: 20px; font-weight: 600; overflow-wrap: break-word; }
+.easm-ui-user-chip-description { font-size: 12px; line-height: 16px; color: var(--easm-ui-text-secondary); overflow-wrap: break-word; }
+.easm-ui-user-chip[data-size='sm'] .easm-ui-user-chip-name { font-size: 13px; line-height: 16px; }
+.easm-ui-user-chip[data-removable='true'] { padding-inline-end: 3px; }
+.easm-ui-user-chip-remove { color: var(--easm-ui-text-secondary); }
+.easm-ui-module-icon { display: inline-flex; flex: none; align-items: center; justify-content: center; height: 40px; width: 40px; border-radius: 10px; background: var(--easm-ui-primary-surface); color: var(--easm-ui-primary); --easm-icon-fill: var(--easm-ui-primary-border); --easm-icon-background: var(--easm-ui-primary-surface); --easm-icon-contrast: var(--easm-ui-primary-surface); }
+.easm-ui-module-icon[data-size='sm'] { height: 32px; width: 32px; border-radius: 8px; }
+.easm-ui-module-icon[data-size='lg'] { height: 48px; width: 48px; border-radius: 12px; }
+.easm-ui-module-icon .easm-icon[data-tone='inherit'][data-state] { --easm-icon-fill: var(--easm-ui-primary-border); }
+.easm-ui-module-icon[data-tone='neutral'] { background: var(--easm-ui-track); color: var(--easm-ui-text); --easm-icon-background: var(--easm-ui-track); --easm-icon-contrast: var(--easm-ui-track); }
+.easm-ui-module-icon[data-tone='neutral'] .easm-icon[data-tone='inherit'][data-state] { --easm-icon-fill: none; }
+.easm-ui-module-icon[data-tone='signature'] { background: var(--easm-ui-signature-surface); color: var(--easm-ui-text); --easm-icon-background: var(--easm-ui-signature-surface); --easm-icon-contrast: var(--easm-ui-signature-surface); }
+.easm-ui-module-icon[data-tone='signature'] .easm-icon[data-tone='inherit'][data-state] { --easm-icon-fill: var(--easm-ui-signature); }
+.easm-ui-module-icon[data-tone='signature'] .easm-icon[data-icon='easm-one'] { --easm-icon-core: var(--easm-ui-signature); }
+.easm-ui-copy-control { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.easm-ui-copy-labels { display: grid; min-width: 0; }
+.easm-ui-copy-labels > span { grid-area: 1 / 1; overflow-wrap: break-word; }
+.easm-ui-copy-measure { visibility: hidden; }
+.easm-ui-copy-error { font-size: 13px; color: var(--easm-ui-danger); max-width: 32ch; }
+@media (pointer: coarse) { .easm-ui-user-chip[data-removable='true'] { min-height: 56px; } .easm-ui-user-chip[data-removable='true'] > .easm-ui-avatar { width: 48px; height: 48px; font-size: 16px; } }
+@media (forced-colors: active) { .easm-ui-avatar, .easm-ui-module-icon, .easm-ui-user-chip { background: Canvas; color: CanvasText; border-color: CanvasText; } .easm-ui-module-icon { border: 1px solid CanvasText; } .easm-ui-avatar-status { border-color: Canvas; } .easm-ui-avatar .easm-ui-avatar-status[data-status] { forced-color-adjust: none; --_easm-presence-ring: Canvas; --_easm-presence-tone: CanvasText; } }
+/* A dashboard's accent (data-easm-product, tones.css): its tint behind its ink, the drawing's fill a step deeper. */
+.easm-ui-module-icon[data-tone='product'] { background: var(--easm-tone-tint); color: var(--easm-tone-ink); --easm-icon-fill: color-mix(in srgb, var(--easm-tone) 18%, var(--easm-tone-tint)); --easm-icon-background: var(--easm-tone-tint); --easm-icon-contrast: var(--easm-tone-tint); }
+.easm-ui-module-icon[data-tone='product'] .easm-icon[data-tone='inherit'][data-state] { --easm-icon-fill: color-mix(in srgb, var(--easm-tone) 18%, var(--easm-tone-tint)); }

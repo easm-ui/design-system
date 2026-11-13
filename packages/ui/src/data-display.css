@@ -1,0 +1,221 @@
+.easm-ui-data-table, .easm-ui-stat-card, .easm-ui-chart {min-width:0;color:var(--easm-ui-text);background:var(--easm-ui-surface);border:1px solid transparent;border-radius:var(--easm-ui-radius-card);font-family:var(--easm-ui-font)}
+.easm-ui-data-table {overflow:hidden;}
+.easm-ui-data-table-header {display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 14px 10px;}
+.easm-ui-data-table-header :is(h2,h3,h4) {margin:0;font-size:15px;font-weight:600;line-height:22px;}
+.easm-ui-data-table-header p {margin:2px 0 0;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:20px;}
+.easm-ui-data-table-actions {display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+/* The toolbar is the card's own band: an even 16px frame (the header above it already gives the top). */
+.easm-ui-data-table-toolbar {padding:12px;}
+@media(min-width:600px) {.easm-ui-data-table-header {padding:16px 16px 12px;}.easm-ui-data-table-toolbar {padding:16px;}}
+.easm-ui-data-table-header+.easm-ui-data-table-toolbar {padding-top:0;}
+/* In card rows the table's controls ride in its FilterBar, after Reset filters: one row for both, the sort at the
+   end. There the direction shows its arrow only (the button still reads "Sort direction: ascending"), so the row
+   fits a phone; it drops under Reset filters only when the two cannot share it. */
+.easm-ui-filter-bar>.easm-ui-data-card-controls {flex:1 0 auto;max-width:100%;padding:0;}
+.easm-ui-filter-bar .easm-ui-data-card-direction {min-width:40px;padding-inline:0;justify-content:center;}
+.easm-ui-filter-bar .easm-ui-data-card-direction-label {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+/* Outranks the in-card fill in responsive.css (whose :is() lists carry an attribute selector). */
+.easm-ui-data-table .easm-ui-data-table-toolbar .easm-ui-filter-bar[data-placement='toolbar'] {padding:0;border:0;border-radius:0;background:transparent;}
+.easm-ui-data-table-scroll {min-width:0;max-width:100%;overflow:auto;}
+/* With a maximum height the rows scroll inside the card and the column headings stay in view. The gutter is
+   reserved only then, so a table that does not scroll vertically keeps no empty strip on Windows. */
+.easm-ui-data-table-scroll[data-max-height] {scrollbar-gutter:stable;overscroll-behavior:contain;}
+.easm-ui-data-table-scroll[data-max-height] thead th {position:sticky;top:0;z-index:1;background:var(--easm-ui-background);}
+/* The ring is the focus-ring token; the transparent outline is what forced-colours mode turns into a visible one. */
+.easm-ui-data-table-scroll:focus-visible {outline:2px solid transparent;box-shadow:var(--easm-ui-focus-ring)}
+.easm-ui-data-table table, .easm-ui-chart-data table {width:100%;table-layout:auto;border-collapse:collapse;font-size:var(--easm-ui-text-md);line-height:1.5;}
+/* Words break only when a word alone is wider than its space (break-word), never between any two letters. With
+   `anywhere`, a cell's narrowest size was one letter, so a table short of room squeezed a column until names read
+   "Reh/man" (Support → Analytics, 2026-10-14); now a table that cannot fit scrolls inside its card instead. The same
+   rule holds across EASM UI, the phone card layout included (a long email still breaks there, at its field's edge). */
+.easm-ui-data-table th, .easm-ui-data-table td, .easm-ui-chart-data th, .easm-ui-chart-data td {padding:12px 16px;text-align:start;vertical-align:middle;overflow-wrap: break-word;}
+.easm-ui-data-table thead {background:var(--easm-ui-background);}
+.easm-ui-data-table th {font-size:var(--easm-ui-text-sm);font-weight:600;color:var(--easm-ui-text-secondary);}
+.easm-ui-data-table [data-width='compact'] {min-width:88px;max-width:160px;}
+.easm-ui-data-table [data-width='regular'] {min-width:144px;max-width:280px;}
+.easm-ui-data-table [data-width='wide'] {min-width:216px;max-width:440px;}
+.easm-ui-data-table [data-align='end'] {text-align:end;font-variant-numeric:tabular-nums;}
+/* A cell that cannot wrap (end-aligned figures, a row's buttons) is never capped below its content: the cap only
+   pushed the content out of its column, so the table scrolled sideways and the buttons hung past the card's edge
+   (Master Portal → Releases, "Details · Retire" in a compact column, 2026-10-14). The column takes their width.
+   A badge, tag or chip that IS the cell's content is the same: it never wraps or squeezes, so under the cap it ran
+   over the next column ("Building · ai-worker" over "no tenant", Releases, 2026-10-16). */
+.easm-ui-data-table td[data-align='end'], .easm-ui-data-table td:has(.easm-ui-button, .easm-ui-icon-button),
+.easm-ui-data-table td:has(> :is(.easm-ui-badge,.easm-ui-tag,.easm-ui-chip)) {max-width:none;}
+.easm-ui-data-table td[data-align='end'] {white-space:nowrap;overflow-wrap:normal;}
+.easm-ui-data-table td>:is(.easm-ui-badge,.easm-ui-tag,.easm-ui-chip) {max-width:none;white-space:nowrap;overflow-wrap:normal;}
+.easm-ui-data-table .easm-ui-data-state-cell {height:0;padding:0;border:0;}
+.easm-ui-data-table[data-size='sm'] th, .easm-ui-data-table[data-size='sm'] td {padding:8px 12px;font-size:var(--easm-ui-text-sm);}
+.easm-ui-data-table[data-size='lg'] th, .easm-ui-data-table[data-size='lg'] td {padding:16px 20px;}
+.easm-ui-data-table tbody tr {transition:background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);}
+/* Rows are told apart by soft banding, never by rules. */
+.easm-ui-data-table tbody tr:nth-child(even), .easm-ui-chart-data tbody tr:nth-child(even) {background:var(--easm-ui-surface-hover);}
+.easm-ui-data-table tbody tr:not([data-disabled]):hover {background:var(--easm-ui-track)}
+/* A secondary button is filled with the track colour, the same as a hovered row: on that row it vanished into it.
+   It steps one shade darker there, and one more under the pointer. */
+.easm-ui-data-table tbody tr:not([data-disabled]):hover .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']) {background:var(--easm-ui-track-hover);--easm-icon-background:var(--easm-ui-track-hover);--easm-icon-contrast:var(--easm-ui-track-hover);}
+.easm-ui-data-table tbody tr:not([data-disabled]):hover .easm-ui-button[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):hover {background:var(--easm-ui-track-pressed);--easm-icon-background:var(--easm-ui-track-pressed);--easm-icon-contrast:var(--easm-ui-track-pressed);}
+.easm-ui-data-table tbody tr[data-selected], .easm-ui-data-table tbody tr[data-selected]:hover {background:var(--easm-ui-primary-surface);}
+.easm-ui-data-table tbody tr[data-disabled] {color:var(--easm-ui-text-disabled);background:var(--easm-ui-surface-disabled);}
+.easm-ui-data-sort {display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;min-height:32px;max-width:100%;padding:0;border:0;border-radius:var(--easm-ui-radius-mark);background:transparent;color:inherit;font:inherit;text-align:inherit;white-space:nowrap;overflow-wrap:normal;cursor:pointer;}
+.easm-ui-data-sort>.easm-ui-icon {flex:none;}
+.easm-ui-data-sort:hover:not(:disabled):not([aria-disabled='true']) {color:var(--easm-ui-primary);}
+.easm-ui-data-sort:focus-visible {outline:2px solid transparent;box-shadow:var(--easm-ui-focus-ring)}
+/* While the table loads or after an error, sort buttons are soft-disabled (aria-disabled) so they keep focus. */
+.easm-ui-data-sort:disabled, .easm-ui-data-sort[aria-disabled='true'] {cursor:default;color:var(--easm-ui-text-disabled);}
+/* Select-all is soft-disabled the same way; it looks like a disabled checkbox but keeps focus. */
+.easm-ui-data-table .easm-ui-checkbox[aria-disabled='true'] {background:var(--easm-ui-surface-disabled);border-color:var(--easm-ui-border-subtle);cursor:default;}
+.easm-ui-data-table .easm-ui-checkbox[aria-disabled='true']:not(:disabled):hover {border-color:var(--easm-ui-border-subtle);}
+.easm-ui-data-table .easm-ui-checkbox[aria-disabled='true']:is(:checked,:indeterminate,[data-indeterminate]) {background:var(--easm-ui-text-disabled);}
+/* Card rows: sorting and select-all as visible controls above the cards (the column headings are hidden). */
+.easm-ui-data-card-controls {display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:4px 12px 8px;}
+/* One line: the sort control narrows (its value ends in an ellipsis) rather than dropping below Select all. */
+.easm-ui-data-card-controls>* {min-width:0;}
+/* "Select all" keeps its own width (as a field it would fill the row and crush the sort to nothing); the sort
+   control and its direction share what is left, on one line. */
+.easm-ui-data-card-controls>:first-child {flex:none;width:auto;}
+.easm-ui-data-card-sort {display:flex;flex:0 1 auto;flex-wrap:nowrap;align-items:center;gap:8px;min-width:0;margin-inline-start:auto;}
+.easm-ui-data-card-sort>* {min-width:0;}
+.easm-ui-data-card-sort>.easm-ui-icon-button {flex:none;}
+.easm-ui-data-table th[data-align='end'] .easm-ui-data-sort {justify-content:flex-end;}
+.easm-ui-data-table .easm-ui-data-check {width:56px;min-width:56px;padding-inline:12px;}
+.easm-ui-data-check .easm-ui-choice {justify-content:center;min-width:32px;min-height:32px;gap:0;}
+.easm-ui-data-check .easm-ui-choice-label {width:0;}
+.easm-ui-data-selection, .easm-ui-data-table-footer {margin:0;padding:12px 16px;background:var(--easm-ui-background);}
+.easm-ui-data-selection {font-size:var(--easm-ui-text-sm);color:var(--easm-ui-text-secondary);}
+.easm-ui-data-message {display:flex;min-height:160px;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;text-align:center;overflow-wrap: break-word;}
+.easm-ui-data-message>p {max-width:46ch;margin:0;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-md);line-height:1.5;}
+.easm-ui-stat-card {padding:16px;}
+@media(min-width:600px) {.easm-ui-stat-card {padding:20px;}}
+.easm-ui-stat-card[data-size='sm'] {padding:16px;}
+.easm-ui-stat-card[data-size='lg'] {padding:24px;}
+.easm-ui-stat-heading {display:flex;align-items:flex-start;justify-content:space-between;gap:12px;color:var(--easm-ui-text-secondary);}
+.easm-ui-stat-heading :is(h2,h3,h4) {margin:0;font-size:var(--easm-ui-text-md);line-height:1.5;font-weight:600;overflow-wrap: break-word;}
+.easm-ui-stat-value {display:block;min-height:48px;margin-block:8px;font-size:32px;line-height:1.25;font-weight:600;letter-spacing:-.6px;font-variant-numeric:tabular-nums;overflow-wrap: break-word;}
+.easm-ui-stat-card[data-size='sm'] .easm-ui-stat-value {min-height:36px;margin-block:6px;font-size:28px;}
+.easm-ui-stat-card[data-size='lg'] .easm-ui-stat-value {font-size:40px;}
+.easm-ui-stat-card>p {margin:0;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:1.5;overflow-wrap: break-word;}
+.easm-ui-stat-card>.easm-ui-stat-error {color:var(--easm-ui-danger);}
+.easm-ui-stat-trend {display:inline-flex;gap:4px;align-items:center;max-width:100%;margin-top:12px;padding:2px 8px 2px 6px;border-radius:var(--easm-ui-radius-pill);background:var(--easm-ui-track);font-size:var(--easm-ui-text-xs);font-weight:600;line-height:18px;color:var(--easm-ui-text-secondary);--easm-icon-background:var(--easm-ui-track);--easm-icon-contrast:var(--easm-ui-track);}
+.easm-ui-stat-trend>.easm-ui-icon {flex:none;}
+.easm-ui-stat-trend>span {min-width:0;overflow-wrap: break-word;}
+.easm-ui-stat-trend[data-sentiment='positive'] {color:var(--easm-ui-success);background:var(--easm-ui-success-surface);--easm-icon-background:var(--easm-ui-success-surface);--easm-icon-contrast:var(--easm-ui-success-surface);}
+.easm-ui-stat-trend[data-sentiment='negative'] {color:var(--easm-ui-danger);background:var(--easm-ui-danger-surface);--easm-icon-background:var(--easm-ui-danger-surface);--easm-icon-contrast:var(--easm-ui-danger-surface);}
+.easm-ui-chart {margin:0;padding:16px;}
+@media(min-width:600px) {.easm-ui-chart {padding:20px;}}
+.easm-ui-chart[data-size='sm'] {padding:16px;}
+.easm-ui-chart[data-size='lg'] {padding:24px;}
+.easm-ui-chart figcaption :is(h2,h3,h4) {margin:0;font-size:var(--easm-ui-text-lg);line-height:1.5;font-weight:600;overflow-wrap: break-word;}
+.easm-ui-chart figcaption p, .easm-ui-chart-scale {margin:4px 0 12px;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:1.5;overflow-wrap: break-word;}
+.easm-ui-chart-measure {width:100%;height:0;overflow:hidden;}
+.easm-ui-chart-viewport {overflow:auto;min-width:0;max-width:100%;overscroll-behavior-inline:contain;}
+.easm-ui-chart-viewport:focus-visible {outline:2px solid transparent;border-radius:var(--easm-ui-radius-mark);box-shadow:var(--easm-ui-focus-ring)}
+/* React sets a matching canvas/viewBox width. Keep axis text at 12px at every density. */
+.easm-ui-chart-viewport svg {display:block;max-width:none;flex:none;}
+.easm-ui-chart-scroll-hint {margin:0 0 12px;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:1.5;overflow-wrap: break-word;}
+.easm-ui-chart svg text {fill:var(--easm-ui-text-secondary);font-family:var(--easm-ui-font);font-size:var(--easm-ui-text-xs);}
+.easm-ui-chart-grid {stroke:var(--easm-ui-border-subtle);stroke-width:1;}
+.easm-ui-chart-axis {stroke:var(--easm-ui-border);stroke-width:1;}
+.easm-ui-chart-bar, .easm-ui-chart-point {fill:var(--easm-ui-primary-fill)}
+.easm-ui-chart-line {fill:none;stroke:var(--easm-ui-primary-fill);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Chart values: a filled toggle and a compact table, separated by fill rather than rules. */
+.easm-ui-chart-data {margin-top:16px;}
+.easm-ui-chart-data summary {display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 12px;border-radius:var(--easm-ui-radius-control);background:var(--easm-ui-track);color:var(--easm-ui-text);font-size:var(--easm-ui-text-sm);font-weight:600;line-height:20px;list-style:none;cursor:pointer;user-select:none;transition:background-color var(--easm-ui-motion-fast) var(--easm-ui-ease);--easm-icon-background:var(--easm-ui-track);--easm-icon-contrast:var(--easm-ui-track)}
+.easm-ui-chart-data summary::-webkit-details-marker {display:none}
+.easm-ui-chart-data summary::marker {content:''}
+.easm-ui-chart-data summary:hover {background:var(--easm-ui-track-hover);--easm-icon-background:var(--easm-ui-track-hover);--easm-icon-contrast:var(--easm-ui-track-hover)}
+.easm-ui-chart-data summary>.easm-ui-icon {flex:none;}
+.easm-ui-chart-data summary>.easm-ui-icon:last-child {color:var(--easm-ui-text-secondary);transition:transform var(--easm-ui-motion-fast) var(--easm-ui-ease);}
+.easm-ui-chart-data[open] summary>.easm-ui-icon:last-child {transform:rotate(180deg);}
+.easm-ui-chart-data summary:focus-visible {outline:2px solid transparent;box-shadow:var(--easm-ui-focus-ring)}
+.easm-ui-chart-data .easm-ui-data-table-scroll {margin-top:12px;scrollbar-gutter:auto;}
+.easm-ui-chart-data table {font-size:var(--easm-ui-text-sm);font-variant-numeric:tabular-nums;}
+.easm-ui-chart-data th, .easm-ui-chart-data td {padding:8px 12px;}
+.easm-ui-chart-data thead th {background:var(--easm-ui-background);color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-xs);font-weight:600;}
+.easm-ui-chart-data thead th:first-child {border-start-start-radius:var(--easm-ui-radius-control);border-end-start-radius:var(--easm-ui-radius-control);}
+.easm-ui-chart-data thead th:last-child {border-start-end-radius:var(--easm-ui-radius-control);border-end-end-radius:var(--easm-ui-radius-control);}
+.easm-ui-chart-data tbody th {font-weight:500;}
+.easm-ui-chart-data [data-align='end'] {text-align:end;white-space:nowrap;}
+/* The legacy Chart's placeholder only: SeriesChart shares the class and sizes its own to the plot. */
+.easm-ui-chart>.easm-ui-chart-placeholder {display:flex;align-items:stretch;min-height:240px;padding:16px 0;}
+.easm-ui-chart>.easm-ui-chart-placeholder>.easm-ui-skeleton {width:100%;}
+/* FilterBar: one row when wide (search grows, controls keep a steady width, reset last);
+   search on its own row when medium; everything stacked when narrow. */
+.easm-ui-filter-bar {width:100%;container-name:easm-filter;container-type:inline-size;display:flex;align-items:flex-end;flex-wrap:wrap;gap:12px;min-width:0;max-width:100%;padding:12px;border:1px solid transparent;border-radius:var(--easm-ui-radius-card);background:var(--easm-ui-surface-hover);font-family:var(--easm-ui-font)}
+.easm-ui-filter-search {flex:1 1 100%;min-width:0;max-width:100%;}
+.easm-ui-filter-controls {display:flex;flex:0 1 100%;align-items:flex-end;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0;min-width:0;}
+.easm-ui-filter-controls>* {flex:0 1 auto;width:184px;min-width:0;}
+/* A row of quick filters (status chips) sits in the bar beside the selects and switches at its own width, taking what is
+   left of the line and paging with its arrows only when the line is shorter than it. */
+.easm-ui-filter-controls>.easm-ui-quick-filters {flex:1 1 auto;width:auto;max-width:100%;}
+.easm-ui-filter-bar>.easm-ui-button {flex:none;margin-inline-start:auto;}
+/* Every control in the bar shares the bar's density, whatever size its caller passed. */
+.easm-ui-filter-bar .easm-ui-field {--easm-ui-control-height:40px;--easm-ui-control-icon:20px;font-size:var(--easm-ui-text-md);}
+.easm-ui-filter-bar[data-size='sm'] .easm-ui-field {--easm-ui-control-height:32px;--easm-ui-control-icon:16px;font-size:var(--easm-ui-text-sm);}
+.easm-ui-filter-bar[data-size='lg'] .easm-ui-field {--easm-ui-control-height:48px;--easm-ui-control-icon:24px;font-size:var(--easm-ui-text-lg);}
+.easm-ui-filter-bar .easm-ui-button {min-height:40px;}
+.easm-ui-filter-bar[data-size='sm'] .easm-ui-button {min-height:32px;}
+.easm-ui-filter-bar[data-size='lg'] .easm-ui-button {min-height:48px;}
+/* Size containers have no intrinsic width: in a flex row (a table footer beside "Rows per page") they shrank to 0 and
+   set "1–25 of 3,778" one letter per line. Both claim the row and keep a usable minimum, wrapping below it. */
+.easm-ui-pagination {width:100%;min-width:min(100%,280px);container-name:easm-pagination;container-type:inline-size;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;max-width:100%;color:var(--easm-ui-text-secondary);font-family:var(--easm-ui-font);font-size:var(--easm-ui-text-sm);}
+.easm-ui-pagination p {margin:0;max-width:100%;overflow-wrap: break-word;}
+.easm-ui-pagination>p {flex-basis:100%;text-align:center;}
+.easm-ui-pagination-controls {display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:8px;min-width:0;max-width:100%;}
+.easm-ui-pagination-controls>span {min-width:88px;max-width:100%;text-align:center;font-variant-numeric:tabular-nums;overflow-wrap: break-word;}
+.easm-ui-pagination-stale {flex-basis:100%;color:var(--easm-ui-warning);line-height:1.5;}
+.easm-ui-pagination-stale>.easm-ui-button {margin-top:12px;max-width:100%;}
+.easm-ui-data-status {display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-family:var(--easm-ui-font);}
+.easm-ui-data-status>span:not(.easm-ui-badge) {min-width:0;overflow-wrap: break-word;color:var(--easm-ui-text-secondary);font-size:var(--easm-ui-text-sm);line-height:1.5;}
+/* From 481px: the filter bar's search and filters share a row, pagination spreads to the edges. */
+@media(min-width:481px) {.easm-ui-filter-bar {padding:16px;}.easm-ui-filter-search {flex-basis:240px;}.easm-ui-filter-controls {flex-basis:auto;}.easm-ui-pagination {justify-content:space-between;}.easm-ui-pagination>p {flex-basis:auto;text-align:inherit;}.easm-ui-pagination-controls {gap:12px;}}
+/* Reflow by the component's available space, including narrow tablet/desktop cards. */
+@container easm-filter (max-width:760px) {.easm-ui-filter-search {flex-basis:100%;}.easm-ui-filter-controls {flex:1 1 0;}.easm-ui-filter-controls>* {flex:1 1 0;width:auto;min-width:144px;}}
+/* Narrow: the search takes its own row and the filters pair up two to a row (each at least 140px), so a phone shows
+   Stage and Sort side by side instead of a stack of full-width rows. */
+@container easm-filter (max-width:480px) {.easm-ui-filter-search,.easm-ui-filter-controls {flex-basis:100%;}.easm-ui-filter-controls>* {flex:1 1 140px;width:auto;}.easm-ui-filter-bar>.easm-ui-button {margin-inline-start:0;}}
+@container easm-pagination (max-width:400px) {.easm-ui-pagination>p {flex-basis:100%;text-align:center;}.easm-ui-pagination-controls {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;gap:8px;}.easm-ui-pagination-page {grid-column:1/-1;grid-row:1;justify-self:center;}.easm-ui-pagination-controls>.easm-ui-button {width:100%;min-width:0;white-space:normal;}.easm-ui-pagination-stale {width:100%;}}
+@media(pointer:coarse) {.easm-ui-data-sort,.easm-ui-data-check .easm-ui-choice,.easm-ui-chart-data summary {min-height:var(--easm-ui-size-touch);}.easm-ui-filter-bar .easm-ui-field,.easm-ui-filter-bar[data-size='sm'] .easm-ui-field,.easm-ui-filter-bar[data-size='md'] .easm-ui-field {--easm-ui-control-height:var(--easm-ui-size-touch);}.easm-ui-filter-bar .easm-ui-button,.easm-ui-filter-bar[data-size='sm'] .easm-ui-button {min-height:var(--easm-ui-size-touch);}.easm-ui-filter-bar .easm-ui-data-card-direction {min-width:var(--easm-ui-size-touch);}}
+@media(prefers-reduced-motion:reduce) {.easm-ui-chart-data summary,.easm-ui-chart-data summary>.easm-ui-icon:last-child {transition:none;}}
+@media(forced-colors:active) {.easm-ui-chart-data summary {border:1px solid ButtonText;}}
+@media(pointer:coarse) {.easm-ui-data-check .easm-ui-choice {min-width:var(--easm-ui-size-touch);}.easm-ui-data-table .easm-ui-data-check {width:68px;min-width:68px;}}
+@media(prefers-reduced-motion:reduce) {.easm-ui-data-table tbody tr {transition:none;}}
+@media(forced-colors:active) {.easm-ui-chart-bar,.easm-ui-chart-point {fill:CanvasText;}.easm-ui-chart-line,.easm-ui-chart-axis {stroke:CanvasText;}.easm-ui-chart-grid {stroke:GrayText;}.easm-ui-data-table tbody tr[data-selected] {outline:1px solid Highlight;outline-offset:-1px;}.easm-ui-data-sort[aria-disabled='true'] {color:GrayText;}}
+
+/* A figure's share of another (StatCard share): a ring in the card's tone fills as the card arrives, and the
+   percentage beside it is set in the tone's ink, so the steps of a funnel read as one story across the cards. */
+.easm-ui-stat-share { --easm-ui-share-tone: var(--easm-ui-chart-blue); --easm-ui-share-ink: var(--easm-ui-chart-blue-ink); display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-sm); line-height: 18px; }
+.easm-ui-stat-share b { color: var(--easm-ui-share-ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+.easm-ui-stat-share-ring { flex: none; rotate: -90deg; }
+.easm-ui-stat-share-track { fill: none; stroke: var(--easm-ui-track); stroke-width: 3; }
+.easm-ui-stat-share-arc { fill: none; stroke: var(--easm-ui-share-tone); stroke-width: 3; stroke-linecap: round; animation: easm-ui-share-fill calc(var(--easm-ui-motion-release) * 2) var(--easm-ui-ease-spring-soft) 120ms backwards; }
+@keyframes easm-ui-share-fill { from { stroke-dasharray: 0 100; } }
+
+/* A metered column (DataTable meter): a thin bar in the column's tone under each number, on a faint track, as
+   long as its share of the column, anchored on the side the numbers align to. Under the number rather than behind
+   it, so a small value is a short bar, never a sliver beside its digits. The bars grow in once as the rows arrive. */
+.easm-ui-data-meter { --easm-ui-meter-share: 0; --easm-ui-meter-tone: var(--easm-ui-chart-blue); position: relative; display: block; }
+/* The bar hangs in the cell's own bottom padding (8 px in a small table), so the number keeps the row's baseline. */
+.easm-ui-data-meter::before, .easm-ui-data-meter::after { content: ''; position: absolute; bottom: -6px; inset-inline-start: 0; height: 3px; border-radius: var(--easm-ui-radius-pill); }
+.easm-ui-data-meter::before { inset-inline-end: 0; background: var(--easm-ui-track); }
+.easm-ui-data-meter::after {
+  width: max(4px, calc(var(--easm-ui-meter-share) * 100%)); background: var(--easm-ui-meter-tone);
+  transform-origin: left center; animation: easm-ui-meter-grow calc(var(--easm-ui-motion-release) * 1.5) var(--easm-ui-ease-spring-soft) 80ms backwards;
+}
+/* A zero keeps the track, so it lines up with its row and reads as nothing, not as missing. */
+.easm-ui-data-meter[data-empty]::after { display: none; }
+[data-align='end'] > .easm-ui-data-meter::after { inset-inline-start: auto; inset-inline-end: 0; transform-origin: right center; }
+.easm-ui-data-meter:dir(rtl)::after { transform-origin: right center; }
+[data-align='end'] > .easm-ui-data-meter:dir(rtl)::after { transform-origin: left center; }
+@keyframes easm-ui-meter-grow { from { scale: 0 1; } }
+@media (prefers-reduced-motion: reduce) { .easm-ui-stat-share-arc, .easm-ui-data-meter::after { animation: none; } }
+[data-easm-motion='off'] .easm-ui-stat-share-arc, [data-easm-motion='off'] .easm-ui-data-meter::after { animation: none; }
+@media (forced-colors: active) { .easm-ui-data-meter::after { background: Highlight; } .easm-ui-data-meter::before { background: GrayText; opacity: .3; } .easm-ui-stat-share-arc { stroke: Highlight; } }
+/* Where a headline figure comes from when it is not verified (demand list CLR-07): said in words under it, with the
+   chart encoding's own mark (an outline for self-reported, a dash for provisional). */
+.easm-ui-stat-source { display: inline-flex; align-items: center; gap: 6px; margin: -4px 0 8px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 550; }
+.easm-ui-stat-source::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-text-secondary); }
+.easm-ui-stat-source[data-provenance='self-reported']::before { width: 10px; height: 10px; border-radius: 3px; background: transparent; box-shadow: inset 0 0 0 2px var(--easm-ui-text-secondary); }
+.easm-ui-stat-source[data-provenance='provisional']::before { width: 14px; height: 0; border-radius: 0; background: none; border-top: 2px dashed var(--easm-ui-text-secondary); }
+/* The dash stands for the figure: centred with its word, never left hanging below it. */
+.easm-ui-stat-value .easm-ui-unmeasured { align-items: center; }

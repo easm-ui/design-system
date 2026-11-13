@@ -1,0 +1,249 @@
+/* Workflow parts (workflow.tsx). Surfaces are told apart by fill, never by an outline or a coloured edge; the
+   glyph, not the colour, carries each meaning; nothing here moves except work under way (the processing glyph).
+   Sizes follow the controls: md 32 px and sm 28 px tall, text never under 12 px, glyphs at 16 or 20. Lines that
+   join markers (Timeline, Stepper) are laid out in the flow beside their markers, never positioned over them. */
+
+/* Tone pairs shared by the status chip and the timeline markers: a fill and the ink of the sign on it. */
+.easm-ui-status-chip, .easm-ui-timeline-item { --_tone-fill: var(--easm-ui-badge-neutral); --_tone-ink: var(--easm-ui-text-secondary); }
+:is(.easm-ui-status-chip, .easm-ui-timeline-item)[data-tone=brand] { --_tone-fill: var(--easm-ui-badge-brand); --_tone-ink: var(--easm-ui-primary-fill); }
+:is(.easm-ui-status-chip, .easm-ui-timeline-item)[data-tone=success] { --_tone-fill: var(--easm-ui-badge-success); --_tone-ink: var(--easm-ui-icon-success); }
+:is(.easm-ui-status-chip, .easm-ui-timeline-item)[data-tone=warning] { --_tone-fill: var(--easm-ui-badge-warning); --_tone-ink: var(--easm-ui-warning); }
+:is(.easm-ui-status-chip, .easm-ui-timeline-item)[data-tone=danger] { --_tone-fill: var(--easm-ui-badge-danger); --_tone-ink: var(--easm-ui-icon-danger); }
+:is(.easm-ui-status-chip, .easm-ui-timeline-item)[data-tone=ai] { --_tone-fill: var(--easm-ui-ai-surface); --_tone-ink: var(--easm-ui-ai); }
+
+/* ------------------------------------------------------------------ StatusChip */
+.easm-ui-status-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; vertical-align: middle; color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 550; }
+.easm-ui-status-chip .easm-ui-status-glyph { flex: none; color: var(--_tone-ink); --easm-icon-fill: none; }
+.easm-ui-status-chip[data-variant=chip] { min-height: 32px; padding: 6px 12px 6px 8px; border-radius: var(--easm-ui-radius-pill); background: var(--_tone-fill); white-space: nowrap; }
+.easm-ui-status-chip[data-variant=chip][data-size=sm] { min-height: 28px; padding: 4px 10px 4px 6px; gap: 5px; }
+.easm-ui-status-chip[data-variant=chip] .easm-ui-status-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.easm-ui-status-chip[data-variant=dot] { justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--_tone-fill); cursor: default; }
+.easm-ui-status-chip[data-variant=dot][data-size=sm] { width: 28px; height: 28px; }
+.easm-ui-status-chip[data-variant=row] { align-items: flex-start; gap: 10px; font-weight: 400; }
+.easm-ui-status-chip[data-variant=row] .easm-ui-status-glyph { padding: 6px; box-sizing: content-box; border-radius: 50%; background: var(--_tone-fill); }
+.easm-ui-status-copy { display: flex; flex-direction: column; min-width: 0; padding-top: 2px; }
+.easm-ui-status-chip[data-variant=row] .easm-ui-status-label { font-weight: 600; line-height: 20px; }
+.easm-ui-status-detail { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; overflow-wrap: anywhere; }
+.easm-ui-status-chip:focus-visible, .easm-ui-identity:focus-visible, .easm-ui-unmeasured:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+
+/* ------------------------------------------------------------------ StageChip: one ramp from the first contact to the goal */
+.easm-ui-stage-chip { --_stage-fill: var(--easm-ui-stage-1); --_stage-ink: var(--easm-ui-text); --_pip: var(--easm-ui-primary-fill); --_pip-off: rgb(16 19 24 / 14%);
+  display: inline-flex; align-items: center; gap: 8px; min-height: 32px; max-width: 100%; padding: 6px 12px 6px 10px; border-radius: var(--easm-ui-radius-pill); background: var(--_stage-fill); color: var(--_stage-ink); font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 550; white-space: nowrap; vertical-align: middle; }
+.easm-ui-stage-chip[data-size=sm] { min-height: 28px; padding: 4px 10px 4px 8px; gap: 6px; }
+.easm-ui-stage-chip[data-step='2'] { --_stage-fill: var(--easm-ui-stage-2); }
+.easm-ui-stage-chip[data-step='3'] { --_stage-fill: var(--easm-ui-stage-3); --_pip: var(--easm-ui-stage-5); }
+.easm-ui-stage-chip[data-step='4'] { --_stage-fill: var(--easm-ui-stage-4); --_stage-ink: var(--easm-ui-surface); --_pip: var(--easm-ui-surface); --_pip-off: rgb(255 255 255 / 34%); }
+.easm-ui-stage-chip[data-step='5'] { --_stage-fill: var(--easm-ui-stage-5); --_stage-ink: var(--easm-ui-surface); --_pip: var(--easm-ui-surface); --_pip-off: rgb(255 255 255 / 30%); }
+.easm-ui-stage-chip[data-step=closed] { --_stage-fill: var(--easm-ui-stage-closed); --_stage-ink: var(--easm-ui-text-secondary); }
+.easm-ui-stage-chip[data-step=stopped] { --_stage-fill: var(--easm-ui-stage-stopped); --_stage-ink: var(--easm-ui-danger-hover); }
+.easm-ui-stage-pips { display: inline-flex; gap: 2px; flex: none; }
+.easm-ui-stage-pips > i { width: 4px; height: 12px; border-radius: 2px; background: var(--_pip-off); }
+.easm-ui-stage-chip[data-size=sm] .easm-ui-stage-pips > i { height: 10px; }
+.easm-ui-stage-pips > i[data-on] { background: var(--_pip); }
+.easm-ui-stage-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* ------------------------------------------------------------------ Presence: shape and colour */
+/* Online a filled dot, idle a ring with a centre, away a half dot, offline a hollow grey ring. */
+.easm-ui-presence { display: inline-flex; align-items: flex-start; gap: 8px; min-width: 0; color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-presence-marks { display: inline-flex; align-items: center; gap: 4px; height: 20px; flex: none; }
+.easm-ui-presence-dot { width: 10px; height: 10px; border-radius: 50%; box-sizing: border-box; border: 2px solid var(--easm-ui-presence-offline); }
+.easm-ui-presence-dot[data-state=online] { border-color: var(--easm-ui-presence-online); background: var(--easm-ui-presence-online); }
+.easm-ui-presence-dot[data-state=idle] { border-color: var(--easm-ui-presence-idle); background: radial-gradient(circle, var(--easm-ui-presence-idle) 0 1.5px, transparent 2px); }
+.easm-ui-presence-dot[data-state=away] { border-color: var(--easm-ui-presence-away); background: linear-gradient(90deg, var(--easm-ui-presence-away) 50%, transparent 50%); }
+.easm-ui-presence-call { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--easm-ui-presence-call); color: var(--easm-ui-surface); }
+.easm-ui-presence-call .easm-ui-icon { width: 12px; height: 12px; --easm-icon-fill: none; }
+.easm-ui-presence[data-variant=dot] .easm-ui-presence-marks { height: 18px; }
+.easm-ui-presence-copy { display: flex; flex-direction: column; min-width: 0; }
+.easm-ui-presence-word { font-weight: 550; }
+.easm-ui-presence-since { font-weight: 400; color: var(--easm-ui-text-secondary); font-variant-numeric: tabular-nums; }
+.easm-ui-presence-last { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* On an avatar the dot is too small for a centre: idle is a green ring, offline a grey one. */
+.easm-ui-avatar-status[data-status='idle'] { --_easm-presence-tone: var(--easm-ui-presence-idle); background: var(--_easm-presence-ring); box-shadow: inset 0 0 0 2.5px var(--_easm-presence-tone); }
+
+/* ------------------------------------------------------------------ IdentityLevel */
+/* A pill in the level's own tint, its glyph and name in the level's ink, and four bars rising like a signal,
+   filled up to the level. Anonymous grey, claimed amber, verified blue, institution sign-in teal; ink on tint
+   is 4.5:1 for every level (the chart inks, tokens/contrast.mjs). */
+.easm-ui-identity { --_id-fill: var(--easm-ui-chart-honey-tint); --_id-ink: var(--easm-ui-chart-honey-ink);
+  display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 6px 12px 6px 8px; border-radius: var(--easm-ui-radius-pill); background: var(--_id-fill); color: var(--_id-ink); font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 600; white-space: nowrap; vertical-align: middle; cursor: default; }
+.easm-ui-identity[data-level=claimed] { --_id-fill: var(--easm-ui-chart-amber-tint); --_id-ink: var(--easm-ui-chart-amber-ink); }
+.easm-ui-identity[data-level=verified] { --_id-fill: var(--easm-ui-chart-blue-tint); --_id-ink: var(--easm-ui-chart-blue-ink); }
+.easm-ui-identity[data-level=erp] { --_id-fill: var(--easm-ui-chart-teal-tint); --_id-ink: var(--easm-ui-chart-teal-ink); }
+.easm-ui-identity .easm-ui-icon { flex: none; color: var(--_id-ink); --easm-icon-fill: none; }
+.easm-ui-identity[data-variant=compact] { padding-inline: 8px 10px; }
+.easm-ui-identity-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; margin-inline-start: 2px; flex: none; }
+.easm-ui-identity-bars > i { width: 3px; border-radius: 1.5px; background: color-mix(in srgb, var(--_id-ink) 24%, transparent); }
+.easm-ui-identity-bars > i:nth-child(1) { height: 5px; }
+.easm-ui-identity-bars > i:nth-child(2) { height: 8px; }
+.easm-ui-identity-bars > i:nth-child(3) { height: 11px; }
+.easm-ui-identity-bars > i:nth-child(4) { height: 14px; }
+.easm-ui-identity-bars > i[data-on] { background: var(--_id-ink); }
+
+/* ------------------------------------------------------------------ SlaClock */
+.easm-ui-sla { --_sla: var(--easm-ui-icon-success); --_sla-fill: var(--easm-ui-badge-neutral); display: inline-flex; align-items: center; gap: 5px; color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; white-space: nowrap; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.easm-ui-sla[data-state=due-soon] { --_sla: var(--easm-ui-icon-warning); --_sla-fill: var(--easm-ui-badge-warning); }
+.easm-ui-sla[data-state=breached] { --_sla: var(--easm-ui-icon-danger); --_sla-fill: var(--easm-ui-badge-danger); }
+.easm-ui-sla[data-state=paused] { --_sla: var(--easm-ui-text-secondary); }
+.easm-ui-sla[data-state=met] { --_sla: var(--easm-ui-icon-success); --_sla-fill: var(--easm-ui-badge-success); }
+.easm-ui-sla[data-variant=chip] { min-height: 28px; padding: 4px 10px 4px 6px; border-radius: var(--easm-ui-radius-pill); background: var(--_sla-fill); }
+.easm-ui-sla[data-variant=chip] .easm-ui-icon { flex: none; color: var(--_sla); --easm-icon-fill: none; }
+.easm-ui-sla[data-variant=dot] { justify-content: center; width: 16px; height: 16px; }
+.easm-ui-sla-dot { display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--_sla); }
+.easm-ui-sla[data-state=paused] .easm-ui-sla-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--_sla); }
+.easm-ui-sla[data-state=breached] .easm-ui-sla-dot { border-radius: 2px; transform: rotate(45deg) scale(.86); }
+.easm-ui-sla[data-variant=ring] { gap: 8px; font-size: var(--easm-ui-text-sm); font-weight: 600; }
+.easm-ui-sla-ring { flex: none; }
+.easm-ui-sla-ring circle { fill: none; stroke-width: 4; }
+.easm-ui-sla-ring-track { stroke: var(--easm-ui-track); }
+.easm-ui-sla-ring-left { stroke: var(--_sla); stroke-linecap: round; transition: stroke-dasharray var(--easm-ui-motion-slow) var(--easm-ui-ease-out); }
+
+/* ------------------------------------------------------------------ Timeline */
+/* Each event is a two-column row: the rail (the thread down through a day label, the marker, the thread on to
+   the next event) and the content. Threads stop --_line-gap short of every marker. */
+.easm-ui-timeline { --_marker: 32px; --_head: 20px; --_day: 20px; --_gap: 16px; --_line-gap: 6px; --_line: var(--easm-ui-border-subtle);
+  color: var(--easm-ui-text); font-size: var(--easm-ui-text-sm); line-height: 20px; }
+.easm-ui-timeline[data-density=compact] { --_marker: 24px; --_head: 18px; --_gap: 12px; --_line-gap: 4px; font-size: var(--easm-ui-text-xs); line-height: 18px; }
+.easm-ui-timeline-list { list-style: none; margin: 0; padding: 0; }
+.easm-ui-timeline-item { display: grid; grid-template-columns: var(--_marker) minmax(0, 1fr); column-gap: 12px; }
+.easm-ui-timeline-rail { display: flex; flex-direction: column; align-items: center; }
+.easm-ui-timeline-lead { flex: none; width: 2px; height: var(--_day); margin-bottom: var(--_line-gap); border-radius: 1px; background: var(--_line); }
+.easm-ui-timeline-lead[data-blank] { background: transparent; }
+.easm-ui-timeline-marker { flex: none; display: grid; place-items: center; width: var(--_marker); height: var(--_marker); border-radius: 50%; background: var(--_tone-fill); color: var(--_tone-ink); }
+.easm-ui-timeline-marker .easm-ui-icon { --easm-icon-fill: none; }
+.easm-ui-timeline-thread { flex: 1 1 auto; width: 2px; min-height: 8px; margin-block: var(--_line-gap); border-radius: 1px; background: var(--_line); }
+/* Into a day label the thread runs on without a break, through the label's lead to the next marker. */
+.easm-ui-timeline-item:has(+ .easm-ui-timeline-item[data-day-start]) .easm-ui-timeline-thread { margin-bottom: 0; border-end-start-radius: 0; border-end-end-radius: 0; }
+.easm-ui-timeline-content { min-width: 0; padding-bottom: var(--_gap); }
+.easm-ui-timeline-item:last-child .easm-ui-timeline-content { padding-bottom: 0; }
+.easm-ui-timeline-day { display: flex; align-items: flex-end; height: var(--_day); margin: 0 0 var(--_line-gap); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 600; }
+/* The head's first line is centred on the marker; the time keeps the end of that line and the title wraps beside it. */
+.easm-ui-timeline-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: start; margin: 0; padding-top: calc((var(--_marker) - var(--_head)) / 2); line-height: var(--_head); }
+.easm-ui-timeline-title { min-width: 0; overflow-wrap: anywhere; }
+.easm-ui-timeline-title strong { font-weight: 600; }
+/* A chip in the title sits on the line and makes room for itself, so on a line of its own it never touches the words above. */
+.easm-ui-timeline-title :is(.easm-ui-stage-chip, .easm-ui-status-chip, .easm-ui-badge) { vertical-align: middle; margin-block: 2px; }
+.easm-ui-timeline-time { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.easm-ui-timeline-detail { margin: 2px 0 0; color: var(--easm-ui-text-secondary); overflow-wrap: anywhere; }
+.easm-ui-timeline-body { margin-top: 8px; }
+.easm-ui-timeline-body > summary { display: inline-flex; min-height: 28px; align-items: center; padding: 4px 12px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 600; cursor: pointer; list-style: none; }
+.easm-ui-timeline-body > summary::-webkit-details-marker { display: none; }
+.easm-ui-timeline-body > summary:hover { background: var(--easm-ui-track-hover); }
+.easm-ui-timeline-body[open] > summary { margin-bottom: 8px; }
+.easm-ui-timeline-body > div { padding: 10px 12px; border-radius: 10px; background: var(--easm-ui-surface-hover); }
+.easm-ui-timeline-earlier { display: inline-flex; align-items: flex-start; gap: 6px; min-height: 32px; margin: 0 0 16px; padding: 6px 12px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-xs); line-height: 20px; font-weight: 600; text-align: start; cursor: pointer; }
+.easm-ui-timeline-earlier .easm-ui-icon { flex: none; margin-top: 2px; }
+.easm-ui-timeline-earlier:hover:not(:disabled) { background: var(--easm-ui-track-hover); }
+.easm-ui-timeline-empty { margin: 0; color: var(--easm-ui-text-secondary); }
+
+/* ------------------------------------------------------------------ Stepper */
+/* Stacked by default: each step is a row of the rail (the node, then the line down to the next node) and the
+   copy. A horizontal stepper lays the steps side by side once its box is 560 px wide, the rail turning into a
+   row (the node, then the line across to the next node). The line always stops clear of both nodes. */
+.easm-ui-stepper { container-type: inline-size; color: var(--easm-ui-text); }
+.easm-ui-stepper > ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.easm-ui-stepper > ol > li { min-width: 0; }
+.easm-ui-step { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; width: 100%; padding: 0 8px; border: 0; border-radius: 12px; background: transparent; color: inherit; font: inherit; text-align: start; }
+button.easm-ui-step { cursor: pointer; }
+button.easm-ui-step:hover { background: var(--easm-ui-surface-hover); }
+.easm-ui-step:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 0; }
+.easm-ui-step-rail { display: flex; flex-direction: column; align-items: center; padding-top: 6px; }
+.easm-ui-step-node { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--easm-ui-track); color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); font-weight: 650; font-variant-numeric: tabular-nums; }
+.easm-ui-step-node .easm-ui-icon { --easm-icon-fill: none; }
+/* Down to the next node, which sits 6 px into the next row: the line ends 4 px above it. */
+.easm-ui-step-line { flex: 1 1 auto; width: 2px; min-height: 8px; margin: 4px 0 -2px; border-radius: 1px; background: var(--easm-ui-border-subtle); }
+li[data-state=done] .easm-ui-step-line { background: var(--easm-ui-badge-brand); }
+li[data-state=current] .easm-ui-step-node { background: var(--easm-ui-primary-fill); color: var(--easm-ui-surface); }
+li[data-state=done] .easm-ui-step-node { background: var(--easm-ui-badge-brand); color: var(--easm-ui-primary-fill); }
+li[data-state=blocked] .easm-ui-step-node { background: var(--easm-ui-badge-warning); color: var(--easm-ui-warning); }
+.easm-ui-step-copy { display: flex; flex-direction: column; min-width: 0; padding: 10px 0 16px; }
+.easm-ui-stepper > ol > li:last-child .easm-ui-step-copy { padding-bottom: 10px; }
+.easm-ui-step-label { font-size: var(--easm-ui-text-sm); line-height: 20px; font-weight: 600; overflow-wrap: anywhere; }
+li[data-state=todo] .easm-ui-step-label, li[data-state=skipped] .easm-ui-step-label { color: var(--easm-ui-text-secondary); font-weight: 500; }
+.easm-ui-step-hint { color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; }
+.easm-ui-step-reason { margin-top: 2px; color: var(--easm-ui-warning); font-size: var(--easm-ui-text-xs); line-height: 16px; font-weight: 600; }
+@container (min-width: 560px) {
+  .easm-ui-stepper[data-orientation=horizontal] > ol { flex-direction: row; }
+  .easm-ui-stepper[data-orientation=horizontal] > ol > li { flex: 1 1 0; }
+  .easm-ui-stepper[data-orientation=horizontal] .easm-ui-step { grid-template-columns: minmax(0, 1fr); row-gap: 8px; padding: 8px 0 8px 8px; }
+  .easm-ui-stepper[data-orientation=horizontal] .easm-ui-step-rail { flex-direction: row; padding-top: 0; }
+  /* Across to the next node, which sits 8 px into the next step: 8 px clear on both sides. */
+  .easm-ui-stepper[data-orientation=horizontal] .easm-ui-step-line { width: auto; height: 2px; min-height: 0; margin: 0 0 0 8px; }
+  .easm-ui-stepper[data-orientation=horizontal] .easm-ui-step-copy,
+  .easm-ui-stepper[data-orientation=horizontal] > ol > li:last-child .easm-ui-step-copy { padding: 0 8px 0 0; }
+}
+.easm-ui-stepper-dots { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
+.easm-ui-stepper-dots > i { width: 8px; height: 8px; border-radius: 50%; background: var(--easm-ui-track-pressed); }
+.easm-ui-stepper-dots > i[data-state=done] { background: var(--easm-ui-primary-fill); }
+.easm-ui-stepper-dots > i[data-state=current] { width: 16px; border-radius: 4px; background: var(--easm-ui-primary-fill); }
+.easm-ui-stepper-dots > i[data-state=blocked] { background: var(--easm-ui-icon-warning); border-radius: 2px; transform: rotate(45deg) scale(.86); }
+
+/* ------------------------------------------------------------------ ReadinessChecklist */
+.easm-ui-readiness { container-type: inline-size; padding: 16px; border-radius: var(--easm-ui-radius-card); background: var(--easm-ui-surface); color: var(--easm-ui-text); }
+/* The title takes the row; the count (with the state's glyph) sits at its end, or under it when there is no room. */
+.easm-ui-readiness-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+.easm-ui-readiness-head h3 { flex: 1 1 14em; min-width: 0; margin: 0; font-size: var(--easm-ui-text-lg); line-height: 22px; font-weight: 650; text-wrap: balance; }
+.easm-ui-readiness-count { display: inline-flex; align-items: center; gap: 4px; flex: none; min-height: 28px; padding: 4px 10px 4px 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-badge-warning); color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); font-weight: 600; line-height: 16px; font-variant-numeric: tabular-nums; }
+.easm-ui-readiness-count .easm-ui-icon { color: var(--easm-ui-warning); --easm-icon-fill: none; }
+.easm-ui-readiness[data-ready] .easm-ui-readiness-count { background: var(--easm-ui-badge-success); }
+.easm-ui-readiness[data-ready] .easm-ui-readiness-count .easm-ui-icon { color: var(--easm-ui-icon-success); }
+.easm-ui-readiness-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+/* Glyph on the label's first line, the words, and Fix it centred on the row. */
+.easm-ui-readiness-list > li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; column-gap: 12px; align-items: start; padding: 12px; border-radius: 10px; background: var(--easm-ui-surface-hover); }
+.easm-ui-readiness-list > li > .easm-ui-icon { color: var(--easm-ui-warning); --easm-icon-fill: none; }
+.easm-ui-readiness-list > li[data-state=done] { background: transparent; padding-block: 8px; }
+.easm-ui-readiness-list > li[data-state=done] > .easm-ui-icon { color: var(--easm-ui-icon-success); }
+.easm-ui-readiness-list > li[data-state=needs-someone] > .easm-ui-icon { color: var(--easm-ui-text-secondary); }
+.easm-ui-readiness-copy { display: flex; flex-direction: column; min-width: 0; }
+.easm-ui-readiness-label { font-size: var(--easm-ui-text-sm); line-height: 20px; font-weight: 600; overflow-wrap: anywhere; }
+li[data-state=done] .easm-ui-readiness-label { font-weight: 500; color: var(--easm-ui-text-secondary); }
+.easm-ui-readiness-why { margin-top: 2px; color: var(--easm-ui-text-secondary); font-size: var(--easm-ui-text-xs); line-height: 16px; overflow-wrap: anywhere; }
+.easm-ui-readiness-owner { color: var(--easm-ui-text); font-weight: 600; }
+/* Fix it is a real button: a filled pill, never a bare link. */
+.easm-ui-readiness-fix { align-self: center; display: inline-flex; align-items: center; min-height: 32px; padding: 4px 14px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-badge-brand); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; }
+/* A long Fix it wraps inside its row instead of running past it. */
+.easm-ui-readiness-fix { max-width: 100%; white-space: normal; text-align: start; }
+.easm-ui-readiness-fix:hover { background: color-mix(in srgb, var(--easm-ui-badge-brand) 80%, var(--easm-ui-primary-fill)); }
+.easm-ui-readiness-fix:focus-visible, .easm-ui-readiness-toggle:focus-visible, .easm-ui-timeline-earlier:focus-visible, .easm-ui-timeline-body > summary:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+.easm-ui-readiness-toggle { margin-top: 8px; min-height: 32px; padding: 4px 12px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-xs); font-weight: 600; cursor: pointer; }
+.easm-ui-readiness-toggle:hover { background: var(--easm-ui-track-hover); }
+/* In a narrow box (a phone) Fix it moves under the words, lined up with them. */
+@container (max-width: 340px) {
+  .easm-ui-readiness-list > li[data-fix] { grid-template-columns: 20px minmax(0, 1fr); }
+  .easm-ui-readiness-list > li[data-fix] > .easm-ui-readiness-fix { grid-column: 2; justify-self: start; margin-top: 10px; }
+}
+
+/* ------------------------------------------------------------------ UnmeasuredValue */
+/* The dash takes the size of the figure it stands for (a table cell, a stat card's 32 px number); the word, when
+   shown, is small text beside it, dotted to say the reason is one hover, focus or tap away. */
+.easm-ui.easm-ui-unmeasured { display: inline-flex; align-items: baseline; gap: 8px; font-size: inherit; line-height: inherit; color: var(--easm-ui-text-secondary); cursor: help; border-radius: 4px; }
+.easm-ui-unmeasured-word { font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 550; letter-spacing: 0; text-decoration: underline dotted; text-underline-offset: 3px; }
+
+@media (forced-colors: active) {
+  .easm-ui-status-chip, .easm-ui-stage-chip, .easm-ui-identity, .easm-ui-sla[data-variant=chip], .easm-ui-readiness, .easm-ui-readiness-fix, .easm-ui-readiness-count { border: 1px solid CanvasText; }
+  .easm-ui-stage-pips > i[data-on], .easm-ui-identity-bars > i[data-on], .easm-ui-stepper-dots > i[data-state=done], .easm-ui-timeline-thread, .easm-ui-timeline-lead:not([data-blank]), .easm-ui-step-line { forced-color-adjust: none; background: CanvasText; }
+}
+
+/* ------------------------------------------------------------------ FilterChip */
+/* A combinable quick filter: glyph, words, a count; on is the dark fill; attention puts the count in signature orange. */
+.easm-ui-filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.easm-ui-filter-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; max-width: 100%; padding: 4px 12px; border: 0; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-track); color: var(--easm-ui-text); font: inherit; font-size: var(--easm-ui-text-sm); line-height: 18px; font-weight: 550; white-space: nowrap; cursor: pointer; }
+.easm-ui-filter-chip:has(> .easm-ui-icon) { padding-inline-start: 8px; }
+.easm-ui-filter-chip:has(> .easm-ui-filter-chip-count) { padding-inline-end: 6px; }
+.easm-ui-filter-chip > .easm-ui-icon { flex: none; color: var(--easm-ui-text-secondary); --easm-icon-fill: none; }
+.easm-ui-filter-chip-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.easm-ui-filter-chip-count { flex: none; min-width: 22px; padding: 1px 6px; border-radius: var(--easm-ui-radius-pill); background: var(--easm-ui-surface); color: var(--easm-ui-text); font-size: var(--easm-ui-text-xs); line-height: 18px; font-weight: 650; text-align: center; font-variant-numeric: tabular-nums; }
+.easm-ui-filter-chip:hover:not(:disabled) { background: var(--easm-ui-track-hover); }
+.easm-ui-filter-chip[aria-pressed=true] { background: var(--easm-ui-ink-panel); color: var(--easm-ui-on-ink); }
+.easm-ui-filter-chip[aria-pressed=true] > .easm-ui-icon { color: var(--easm-ui-on-ink); }
+.easm-ui-filter-chip[aria-pressed=true] .easm-ui-filter-chip-count { background: var(--easm-ui-ink-panel-hover); color: var(--easm-ui-on-ink); }
+.easm-ui-filter-chip[aria-pressed=true]:hover:not(:disabled) { background: var(--easm-ui-ink-panel-hover); }
+.easm-ui-filter-chip[data-attention] > .easm-ui-icon { color: var(--easm-ui-orange-ink, var(--easm-ui-orange-fill)); }
+.easm-ui-filter-chip[data-attention] .easm-ui-filter-chip-count { background: var(--easm-ui-orange-fill); color: var(--easm-ui-on-orange-fill); }
+.easm-ui-filter-chip[aria-pressed=true][data-attention] > .easm-ui-icon { color: var(--easm-ui-on-ink); }
+.easm-ui-filter-chip[data-empty]:not([aria-pressed=true]) { color: var(--easm-ui-text-secondary); }
+.easm-ui-filter-chip[data-empty]:not([aria-pressed=true]) .easm-ui-filter-chip-count { background: transparent; color: var(--easm-ui-text-secondary); }
+.easm-ui-filter-chip:focus-visible { outline: 2px solid var(--easm-ui-primary-fill); outline-offset: 2px; }
+.easm-ui-filter-chip:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ------------------------------------------------------------------ PersonJourney */
+.easm-ui-journey { display: grid; gap: 16px; }

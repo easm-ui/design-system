@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const ViaAssistantChatIcon = /* @__PURE__ */ createIcon({"name":"via-assistant-chat","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M8 4h8c3.3 0 5 1.7 5 5v5c0 3.3-1.7 5-5 5h-5.6l-4.1 2c-.6.3-1.3-.2-1.3-.9v-1.7C3.6 17.8 3 16.3 3 14V9c0-3.3 1.7-5 5-5Z","fill":"surface"}},{"tag":"path","attrs":{"d":"M7.5 9.5h9m-9 3.7h6"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"m18 15.9.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6.6-1.5Z","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

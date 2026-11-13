@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const InputFromSigninIcon = /* @__PURE__ */ createIcon({"name":"input-from-signin","body":[{"tag":"g","attrs":{"transform":"translate(7.5 6.6) scale(0.5) translate(-12 -12)","stroke-width":3.2},"children":[{"tag":"circle","attrs":{"cx":"12","cy":"7","r":"3.1","fill":"surface"}},{"tag":"path","attrs":{"d":"M5 19c0-3.6 2.4-5.2 7-5.2s7 1.6 7 5.2c0 1.2-.8 2-2 2H7c-1.2 0-2-.8-2-2Z","fill":"surface"}}]},{"tag":"path","attrs":{"d":"M13.2 6.8h3.3a2 2 0 0 1 2 2v2.6m-1.6-1.5 1.6 1.6 1.6-1.6"}},{"tag":"rect","attrs":{"x":3,"y":14,"width":18,"height":6.5,"rx":2.2,"fill":"surface"}},{"tag":"path","attrs":{"d":"M6.5 17.25h5.5"}}]});

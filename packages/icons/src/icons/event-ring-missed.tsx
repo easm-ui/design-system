@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const EventRingMissedIcon = /* @__PURE__ */ createIcon({"name":"event-ring-missed","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M6 10a6 6 0 0 1 12 0v4.5l1.8 2.5c.3.5 0 1.1-.6 1.1H4.8c-.6 0-.9-.6-.6-1.1L6 14.5V10ZM10 21h4M12 2.5V4","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":2.2,"fill":"none","stroke":"contrast","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 17.25V18l.7.6","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

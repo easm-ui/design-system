@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const MyWorkIcon = /* @__PURE__ */ createIcon({"name":"my-work","body":[{"tag":"rect","attrs":{"x":9,"y":2.8,"width":10.5,"height":10,"rx":1.6,"fill":"surface"}},{"tag":"path","attrs":{"d":"M11.6 5.8h5.2"}},{"tag":"rect","attrs":{"x":4.5,"y":6.4,"width":11,"height":8.6,"rx":1.6,"fill":"surface"}},{"tag":"path","attrs":{"d":"M7 9.4h6"}},{"tag":"path","attrs":{"d":"M3 14h4.5c.9 0 1.3.4 1.7 1.4l.1.3c.4 1 1 1.3 2 1.3h1.4c1 0 1.6-.3 2-1.3l.1-.3c.4-1 .8-1.4 1.7-1.4H21v3.7a2.8 2.8 0 0 1-2.8 2.8H5.8A2.8 2.8 0 0 1 3 17.7Z","fill":"surface"}}]});

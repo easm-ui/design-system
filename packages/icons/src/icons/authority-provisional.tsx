@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const AuthorityProvisionalIcon = /* @__PURE__ */ createIcon({"name":"authority-provisional","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"circle","attrs":{"cx":12,"cy":12,"r":8.5,"fill":"surface"}},{"tag":"path","attrs":{"d":"M12 7v5l3.5 2"}}]},{"tag":"circle","attrs":{"cx":18,"cy":18,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M19.9 18a1.9 1.9 0 1 1-.6-1.4M19.6 15.5v1.3h-1.3","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});

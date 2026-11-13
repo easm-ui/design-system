@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const UserSpeakingIcon = /* @__PURE__ */ createIcon({"name":"user-speaking","body":[{"tag":"circle","attrs":{"cx":9.2,"cy":6.4,"r":3,"fill":"surface"}},{"tag":"path","attrs":{"d":"M3 18.8c0-3.4 2.3-5 6.2-5s6.2 1.6 6.2 5c0 1.2-.8 2-2 2H5c-1.2 0-2-.8-2-2Z","fill":"surface","stroke":"none"}},{"tag":"path","attrs":{"d":"M3 18.8c0-3.4 2.3-5 6.2-5 2.5 0 4.4.7 5.3 2M3 18.8c0 1.2.8 2 2 2h9.5"}},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke":"ink","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M15.35 16.4V19M17.7 15.1v5.2M19.9 16.2v3","stroke-width":1.1,"fill":"none"}}]});

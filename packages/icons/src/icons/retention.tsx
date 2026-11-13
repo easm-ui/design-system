@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const RetentionIcon = /* @__PURE__ */ createIcon({"name":"retention","body":[{"tag":"path","attrs":{"d":"M3 5.6h13.4v12.2c0 1.5-3 2.7-6.7 2.7S3 19.3 3 17.8V5.6Z","fill":"surface","stroke":"none"}},{"tag":"ellipse","attrs":{"cx":9.7,"cy":5.6,"rx":6.7,"ry":2.7,"fill":"surface"}},{"tag":"path","attrs":{"d":"M3 5.6v12.2c0 1.5 3 2.7 6.7 2.7 1.6 0 3-.2 4.1-.5M16.4 5.6v7.6M3 11.6c0 1.5 3 2.7 6.7 2.7s6.7-1.2 6.7-2.7"}},{"tag":"circle","attrs":{"cx":17.7,"cy":17.7,"r":4.5,"fill":"background","stroke-width":1.35,"data-detail-badge":"true"}},{"tag":"path","attrs":{"d":"M17.7 15.3v2.4l1.65 1","stroke-width":1.1}}]});

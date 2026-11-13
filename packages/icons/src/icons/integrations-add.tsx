@@ -1,0 +1,3 @@
+// Generated individual module; no registry import.
+import { createIcon } from '../core';
+export const IntegrationsAddIcon = /* @__PURE__ */ createIcon({"name":"integrations-add","body":[{"tag":"g","attrs":{"transform":"translate(.6 .6) scale(.82)","stroke-width":1.9512195121951221},"children":[{"tag":"path","attrs":{"d":"M9.8 7.5h3.7c2.5 0 4 1.5 4 4v1.7"}},{"tag":"rect","attrs":{"x":"3.2","y":"4.2","width":"6.6","height":"6.6","rx":"2.2","fill":"surface"}},{"tag":"rect","attrs":{"x":"14.2","y":"13.2","width":"6.6","height":"6.6","rx":"2.2","fill":"surface"}}]},{"tag":"circle","attrs":{"cx":18,"cy":17.5,"r":4,"fill":"ink","stroke":"background","stroke-width":1.3}},{"tag":"path","attrs":{"d":"M18 15.5v4m-2-2h4","stroke":"contrast","stroke-width":1.3,"fill":"none"}}]});
