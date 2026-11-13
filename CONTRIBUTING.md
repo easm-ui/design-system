@@ -52,7 +52,7 @@ Packages follow [semantic versioning](https://semver.org). Add a changeset (`pnp
 | **Minor** | New components, props, variants, tokens or icons; deprecating something; a deliberate visual change to an existing token value. |
 | **Patch** | Bug fixes, accessibility fixes that keep the API unchanged, documentation and internal refactors. |
 
-Releases are automatic. After a pull request with changesets merges into `main`, the Release workflow opens a **chore: release packages** pull request that applies them, bumps versions and writes each `CHANGELOG.md`. Merging it publishes to npm (npmjs.com) with provenance. If the workflow ever cannot open that pull request, run `pnpm release:version` on a branch from `main` and open the pull request yourself.
+Releases are automatic. After a pull request with changesets merges into `main`, the Release workflow opens a **chore: release packages** pull request that applies them, bumps versions and writes each `CHANGELOG.md`. Merging it publishes to npm (npmjs.com) through npm Trusted Publishing, with provenance; no npm token is stored anywhere. If the workflow ever cannot open that pull request, run `pnpm release:version` on a branch from `main` and open the pull request yourself.
 
 ## Deprecation policy
 
